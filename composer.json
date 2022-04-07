@@ -1,0 +1,15 @@
+{
+  "name": "zaacom/helpers",
+  "description": "Zaacom helpers",
+  "authors": [
+    {
+      "name": "Thomas FONTAINE--TUFFERY",
+      "email": "thomas-fontaine@zaacom.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Zaacom\\helpers\\": "src"
+    }
+  }
+}
