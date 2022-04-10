@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\file;
+namespace Zaacom\helpers\files;
 
 abstract class File
 {
@@ -17,7 +17,7 @@ abstract class File
 			$path = rtrim($path);
 		}
 		if (!is_dir($path)) {
-			mkdir($path, recursive: true);
+			Directory::create($path);
 		}
 		return file_put_contents($path . DIRECTORY_SEPARATOR . trim($fileName, DIRECTORY_SEPARATOR), $content);
 	}

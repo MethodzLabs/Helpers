@@ -56,7 +56,7 @@ class DateTime extends \DateTime
 		return $this->getTimestamp() > $datetime->getTimestamp();
 	}
 
-	public function equal(string|DateTime $datetime): bool
+	public function equals(string|DateTime $datetime): bool
 	{
 		if (is_string($datetime)) {
 			$datetime = new self($datetime);
