@@ -84,7 +84,7 @@ enum CurlErrorEnum: int
 	case CURL_REMOTE_FILE_NOT_FOUND = 78;
 	case CURL_SSH = 79;
 	case CURL_SSL_SHUTDOWN_FAIL = 80;
-	case CURL_AGAI = 81;
+	case CURL_AGAIN = 81;
 	case CURL_SSL_CRL_BAD_FILE = 82;
 	case CURL_SSL_ISSUER_ERROR = 83;
 	case CURL_FTP_PRET_FAIL = 84;
