@@ -20,6 +20,11 @@ class Cookie
 		return new self($name);
 	}
 
+	#[Pure] public static function exist(string $name): bool
+	{
+		return array_key_exists($name, $_COOKIE);
+	}
+
 	public function setDatetimeExpire(DateTime $dateTime): self
 	{
 		$this->maxTime = $dateTime->getTimestamp();
@@ -47,4 +52,6 @@ class Cookie
 	{
 		return setcookie($this->name, "", 1);
 	}
+
+
 }
