@@ -37,9 +37,9 @@ class Cookie
 		return $this;
 	}
 
-	public function setExpireInTimePlusSecond(int $second): self
+	public function setExpireInTimePlusSeconds(int $seconds): self
 	{
-		$this->maxTime = time() + $second;
+		$this->maxTime = time() + $seconds;
 		return $this;
 	}
 
