@@ -10,14 +10,15 @@ class Mail
 	private array $toMails;
 	private string $subject;
 	private string $body;
-	private ?bool $isHTML = false;
+	private bool $isHTML;
 
-	public function __construct(array $to, string $fromMail, string $subject, string $body)
+	public function __construct(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false)
 	{
 		$this->toMails = $to;
 		$this->fromMail = $fromMail;
 		$this->subject = $subject;
 		$this->body = $body;
+		$this->isHTML = $isHTML;
 	}
 
 	public function setFromMail(string $fromMail): static
@@ -29,12 +30,6 @@ class Mail
 	public function setFromName(string $fromName): static
 	{
 		$this->fromName = $fromName;
-		return $this;
-	}
-
-	public function isHTML(): static
-	{
-		$this->isHTML = true;
 		return $this;
 	}
 
