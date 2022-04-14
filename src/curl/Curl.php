@@ -24,6 +24,11 @@ abstract class Curl
 		curl_setopt_array(self::$curlHandle, $header);
 	}
 
+	public static function setHtaccessUsernameAndPassword(string $username, string $password)
+	{
+		curl_setopt(self::$curlHandle, CURLOPT_USERPWD, "$username:$password");
+	}
+
 	public static function getInfos(): array
 	{
 		self::$infos = curl_getinfo(self::$curlHandle);
