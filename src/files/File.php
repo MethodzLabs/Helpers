@@ -4,6 +4,18 @@ namespace Zaacom\helpers\files;
 
 abstract class File
 {
+
+	public static function upload(string $path, string $fileName, string $tmp_name): bool
+	{
+		if (str_ends_with($path, DIRECTORY_SEPARATOR)) {
+			$path = rtrim($path);
+		}
+		if (!is_dir($path)) {
+			Directory::create($path);
+		}
+		return move_uploaded_file($tmp_name, $path . DIRECTORY_SEPARATOR . trim($fileName, DIRECTORY_SEPARATOR));
+	}
+
 	/**
 	 * @param string $path without / at end
 	 * @param string $fileName
