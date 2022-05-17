@@ -9,6 +9,7 @@ class Cookie
 {
 	private string $name;
 	private int $maxTime = 0;
+	private string $domain = "";
 
 	private function __construct(string $name)
 	{
@@ -18,6 +19,14 @@ class Cookie
 	#[Pure] public static function create(string $name): self
 	{
 		return new self($name);
+	}
+
+	public static function get(string $name): mixed
+	{
+		if (!self::exist($name)) {
+			return null;
+		}
+		return json_decode($_COOKIE[$name]);
 	}
 
 	#[Pure] public static function exist(string $name): bool
@@ -37,6 +46,12 @@ class Cookie
 		return $this;
 	}
 
+	public function setDomain(string $domain): self
+	{
+		$this->domain = $domain;
+		return $this;
+	}
+
 	public function setExpireInTimePlusSeconds(int $seconds): self
 	{
 		$this->maxTime = time() + $seconds;
@@ -45,13 +60,11 @@ class Cookie
 
 	public function save(mixed $value): bool
 	{
-		return setcookie($this->name, json_encode($value), $this->maxTime);
+		return setcookie($this->name, json_encode($value), $this->maxTime, path: '', secure: false, domain: $this->domain);
 	}
 
 	public function delete(): bool
 	{
 		return setcookie($this->name, "", 1);
 	}
-
-
 }
