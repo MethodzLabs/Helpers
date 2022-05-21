@@ -37,6 +37,10 @@ abstract class Curl
 		self::addHeader(CURLOPT_USERPWD, "$username:$password");
 	}
 
+	public static function setRequestAsPost(bool $bool = true) {
+		self::addHeader(CURLOPT_POST, $bool);
+	}
+
 	public static function setPOSTParameters(array $data)
 	{
 		self::$data = $data;
@@ -60,7 +64,7 @@ abstract class Curl
 	public static function exec(): bool|string
 	{
 		if (self::$data !== null) {
-			self::addHeader(CURLOPT_POST, true);
+			self::setRequestAsPost();
 			self::addHeader(CURLOPT_POSTFIELDS, self::$data);
 		}
 		curl_setopt_array(self::$curlHandle, self::$header);
