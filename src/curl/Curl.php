@@ -8,25 +8,64 @@ abstract class Curl
 
 	private static \CurlHandle $curlHandle;
 	private static bool|string $result;
+	private static string $url;
 	private static array $infos;
+	private static ?array $data = null;
+	private static array $header = [
+		CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
+		CURLOPT_RETURNTRANSFER => true,
+	];
 
 	public static function init(string $url)
 	{
+		self::$url = $url;
 		self::$curlHandle = curl_init($url);
-		self::setHeader([
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows; U; Windows NT 6.1; fr; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13',
-		]);
 	}
 
 	public static function setHeader(array $header)
 	{
-		curl_setopt_array(self::$curlHandle, $header);
+		self::$header = $header;
+	}
+
+	public static function addHeader(int $key, mixed $value)
+	{
+		self::$header[$key] = $value;
 	}
 
 	public static function setHtaccessUsernameAndPassword(string $username, string $password)
 	{
-		curl_setopt(self::$curlHandle, CURLOPT_USERPWD, "$username:$password");
+		self::addHeader(CURLOPT_USERPWD, "$username:$password");
+	}
+
+	public static function setPOSTParameters(array $data)
+	{
+		self::$data = $data;
+	}
+
+	public static function addPOSTParameters(string $key, mixed $value)
+	{
+		self::$data[$key] = $value;
+	}
+
+	public static function setGETParameters(array $data)
+	{
+		self::addHeader(CURLOPT_URL, Url::from(self::$url)->setParameters($data)->build());
+	}
+
+	public static function addGETParameters(string $key, mixed $value)
+	{
+		self::addHeader(CURLOPT_URL, Url::from(self::$url)->addParameters($key, $value)->build());
+	}
+
+	public static function exec(): bool|string
+	{
+		if (self::$data !== null) {
+			self::addHeader(CURLOPT_POST, true);
+			self::addHeader(CURLOPT_POSTFIELDS, self::$data);
+		}
+		curl_setopt_array(self::$curlHandle, self::$header);
+		self::$result = curl_exec(self::$curlHandle);
+		return self::$result;
 	}
 
 	public static function getInfos(): array
@@ -39,12 +78,6 @@ abstract class Curl
 	public static function getInfo(int $option)
 	{
 		return curl_getinfo(self::$curlHandle, $option);
-	}
-
-	public static function exec(): bool|string
-	{
-		self::$result = curl_exec(self::$curlHandle);
-		return self::$result;
 	}
 
 	public static function getResult(): bool|string
