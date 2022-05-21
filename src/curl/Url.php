@@ -4,16 +4,15 @@ namespace Zaacom\helpers\curl;
 
 class Url
 {
-	public UrlSchemeEnum $scheme;
-	public ?string $user;
-	public ?string $pass;
-	public string $host;
-	public ?int $port;
-	public ?string $path;
-	public ?array $data = null;
-	public ?string $fragment;
+	private UrlSchemeEnum $scheme;
+	private ?string $user;
+	private ?string $pass;
+	private string $host;
+	private ?int $port;
+	private ?string $path;
+	private ?array $data = null;
+	private ?string $fragment;
 
-//"http   ://   username   :   password   @   hostname   :   9090   /path   ?   arg=value   #   anchor"
 
 	private function __construct(string $url)
 	{
