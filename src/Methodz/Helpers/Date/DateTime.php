@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Date;
 
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+
 /**
  * @author Thomas FONTAINE--TUFFERY
  */
@@ -62,6 +64,12 @@ class DateTime extends \DateTime
 			$datetime = new self($datetime);
 		}
 		return $this->getTimestamp() == $datetime->getTimestamp();
+	}
+
+	public function setDate(int $year, int $month, int $day): self
+	{
+		parent::setDate($year, $month, $day);
+		return $this;
 	}
 
 	public function __toString()
