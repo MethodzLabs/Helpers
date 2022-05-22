@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Zaacom\\helpers\\": "src"
+      "Methodz\\Helpers\\": "src/Methodz/Helpers"
     }
   },
   "require-dev": {

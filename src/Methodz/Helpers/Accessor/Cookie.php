@@ -1,9 +1,9 @@
 <?php
 
-namespace Zaacom\helpers\accessor;
+namespace Methodz\Helpers\Accessors;
 
 use JetBrains\PhpStorm\Pure;
-use Zaacom\helpers\date\DateTime;
+use Methodz\Helpers\Date\DateTime;
 
 class Cookie
 {

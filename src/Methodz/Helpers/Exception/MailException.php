@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\exception;
+namespace Methodz\Helpers\Exception;
 
 class MailException extends \Exception
 {

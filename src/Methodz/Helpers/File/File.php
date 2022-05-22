@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\files;
+namespace Methodz\Helpers\File;
 
 abstract class File
 {
@@ -35,22 +35,22 @@ abstract class File
 	}
 
 	/**
-	 * @param string $path
-	 * @param string $fileName can be empty
+	 * @param string      $path
+	 * @param string|null $fileName can be null
 	 *
 	 * @return bool|string
 	 */
-	public static function get(string $path, string $fileName = ""): bool|string
+	public static function get(string $path, ?string $fileName = null): bool|string
 	{
-		if (!empty($fileName)) {
+		if ($fileName !== null) {
 			$fileName = DIRECTORY_SEPARATOR . $fileName;
 		}
 		return file_get_contents($path . $fileName);
 	}
 
-	public static function delete(string $path, string $fileName = ""): bool
+	public static function delete(string $path, ?string $fileName = null): bool
 	{
-		if (!empty($fileName)) {
+		if ($fileName !== null) {
 			$fileName = DIRECTORY_SEPARATOR . $fileName;
 		}
 		if (file_exists($path . $fileName)) {

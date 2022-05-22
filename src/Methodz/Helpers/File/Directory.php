@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\files;
+namespace Methodz\Helpers\File;
 
 use Exception;
 

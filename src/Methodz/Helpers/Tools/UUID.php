@@ -1,8 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\tools;
-
-use JetBrains\PhpStorm\Pure;
+namespace Methodz\Helpers\Tools;
 
 abstract class UUID
 {
@@ -27,7 +25,7 @@ abstract class UUID
 		return self::$history;
 	}
 
-	#[Pure] public static function getLastUUID(): ?string
+	public static function getLastUUID(): ?string
 	{
 		if (count(self::getHistory()) === 0) {
 			return null;

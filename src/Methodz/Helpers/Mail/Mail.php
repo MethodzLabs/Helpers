@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\mail;
+namespace Methodz\Helpers\Mail;
 
 class Mail
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\date;
+namespace Methodz\Helpers\Date;
 
 /**
  * @author Thomas FONTAINE--TUFFERY

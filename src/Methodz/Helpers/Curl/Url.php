@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaacom\helpers\curl;
+namespace Methodz\Helpers\Curl;
 
 class Url
 {

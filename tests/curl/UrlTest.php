@@ -2,7 +2,7 @@
 
 namespace curl;
 
-use Zaacom\helpers\curl\Url;
+use Methodz\Helpers\Curl\Url;
 use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase

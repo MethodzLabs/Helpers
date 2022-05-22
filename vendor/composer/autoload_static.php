@@ -17,10 +17,6 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
-        'Z' => 
-        array (
-            'Zaacom\\helpers\\' => 15,
-        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
@@ -33,6 +29,10 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         array (
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
+        ),
+        'M' => 
+        array (
+            'Methodz\\Helpers\\' => 16,
         ),
         'D' => 
         array (
@@ -47,10 +47,6 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-        ),
-        'Zaacom\\helpers\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -67,6 +63,10 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Methodz\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Methodz/Helpers',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
