@@ -53,12 +53,14 @@ abstract class Curl
 
 	public static function setGETParameters(array $data)
 	{
-		self::addHeader(CURLOPT_URL, Url::from(self::$url)->setParameters($data)->build());
+		self::$url = Url::from(self::$url)->setParameters($data)->build();
+		self::addHeader(CURLOPT_URL, self::$url);
 	}
 
 	public static function addGETParameters(string $key, mixed $value)
 	{
-		self::addHeader(CURLOPT_URL, Url::from(self::$url)->addParameters($key, $value)->build());
+		self::$url = Url::from(self::$url)->addParameters($key, $value)->build();
+		self::addHeader(CURLOPT_URL, self::$url);
 	}
 
 	public static function exec(): bool|string
