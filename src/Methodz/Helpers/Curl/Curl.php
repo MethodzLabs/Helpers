@@ -22,10 +22,11 @@ class Curl
 		$this->url = $url;
 		$this->infos = [];
 		$this->data = null;
-		$this->options = [];
-		$this->header = [
-			CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
+		$this->options = [
 			CURLOPT_RETURNTRANSFER => true,
+		];
+		$this->header = [
+			CurlCommonHeaderKeyEnum::USER_AGENT->value => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
 		];
 	}
 
@@ -119,7 +120,7 @@ class Curl
 		foreach ($this->header as $k => $h) {
 			$header[] = "$k: $h";
 		}
-		$this->addOption(CURLOPT_HTTPHEADER ,$header);
+		$this->addOption(CURLOPT_HTTPHEADER, $header);
 		curl_setopt_array($this->curlHandle, $this->options);
 		$this->result = curl_exec($this->curlHandle);
 		$this->infos = curl_getinfo($this->curlHandle);
