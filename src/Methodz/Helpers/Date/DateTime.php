@@ -66,9 +66,15 @@ class DateTime extends \DateTime
 		return $this->getTimestamp() == $datetime->getTimestamp();
 	}
 
-	public function setDate(int $year, int $month, int $day): self
+	public function setDate(int $year, int $month, int $day): static
 	{
 		parent::setDate($year, $month, $day);
+		return $this;
+	}
+
+	public function setTimestamp(int $timestamp): static
+	{
+		parent::setTimestamp($timestamp);
 		return $this;
 	}
 
@@ -77,8 +83,18 @@ class DateTime extends \DateTime
 		return $this->formatMax();
 	}
 
-	public static function now(): DateTime
+	public static function now(): static
 	{
 		return new self();
+	}
+
+	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): static
+	{
+		return self::createFromTimestamp(\DateTime::createFromFormat($format, $datetime, $timezone));
+	}
+
+	public static function createFromTimestamp(int $timestamp): static
+	{
+		return self::now()->setTimestamp($timestamp);
 	}
 }
