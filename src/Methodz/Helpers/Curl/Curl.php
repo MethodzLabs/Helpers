@@ -111,9 +111,12 @@ class Curl
 	}
 
 	/**
+	 * @param bool $closeAfterExec
+	 *
+	 * @return Curl
 	 * @throws CurlExecuteException
 	 */
-	public function exec(): static
+	public function exec(bool $closeAfterExec = true): static
 	{
 		if ($this->data !== null) {
 			$this->setRequestAsPost();
@@ -129,6 +132,9 @@ class Curl
 		$this->infos = curl_getinfo($this->curlHandle);
 		if ($this->result === false) {
 			throw new CurlExecuteException($this->getErrorString());
+		}
+		if ($closeAfterExec) {
+			$this->close();
 		}
 
 		return $this;
