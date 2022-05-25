@@ -18,7 +18,7 @@ class Curl
 	{
 		$this->curlHandle = curl_init($url);
 		$this->result = null;
-		$this->url = null;
+		$this->url = $url;
 		$this->infos = [];
 		$this->data = null;
 		$this->header = [
