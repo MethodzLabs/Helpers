@@ -10,9 +10,10 @@ class Curl
 	private \CurlHandle $curlHandle;
 	private null|string $result;
 	private string $url;
-	private ?array $infos;
+	private array $infos;
 	private ?array $data;
 	private array $header;
+	private array $options;
 
 	private function __construct(string $url)
 	{
@@ -21,6 +22,7 @@ class Curl
 		$this->url = $url;
 		$this->infos = [];
 		$this->data = null;
+		$this->options = [];
 		$this->header = [
 			CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
 			CURLOPT_RETURNTRANSFER => true,
@@ -90,8 +92,21 @@ class Curl
 		return $this;
 	}
 
+	public function setOptions(array $options): static
+	{
+		$this->options = $options;
+
+		return $this;
+	}
+
+	public function addOption(string $key, mixed $value): static
+	{
+		$this->options[$key] = $value;
+
+		return $this;
+	}
+
 	/**
-	 * @return $this
 	 * @throws CurlExecuteException
 	 */
 	public function exec(): static
@@ -104,8 +119,10 @@ class Curl
 		foreach ($this->header as $k => $h) {
 			$header[] = "$k: $h";
 		}
-		curl_setopt($this->curlHandle, CURLOPT_HTTPHEADER, $header);
+		$this->addOption(CURLOPT_HTTPHEADER ,$header);
+		curl_setopt_array($this->curlHandle, $this->options);
 		$this->result = curl_exec($this->curlHandle);
+		$this->infos = curl_getinfo($this->curlHandle);
 		if ($this->result === false) {
 			throw new CurlExecuteException($this->getErrorString());
 		}
@@ -115,8 +132,6 @@ class Curl
 
 	public function getInfos(): array
 	{
-		$this->infos = curl_getinfo($this->curlHandle);
-
 		return $this->infos;
 	}
 
