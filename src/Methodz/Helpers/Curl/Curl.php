@@ -22,12 +22,10 @@ class Curl
 		$this->url = $url;
 		$this->infos = [];
 		$this->data = null;
-		$this->options = [
-			CURLOPT_RETURNTRANSFER => true,
-		];
-		$this->header = [
-			CurlCommonHeaderKeyEnum::USER_AGENT->value => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
-		];
+		$this->options = [];
+		$this->addOption(CURLOPT_RETURNTRANSFER, true);
+		$this->header = [];
+		$this->addHeader(CurlCommonHeaderKeyEnum::USER_AGENT, "'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15'");
 	}
 
 	public static function init(string $url): static
@@ -54,14 +52,14 @@ class Curl
 
 	public function setHtaccessUsernameAndPassword(string $username, string $password): static
 	{
-		$this->addHeader(CURLOPT_USERPWD, "$username:$password");
+		$this->addOption(CURLOPT_USERPWD, "$username:$password");
 
 		return $this;
 	}
 
 	public function setRequestAsPost(bool $bool = true): static
 	{
-		$this->addHeader(CURLOPT_POST, $bool);
+		$this->addOption(CURLOPT_POST, $bool);
 
 		return $this;
 	}
