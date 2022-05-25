@@ -83,7 +83,7 @@ class Curl
 	public function setGETParameters(array $data): static
 	{
 		$this->url = Url::from($this->url)->setParameters($data)->build();
-		$this->addHeader(CURLOPT_URL, $this->url);
+		$this->addOption(CURLOPT_URL, $this->url);
 
 		return $this;
 	}
@@ -91,7 +91,7 @@ class Curl
 	public function addGETParameters(string $key, mixed $value): static
 	{
 		$this->url = Url::from($this->url)->addParameters($key, $value)->build();
-		$this->addHeader(CURLOPT_URL, $this->url);
+		$this->addOption(CURLOPT_URL, $this->url);
 
 		return $this;
 	}
