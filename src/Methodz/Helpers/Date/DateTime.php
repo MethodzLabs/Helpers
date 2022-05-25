@@ -90,7 +90,7 @@ class DateTime extends \DateTime
 
 	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): static
 	{
-		return self::createFromTimestamp(\DateTime::createFromFormat($format, $datetime, $timezone));
+		return self::createFromTimestamp(\DateTime::createFromFormat($format, $datetime, $timezone)->getTimestamp());
 	}
 
 	public static function createFromTimestamp(int $timestamp): static
