@@ -3,111 +3,151 @@
 namespace Methodz\Helpers\Curl;
 
 
-abstract class Curl
+use Methodz\Helpers\Curl\Exception\CurlExecuteException;
+
+class Curl
 {
+	private \CurlHandle $curlHandle;
+	private null|string $result;
+	private string $url;
+	private ?array $infos;
+	private ?array $data;
+	private array $header;
 
-	private static \CurlHandle $curlHandle;
-	private static bool|string $result;
-	private static string $url;
-	private static array $infos;
-	private static ?array $data = null;
-	private static array $header = [
-		CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
-		CURLOPT_RETURNTRANSFER => true,
-	];
-
-	public static function init(string $url)
+	private function __construct(string $url)
 	{
-		self::$url = $url;
-		self::$curlHandle = curl_init($url);
+		$this->curlHandle = curl_init($url);
+		$this->result = null;
+		$this->url = null;
+		$this->infos = [];
+		$this->data = null;
+		$this->header = [
+			CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15',
+			CURLOPT_RETURNTRANSFER => true,
+		];
 	}
 
-	public static function setHeader(array $header)
+	public static function init(string $url): static
 	{
-		self::$header = $header;
+		return new self($url);
 	}
 
-	public static function addHeader(int $key, mixed $value)
+	public function setHeader(array $header): static
 	{
-		self::$header[$key] = $value;
+		$this->header = $header;
+
+		return $this;
 	}
 
-	public static function setHtaccessUsernameAndPassword(string $username, string $password)
+	public function addHeader(int $key, mixed $value): static
 	{
-		self::addHeader(CURLOPT_USERPWD, "$username:$password");
+		$this->header[$key] = $value;
+
+		return $this;
 	}
 
-	public static function setRequestAsPost(bool $bool = true) {
-		self::addHeader(CURLOPT_POST, $bool);
+	public function setHtaccessUsernameAndPassword(string $username, string $password): static
+	{
+		$this->addHeader(CURLOPT_USERPWD, "$username:$password");
+
+		return $this;
 	}
 
-	public static function setPOSTParameters(array $data)
+	public function setRequestAsPost(bool $bool = true): static
 	{
-		self::$data = $data;
+		$this->addHeader(CURLOPT_POST, $bool);
+
+		return $this;
 	}
 
-	public static function addPOSTParameters(string $key, mixed $value)
+	public function setPOSTParameters(array $data): static
 	{
-		self::$data[$key] = $value;
+		$this->data = $data;
+
+		return $this;
 	}
 
-	public static function setGETParameters(array $data)
+	public function addPOSTParameters(string $key, mixed $value): static
 	{
-		self::$url = Url::from(self::$url)->setParameters($data)->build();
-		self::addHeader(CURLOPT_URL, self::$url);
+		$this->data[$key] = $value;
+
+		return $this;
 	}
 
-	public static function addGETParameters(string $key, mixed $value)
+	public function setGETParameters(array $data): static
 	{
-		self::$url = Url::from(self::$url)->addParameters($key, $value)->build();
-		self::addHeader(CURLOPT_URL, self::$url);
+		$this->url = Url::from($this->url)->setParameters($data)->build();
+		$this->addHeader(CURLOPT_URL, $this->url);
+
+		return $this;
 	}
 
-	public static function exec(): bool|string
+	public function addGETParameters(string $key, mixed $value): static
 	{
-		if (self::$data !== null) {
-			self::setRequestAsPost();
-			self::addHeader(CURLOPT_POSTFIELDS, self::$data);
+		$this->url = Url::from($this->url)->addParameters($key, $value)->build();
+		$this->addHeader(CURLOPT_URL, $this->url);
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 * @throws CurlExecuteException
+	 */
+	public function exec(): static
+	{
+		if ($this->data !== null) {
+			$this->setRequestAsPost();
+			$this->addHeader(CURLOPT_POSTFIELDS, $this->data);
 		}
-		curl_setopt_array(self::$curlHandle, self::$header);
-		self::$result = curl_exec(self::$curlHandle);
-		return self::$result;
+		curl_setopt_array($this->curlHandle, $this->header);
+		$this->result = curl_exec($this->curlHandle);
+		if ($this->result === false) {
+			throw new CurlExecuteException($this->getErrorString());
+		}
+
+		return $this;
 	}
 
-	public static function getInfos(): array
+	public function getInfos(): array
 	{
-		self::$infos = curl_getinfo(self::$curlHandle);
+		$this->infos = curl_getinfo($this->curlHandle);
 
-		return self::$infos;
+		return $this->infos;
 	}
 
-	public static function getInfo(int $option)
+	public function getInfo(int $option)
 	{
-		return curl_getinfo(self::$curlHandle, $option);
+		return curl_getinfo($this->curlHandle, $option);
 	}
 
-	public static function getResult(): bool|string
+	public function getResult(): string
 	{
-		return self::$result;
+		if ($this->result === null) {
+			$this->exec();
+		}
+		return $this->result;
 	}
 
-	public static function getErrorString(): string
+	public function getErrorString(): string
 	{
-		return "Curl error " . self::getErrorNumber() . " (" . self::getError()->name . "): \"" . curl_error(self::$curlHandle) . "\"";
+		return "Curl error " . $this->getErrorNumber() . " (" . $this->getError()->name . "): \"" . curl_error($this->curlHandle) . "\"";
 	}
 
-	public static function getError(): CurlErrorEnum
+	public function getError(): CurlErrorEnum
 	{
-		return CurlErrorEnum::getError(self::getErrorNumber());
+		return CurlErrorEnum::getError($this->getErrorNumber());
 	}
 
-	public static function getErrorNumber(): int
+	public function getErrorNumber(): int
 	{
-		return curl_errno(self::$curlHandle);
+		return curl_errno($this->curlHandle);
 	}
 
-	public static function close()
+	public function close(): static
 	{
-		curl_close(self::$curlHandle);
+		curl_close($this->curlHandle);
+
+		return $this;
 	}
 }
