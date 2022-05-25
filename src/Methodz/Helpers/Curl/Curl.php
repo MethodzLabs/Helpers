@@ -42,8 +42,11 @@ class Curl
 		return $this;
 	}
 
-	public function addHeader(int $key, mixed $value): static
+	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): static
 	{
+		if (!is_string($key)) {
+			$key = $key->value;
+		}
 		$this->header[$key] = $value;
 
 		return $this;
