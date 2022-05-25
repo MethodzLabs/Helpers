@@ -18,5 +18,6 @@ enum CurlCommonHeaderKeyEnum: string
 	case HTTP_ACCEPT_LANGUAGE = "http_accept_language";
 	case CONTENT_LENGTH = "Content-Length";
 	case CONTENT_TYPE = "Content-Type";
+	case COOKIE = "Cookie";
 
 }
