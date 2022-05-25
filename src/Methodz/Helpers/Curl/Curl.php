@@ -100,7 +100,7 @@ class Curl
 		return $this;
 	}
 
-	public function addOption(string $key, mixed $value): static
+	public function addOption(int $key, mixed $value): static
 	{
 		$this->options[$key] = $value;
 
