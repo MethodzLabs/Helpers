@@ -98,9 +98,13 @@ class Curl
 	{
 		if ($this->data !== null) {
 			$this->setRequestAsPost();
-			$this->addHeader(CURLOPT_POSTFIELDS, $this->data);
+			curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $this->data);
 		}
-		curl_setopt_array($this->curlHandle, $this->header);
+		$header = [];
+		foreach ($this->header as $k => $h) {
+			$header[] = "$k: $h";
+		}
+		curl_setopt($this->curlHandle, CURLOPT_HTTPHEADER, $header);
 		$this->result = curl_exec($this->curlHandle);
 		if ($this->result === false) {
 			throw new CurlExecuteException($this->getErrorString());
