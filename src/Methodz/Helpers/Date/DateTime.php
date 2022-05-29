@@ -39,7 +39,13 @@ class DateTime extends \DateTime
 
 	public function isValidDateTime(): bool
 	{
-		return $this->datetime !== "0000-01-01 00:00:00";
+		if (in_array($this->formatMax(), ["0000-01-01 00:00:00", "0000-00-00 00:00:00"])) {
+			return false;
+		}
+		if (in_array($this->getTimestamp(), [-1, 0])) {
+			return false;
+		}
+		return true;
 	}
 
 	public function isBefore(string|DateTime $datetime): bool
@@ -66,13 +72,13 @@ class DateTime extends \DateTime
 		return $this->getTimestamp() == $datetime->getTimestamp();
 	}
 
-	public function setDate(int $year, int $month, int $day): static
+	public function setDate(int $year, int $month, int $day): self
 	{
 		parent::setDate($year, $month, $day);
 		return $this;
 	}
 
-	public function setTimestamp(int $timestamp): static
+	public function setTimestamp(int $timestamp): self
 	{
 		parent::setTimestamp($timestamp);
 		return $this;
@@ -83,17 +89,17 @@ class DateTime extends \DateTime
 		return $this->formatMax();
 	}
 
-	public static function now(): static
+	public static function now(): self
 	{
 		return new self();
 	}
 
-	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): static
+	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): self
 	{
 		return self::createFromTimestamp(\DateTime::createFromFormat($format, $datetime, $timezone)->getTimestamp());
 	}
 
-	public static function createFromTimestamp(int $timestamp): static
+	public static function createFromTimestamp(int $timestamp): self
 	{
 		return self::now()->setTimestamp($timestamp);
 	}

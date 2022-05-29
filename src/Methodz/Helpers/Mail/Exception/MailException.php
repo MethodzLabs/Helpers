@@ -1,6 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Exception;
+namespace Methodz\Helpers\Mail\Exception;
 
 class MailException extends \Exception
 {

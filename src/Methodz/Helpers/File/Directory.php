@@ -16,7 +16,7 @@ abstract class Directory
 	 */
 	public static function create(string $path, int $permission = 0777): bool
 	{
-		if (is_dir($path)) {
+		if (self::exist($path)) {
 			return true;
 		}
 		return mkdir($path, $permission, true);
@@ -32,7 +32,7 @@ abstract class Directory
 	 */
 	public static function delete(string $path): bool
 	{
-		if (!is_dir($path)) {
+		if (!self::exist($path)) {
 			throw new Exception($path . " is not a directory");
 		}
 
@@ -48,5 +48,17 @@ abstract class Directory
 		}
 
 		return rmdir($path);
+	}
+
+	/**
+	 * Check if directory exist
+	 *
+	 * @param string $path
+	 *
+	 * @return bool
+	 */
+	public static function exist(string $path): bool
+	{
+		return is_dir($path);
 	}
 }

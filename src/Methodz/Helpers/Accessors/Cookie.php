@@ -16,24 +16,6 @@ class Cookie
 		$this->name = $name;
 	}
 
-	#[Pure] public static function create(string $name): self
-	{
-		return new self($name);
-	}
-
-	public static function get(string $name): mixed
-	{
-		if (!self::exist($name)) {
-			return null;
-		}
-		return json_decode($_COOKIE[$name]);
-	}
-
-	#[Pure] public static function exist(string $name): bool
-	{
-		return array_key_exists($name, $_COOKIE);
-	}
-
 	public function setDatetimeExpire(DateTime $dateTime): self
 	{
 		$this->maxTime = $dateTime->getTimestamp();
@@ -66,5 +48,43 @@ class Cookie
 	public function delete(): bool
 	{
 		return setcookie($this->name, "", 1);
+	}
+
+
+	/**
+	 * @param string $name
+	 *
+	 * @return static
+	 */
+	public static function create(string $name): self
+	{
+		return new self($name);
+	}
+
+	/**
+	 * Returns the value of the cookie or null for the name passed in parameters
+	 *
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
+	public static function get(string $name): mixed
+	{
+		if (!self::exist($name)) {
+			return null;
+		}
+		return json_decode($_COOKIE[$name]);
+	}
+
+	/**
+	 * Check if a cookie exists for the name
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 */
+	public static function exist(string $name): bool
+	{
+		return array_key_exists($name, $_COOKIE);
 	}
 }

@@ -5,6 +5,15 @@ namespace Methodz\Helpers\File;
 abstract class File
 {
 
+	/**
+	 * Use function `move_uploaded_file`
+	 *
+	 * @param string $path
+	 * @param string $fileName
+	 * @param string $tmp_name
+	 *
+	 * @return bool
+	 */
 	public static function upload(string $path, string $fileName, string $tmp_name): bool
 	{
 		if (str_ends_with($path, DIRECTORY_SEPARATOR)) {
@@ -21,9 +30,9 @@ abstract class File
 	 * @param string $fileName
 	 * @param string $content
 	 *
-	 * @return false|int
+	 * @return bool
 	 */
-	public static function put(string $path, string $fileName, string $content): bool|int
+	public static function put(string $path, string $fileName, string $content): bool
 	{
 		if (str_ends_with($path, DIRECTORY_SEPARATOR)) {
 			$path = rtrim($path);
@@ -31,7 +40,11 @@ abstract class File
 		if (!is_dir($path)) {
 			Directory::create($path);
 		}
-		return file_put_contents($path . DIRECTORY_SEPARATOR . trim($fileName, DIRECTORY_SEPARATOR), $content);
+		$success = file_put_contents($path . DIRECTORY_SEPARATOR . trim($fileName, DIRECTORY_SEPARATOR), $content);
+		if ($success !== false) {
+			$success = true;
+		}
+		return $success;
 	}
 
 	/**

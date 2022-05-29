@@ -4,7 +4,6 @@ namespace Methodz\Helpers\Mail;
 
 class Mail
 {
-
 	private string $fromMail;
 	private ?string $fromName = null;
 	private array $toMails;
@@ -12,7 +11,7 @@ class Mail
 	private string $body;
 	private bool $isHTML;
 
-	public function __construct(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false)
+	private function __construct(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false)
 	{
 		$this->toMails = $to;
 		$this->fromMail = $fromMail;
@@ -21,18 +20,17 @@ class Mail
 		$this->isHTML = $isHTML;
 	}
 
-	public function setFromMail(string $fromMail): static
+	public function setFromMail(string $fromMail): self
 	{
 		$this->fromMail = $fromMail;
 		return $this;
 	}
 
-	public function setFromName(string $fromName): static
+	public function setFromName(string $fromName): self
 	{
 		$this->fromName = $fromName;
 		return $this;
 	}
-
 
 	/**
 	 * @return bool
@@ -48,5 +46,11 @@ class Mail
 		$headers[] = 'From:' . ($this->fromName != null ? $this->fromName . ' ' : '') . '<' . $this->fromMail . '>';
 
 		return mail(implode(' , ', $this->toMails), $this->subject, $this->body, implode("\r\n", $headers));
+	}
+
+
+	public static function create(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false): self
+	{
+		return new self($to, $fromMail, $subject, $body, $isHTML);
 	}
 }

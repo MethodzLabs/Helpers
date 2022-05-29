@@ -28,19 +28,14 @@ class Curl
 		$this->addHeader(CurlCommonHeaderKeyEnum::USER_AGENT, "'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15'");
 	}
 
-	public static function init(string $url): static
-	{
-		return new self($url);
-	}
-
-	public function setHeader(array $header): static
+	public function setHeader(array $header): self
 	{
 		$this->header = $header;
 
 		return $this;
 	}
 
-	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): static
+	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): self
 	{
 		if (!is_string($key)) {
 			$key = $key->value;
@@ -50,35 +45,35 @@ class Curl
 		return $this;
 	}
 
-	public function setHtaccessUsernameAndPassword(string $username, string $password): static
+	public function setHtaccessUsernameAndPassword(string $username, string $password): self
 	{
 		$this->addOption(CURLOPT_USERPWD, "$username:$password");
 
 		return $this;
 	}
 
-	public function setRequestAsPost(bool $bool = true): static
+	public function setRequestAsPost(bool $bool = true): self
 	{
 		$this->addOption(CURLOPT_POST, $bool);
 
 		return $this;
 	}
 
-	public function setPOSTParameters(array $data): static
+	public function setPOSTParameters(array $data): self
 	{
 		$this->data = $data;
 
 		return $this;
 	}
 
-	public function addPOSTParameters(string $key, mixed $value): static
+	public function addPOSTParameters(string $key, mixed $value): self
 	{
 		$this->data[$key] = $value;
 
 		return $this;
 	}
 
-	public function setGETParameters(array $data): static
+	public function setGETParameters(array $data): self
 	{
 		$this->url = Url::from($this->url)->setParameters($data)->build();
 		$this->addOption(CURLOPT_URL, $this->url);
@@ -86,7 +81,7 @@ class Curl
 		return $this;
 	}
 
-	public function addGETParameters(string $key, mixed $value): static
+	public function addGETParameters(string $key, mixed $value): self
 	{
 		$this->url = Url::from($this->url)->addParameters($key, $value)->build();
 		$this->addOption(CURLOPT_URL, $this->url);
@@ -94,14 +89,14 @@ class Curl
 		return $this;
 	}
 
-	public function setOptions(array $options): static
+	public function setOptions(array $options): self
 	{
 		$this->options = $options;
 
 		return $this;
 	}
 
-	public function addOption(int $key, mixed $value): static
+	public function addOption(int $key, mixed $value): self
 	{
 		$this->options[$key] = $value;
 
@@ -114,7 +109,7 @@ class Curl
 	 * @return Curl
 	 * @throws CurlExecuteException
 	 */
-	public function exec(bool $closeAfterExec = true): static
+	public function exec(bool $closeAfterExec = true): self
 	{
 		if ($this->data !== null) {
 			$this->setRequestAsPost();
@@ -143,9 +138,12 @@ class Curl
 		return $this->infos;
 	}
 
-	public function getInfo(int $option)
+	public function getInfo(CurlInfoKeyEnum $key): string|null
 	{
-		return curl_getinfo($this->curlHandle, $option);
+		if (!array_key_exists($key->value, $this->infos)) {
+			return null;
+		}
+		return $this->infos[$key->value];
 	}
 
 	public function getResult(): string
@@ -171,10 +169,16 @@ class Curl
 		return curl_errno($this->curlHandle);
 	}
 
-	public function close(): static
+	public function close(): self
 	{
 		curl_close($this->curlHandle);
 
 		return $this;
+	}
+
+
+	public static function init(string $url): self
+	{
+		return new self($url);
 	}
 }

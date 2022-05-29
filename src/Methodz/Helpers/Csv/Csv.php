@@ -2,6 +2,7 @@
 
 namespace Methodz\Helpers\Csv;
 
+use Exception;
 use Methodz\Helpers\File\File;
 
 class Csv
@@ -10,7 +11,7 @@ class Csv
 	private ?string $path;
 	private ?string $fileName;
 
-	private function __construct(string|array $data, ?string $path = null, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\")
+	private function __construct(string|array $data, ?string $path = null, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n")
 	{
 		$this->path = $path;
 		$this->fileName = $fileName;
@@ -36,7 +37,7 @@ class Csv
 				$i++;
 			}
 		} else {
-			$data = explode("\n", $data);
+			$data = explode($eol, $data);
 			$rowsToDelete = [];
 			foreach ($data as $rowNumber => &$row) {
 				if (empty($row)) {
@@ -63,6 +64,8 @@ class Csv
 	}
 
 	/**
+	 * Returns a 2 dimensional table for each row of the csv except the header with the column name in key
+	 *
 	 * @return array[]
 	 */
 	public function getData(): array
@@ -82,10 +85,23 @@ class Csv
 		return $this;
 	}
 
+	/**
+	 * Save Csv as file
+	 *
+	 * @param string|null $path
+	 * @param string|null $fileName
+	 * @param string      $separator
+	 * @param string      $enclosure
+	 * @param string      $escape
+	 * @param string      $eol
+	 *
+	 * @return bool
+	 * @throws Exception
+	 */
 	public function save(?string $path = null, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): bool
 	{
 		if (($path === null && $this->path === null) || ($fileName === null && $this->fileName === null)) {
-			throw new \Exception("Path and fileName can't be null");
+			throw new Exception("Path and fileName can't be null");
 		}
 		if ($path === null) {
 			$path = $this->path;
@@ -110,20 +126,51 @@ class Csv
 		return true;
 	}
 
-	public static function fromFile(string $path, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\"): self
+	/**
+	 * Create a Csv from a Csv file
+	 *
+	 * @param string      $path
+	 * @param string|null $fileName
+	 * @param string      $separator
+	 * @param string      $enclosure
+	 * @param string      $escape
+	 * @param string      $eol
+	 *
+	 * @return static
+	 * @throws Exception
+	 */
+	public static function fromFile(string $path, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self
 	{
 		$content = File::get($path, $fileName);
 		if ($content === false) {
-			throw new \Exception("Can't load CSV file $path" . ($fileName !== null ? "/$fileName" : ""));
+			throw new Exception("Can't load Csv file $path" . ($fileName !== null ? "/$fileName" : ""));
 		}
-		return new self($content, $path, $fileName, $separator, $enclosure, $escape);
+		return new self($content, $path, $fileName, $separator, $enclosure, $escape, $eol);
 	}
 
-	public static function fromString(string $csvString): self
+	/**
+	 * Create a Csv from a string in Csv format
+	 *
+	 * @param string $csvString
+	 * @param string $separator
+	 * @param string $enclosure
+	 * @param string $escape
+	 * @param string $eol
+	 *
+	 * @return static
+	 */
+	public static function fromString(string $csvString, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self
 	{
-		return new self($csvString);
+		return new self($csvString, separator: $separator, enclosure: $enclosure, escape: $escape, eol: $eol);
 	}
 
+	/**
+	 * Create a Csv from a table
+	 *
+	 * @param array $csvData
+	 *
+	 * @return static
+	 */
 	public static function fromArray(array $csvData): self
 	{
 		return new self($csvData);
