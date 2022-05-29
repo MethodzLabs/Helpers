@@ -23,16 +23,16 @@ Menu:
 > 	private int $maxTime = 0;
 > 	private string $domain = "";
 > 	
-> 	public function setDatetimeExpire(DateTime $dateTime): self
-> 	public function setTimeExpire(int $time): self
-> 	public function setDomain(string $domain): self
-> 	public function setExpireInTimePlusSeconds(int $seconds): self
-> 	public function save(mixed $value): bool
-> 	public function delete(): bool
+> 	public function setDatetimeExpire(DateTime $dateTime): self;
+> 	public function setTimeExpire(int $time): self;
+> 	public function setDomain(string $domain): self;
+> 	public function setExpireInTimePlusSeconds(int $seconds): self;
+> 	public function save(mixed $value): bool;
+> 	public function delete(): bool;
 > 	
-> 	public static function create(string $name): self
-> 	public static function get(string $name): mixed
-> 	public static function exist(string $name): bool
+> 	public static function create(string $name): self;
+> 	public static function get(string $name): mixed;
+> 	public static function exist(string $name): bool;
 > }
 > ```
 
@@ -46,13 +46,13 @@ Menu:
 > 	private ?string $path;
 > 	private ?string $fileName;
 > 
-> 	public function getData(): array
-> 	public function setData(array $data): self
-> 	public function save(?string $path = null, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): bool
+> 	public function getData(): array;
+> 	public function setData(array $data): self;
+> 	public function save(?string $path = null, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): bool;
 > 
-> 	public static function fromFile(string $path, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self
-> 	public static function fromString(string $csvString, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self
-> 	public static function fromArray(array $csvData): self
+> 	public static function fromFile(string $path, ?string $fileName = null, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self;
+> 	public static function fromString(string $csvString, string $separator = ";", string $enclosure = '"', string $escape = "\\", string $eol = "\n"): self;
+> 	public static function fromArray(array $csvData): self;
 > }
 > ```
 
@@ -66,26 +66,26 @@ Menu:
 > 	private ?string $path;
 > 	private ?string $fileName;
 > 
-> 	public function setHeader(array $header): self
-> 	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): self
-> 	public function setHtaccessUsernameAndPassword(string $username, string $password): self
-> 	public function setRequestAsPost(bool $bool = true): self
-> 	public function setPOSTParameters(array $data): self
-> 	public function addPOSTParameters(string $key, mixed $value): self
-> 	public function setGETParameters(array $data): self
-> 	public function addGETParameters(string $key, mixed $value): self
-> 	public function setOptions(array $options): self
-> 	public function addOption(int $key, mixed $value): self
-> 	public function exec(bool $closeAfterExec = true): self
-> 	public function getInfos(): array
-> 	public function getInfo(CurlInfoKeyEnum $key): string|null
-> 	public function getResult(): string
-> 	public function getErrorString(): string
-> 	public function getError(): CurlErrorEnum
-> 	public function getErrorNumber(): int
->  	public function close(): self
+> 	public function setHeader(array $header): self;
+> 	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): self;
+> 	public function setHtaccessUsernameAndPassword(string $username, string $password): self;
+> 	public function setRequestAsPost(bool $bool = true): self;
+> 	public function setPOSTParameters(array $data): self;
+> 	public function addPOSTParameters(string $key, mixed $value): self;
+> 	public function setGETParameters(array $data): self;
+> 	public function addGETParameters(string $key, mixed $value): self;
+> 	public function setOptions(array $options): self;
+> 	public function addOption(int $key, mixed $value): self;
+> 	public function exec(bool $closeAfterExec = true): self;
+> 	public function getInfos(): array;
+> 	public function getInfo(CurlInfoKeyEnum $key): string|null;
+> 	public function getResult(): string;
+> 	public function getErrorString(): string;
+> 	public function getError(): CurlErrorEnum;
+> 	public function getErrorNumber(): int;
+>  	public function close(): self;
 > 
-> 	public static function init(string $url): self
+> 	public static function init(string $url): self;
 > }
 > ```
 
@@ -97,22 +97,22 @@ Menu:
 > {
 > 	private string $datetime;
 > 
-> 	public function __construct(string $datetime = 'now')
+> 	public function __construct(string $datetime = 'now');
 > 
-> 	public function formatMin(string $format = 'Y-m-d'): string
-> 	public function formatMax(string $format = 'Y-m-d H:i:s'): string
-> 	public function formatFrenchMin(string $format = 'd/m/Y'): string
-> 	public function formatFrenchMax(string $format = 'H:i:s d/m/Y'): string
-> 	public function isValidDateTime(): bool
-> 	public function isBefore(string|DateTime $datetime): bool
-> 	public function isAfter(string|DateTime $datetime): bool
-> 	public function equals(string|DateTime $datetime): bool
-> 	public function setDate(int $year, int $month, int $day): static
-> 	public function setTimestamp(int $timestamp): static
+> 	public function formatMin(string $format = 'Y-m-d'): string;
+> 	public function formatMax(string $format = 'Y-m-d H:i:s'): string;
+> 	public function formatFrenchMin(string $format = 'd/m/Y'): string;
+> 	public function formatFrenchMax(string $format = 'H:i:s d/m/Y'): string;
+> 	public function isValidDateTime(): bool;
+> 	public function isBefore(string|DateTime $datetime): bool;
+> 	public function isAfter(string|DateTime $datetime): bool;
+> 	public function equals(string|DateTime $datetime): bool;
+> 	public function setDate(int $year, int $month, int $day): self;
+> 	public function setTimestamp(int $timestamp): self;
 > 
-> 	public static function now(): self
-> 	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): self
-> 	public static function createFromTimestamp(int $timestamp): self
+> 	public static function now(): self;
+> 	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): self;
+> 	public static function createFromTimestamp(int $timestamp): self;
 > }
 > ```
 
@@ -122,9 +122,9 @@ Menu:
 > 
 > abstract class Directory
 > {
-> 	public static function create(string $path, int $permission = 0777): bool
-> 	public static function delete(string $path): bool
-> 	public static function exist(string $path): bool
+> 	public static function create(string $path, int $permission = 0777): bool;
+> 	public static function delete(string $path): bool;
+> 	public static function exist(string $path): bool;
 > }
 > ```
 
@@ -134,10 +134,10 @@ Menu:
 > 
 > abstract class File
 > {
-> 	public static function upload(string $path, string $fileName, string $tmp_name): bool
-> 	public static function put(string $path, string $fileName, string $content): bool|int
-> 	public static function get(string $path, ?string $fileName = null): bool|string
-> 	public static function delete(string $path, ?string $fileName = null): bool
+> 	public static function upload(string $path, string $fileName, string $tmp_name): bool;
+> 	public static function put(string $path, string $fileName, string $content): bool|int;
+> 	public static function get(string $path, ?string $fileName = null): bool|string;
+> 	public static function delete(string $path, ?string $fileName = null): bool;
 > }
 > ```
 
@@ -147,11 +147,11 @@ Menu:
 > 
 > class Mail
 > {
-> 	public function setFromMail(string $fromMail): self
-> 	public function setFromName(string $fromName): self
-> 	public function send(): bool
+> 	public function setFromMail(string $fromMail): self;
+> 	public function setFromName(string $fromName): self;
+> 	public function send(): bool;
 > 
-> 	public static function create(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false): self
+> 	public static function create(array $to, string $fromMail, string $subject, string $body, bool $isHTML = false): self;
 > }
 > ```
 
@@ -170,21 +170,21 @@ Menu:
 > 	private ?array $data = null;
 > 	private ?string $fragment;
 > 
-> 	public function setHeader(array $header): self
-> 	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): self
-> 	public function setHtaccessUsernameAndPassword(string $username, string $password): self
-> 	public function setScheme(UrlSchemeEnum $scheme): self
-> 	public function setUser(string|null $user): self
-> 	public function setPass(string|null $pass): self
-> 	public function setHost(string|null $host): self
-> 	public function setPort(int|null $port): self
-> 	public function setPath(string|null $path): self
-> 	public function setParameters(?array $data): self
-> 	public function addParameters(string $key, mixed $value): self
-> 	public function setFragment(string|null $fragment): self
->  	public function build(): string
+> 	public function setHeader(array $header): self;
+> 	public function addHeader(CurlCommonHeaderKeyEnum|string $key, mixed $value): self;
+> 	public function setHtaccessUsernameAndPassword(string $username, string $password): self;
+> 	public function setScheme(UrlSchemeEnum $scheme): self;
+> 	public function setUser(string|null $user): self;
+> 	public function setPass(string|null $pass): self;
+> 	public function setHost(string|null $host): self;
+> 	public function setPort(int|null $port): self;
+> 	public function setPath(string|null $path): self;
+> 	public function setParameters(?array $data): self;
+> 	public function addParameters(string $key, mixed $value): self;
+> 	public function setFragment(string|null $fragment): self;
+>  	public function build(): string;
 > 
-> 	public static function from(string $url): self
+> 	public static function from(string $url): self;
 > }
 > ```
 
@@ -196,8 +196,8 @@ Menu:
 > {
 > 	private static array $history = [];
 > 
-> 	public static function generate(int $length = 30): string
-> 	public static function getHistory(): array
-> 	public static function getLastUUID(): ?string
+> 	public static function generate(int $length = 30): string;
+> 	public static function getHistory(): array;
+> 	public static function getLastUUID(): ?string;
 > }
 > ```
