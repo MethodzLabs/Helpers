@@ -76,6 +76,7 @@ Menu:
 > 	public function addGETParameters(string $key, mixed $value): self;
 > 	public function setOptions(array $options): self;
 > 	public function addOption(int $key, mixed $value): self;
+> 	public function getUrl(): string;
 > 	public function exec(bool $closeAfterExec = true): self;
 > 	public function getInfos(): array;
 > 	public function getInfo(CurlInfoKeyEnum $key): string|null;

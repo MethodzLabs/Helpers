@@ -103,6 +103,11 @@ class Curl
 		return $this;
 	}
 
+	public function getUrl(): string
+	{
+		return $this->url;
+	}
+
 	/**
 	 * @param bool $closeAfterExec
 	 *
