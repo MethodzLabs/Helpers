@@ -16,6 +16,7 @@
     "phpunit/phpunit": "9.5.20"
   },
   "require": {
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-dom": "*"
   }
 }
