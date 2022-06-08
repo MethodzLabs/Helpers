@@ -143,12 +143,19 @@ class Curl
 		return $this->infos;
 	}
 
-	public function getInfo(CurlInfoKeyEnum $key): string|null
+	public function getInfo(CurlInfoKeyEnum $key): string|int|float|null
 	{
 		if (!array_key_exists($key->value, $this->infos)) {
 			return null;
 		}
-		return $this->infos[$key->value];
+		$data = $this->infos[$key->value];
+		if (strval(intval($data)) === $data) {
+			return intval($data);
+		}
+		if (strval(floatval($data)) === $data) {
+			return floatval($data);
+		}
+		return $data;
 	}
 
 	public function getResult(): string
