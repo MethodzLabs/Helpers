@@ -78,6 +78,12 @@ class DateTime extends \DateTime
 		return $this;
 	}
 
+	public function setTime(int $hour = 0, int $minute = 0, int $second = 0, int $microsecond = 0): self
+	{
+		parent::setTime($hour, $minute, $second, $microsecond);
+		return $this;
+	}
+
 	public function setTimestamp(int $timestamp): self
 	{
 		parent::setTimestamp($timestamp);
