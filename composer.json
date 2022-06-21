@@ -17,6 +17,7 @@
   },
   "require": {
     "ext-curl": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "ext-pdo": "*"
   }
 }
