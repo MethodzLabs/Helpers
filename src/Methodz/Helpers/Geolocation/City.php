@@ -12,6 +12,8 @@ class City
 	private float $latitude;
 	private float $longitude;
 
+	private ?Country $country;
+
 	private function __construct(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null)
 	{
 		$this->id = $id;
@@ -44,6 +46,18 @@ class City
 	public function getLongitude(): float
 	{
 		return $this->longitude;
+	}
+
+	/**
+	 * @return Country
+	 */
+	public function getCountry(): Country
+	{
+		if ($this->country === null) {
+			$this->country = Country::getWhereIdEquals($this->getCountryId());
+		}
+
+		return $this->country;
 	}
 
 	/**

@@ -93,13 +93,28 @@ class Country
 	}
 
 	/**
+	 * @param int $id
+	 *
+	 * @return self|null
+	 */
+	public static function getWhereIdEquals(int $id): ?self
+	{
+		$data = Database::getRow("SELECT * FROM `country` WHERE `country`.`id` LIKE :id", [':id' => $id]);
+		$result = null;
+		if ($data->isOK()) {
+			$result = self::arrayToObject($data->getResult());
+		}
+		return $result;
+	}
+
+	/**
 	 * @param string $iso_code_2
 	 *
-	 * @return Country|null
+	 * @return self|null
 	 */
 	public static function getWhereIsoCode2Equals(string $iso_code_2): ?self
 	{
-		$data = Database::getRow("SELECT * FROM `country` WHERE `country`.`name` LIKE :name", [':name' => $iso_code_2]);
+		$data = Database::getRow("SELECT * FROM `country` WHERE `country`.`iso_code_2` LIKE :iso_code_2", [':iso_code_2' => $iso_code_2]);
 		$result = null;
 		if ($data->isOK()) {
 			$result = self::arrayToObject($data->getResult());
