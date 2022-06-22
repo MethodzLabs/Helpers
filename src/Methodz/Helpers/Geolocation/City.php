@@ -12,7 +12,7 @@ class City
 	private float $latitude;
 	private float $longitude;
 
-	private ?Country $country;
+	private ?Country $country = null;
 
 	private function __construct(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null)
 	{
