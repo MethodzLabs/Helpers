@@ -146,6 +146,7 @@ class Country
 		return self::init(
 			id: $data['id'],
 			name: $data['name'],
+			language_id: $data['language_id'],
 			iso_code_2: $data['iso_code_2'],
 			iso_code_3: $data['iso_code_3']
 		);
