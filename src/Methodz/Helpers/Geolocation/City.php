@@ -2,6 +2,7 @@
 
 namespace Methodz\Helpers\Geolocation;
 
+use Exception;
 use Methodz\Helpers\Database\Database;
 
 class City
@@ -9,23 +10,28 @@ class City
 	private ?int $id;
 	private int $country_id;
 	private string $name;
-	private float $latitude;
-	private float $longitude;
+	private Coordinate $coordinate;
 
 	private ?Country $country = null;
 
-	private function __construct(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null)
+	private function __construct(int $country_id, string $name, Coordinate $coordinate, ?int $id = null)
 	{
 		$this->id = $id;
 		$this->country_id = $country_id;
 		$this->name = $name;
-		$this->latitude = $latitude;
-		$this->longitude = $longitude;
+		$this->coordinate = $coordinate;
 	}
 
 	public function getId(): ?int
 	{
 		return $this->id;
+	}
+
+	private function setId(int $id): self
+	{
+		$this->id = $id;
+
+		return $this;
 	}
 
 	public function getCountryId(): int
@@ -38,14 +44,9 @@ class City
 		return $this->name;
 	}
 
-	public function getLatitude(): float
+	public function getCoordinate(): Coordinate
 	{
-		return $this->latitude;
-	}
-
-	public function getLongitude(): float
-	{
-		return $this->longitude;
+		return $this->coordinate;
 	}
 
 	/**
@@ -61,6 +62,47 @@ class City
 	}
 
 	/**
+	 * @throws Exception
+	 */
+	public function save(): self
+	{
+		if ($this->getId() === null) {
+			$result = Database::insert(
+				table: "city",
+				data: [
+					'country_id' => $this->country_id,
+					'name' => $this->name,
+					'latitude' => $this->coordinate->getLatitude(),
+					'longitude' => $this->coordinate->getLongitude(),
+				]
+			);
+			if ($result->isOK()) {
+				$this->setId(Database::getLastInsertId());
+			} else {
+				throw new Exception("Object " . self::class . " can't be save");
+			}
+		} else {
+			$result = Database::update(
+				table: "city",
+				data: [
+					'country_id' => $this->country_id,
+					'name' => $this->name,
+					'latitude' => $this->coordinate->getLatitude(),
+					'longitude' => $this->coordinate->getLongitude(),
+				],
+				where: "`id`=:id",
+				where_params: [
+					':id' => $this->getId(),
+				]
+			);
+			if (!$result->isOK()) {
+				throw new Exception("Object " . self::class . " can't be save");
+			}
+		}
+		return $this;
+	}
+
+	/**
 	 * @param int      $country_id
 	 * @param string   $name
 	 * @param float    $latitude
@@ -71,7 +113,7 @@ class City
 	 */
 	public static function init(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null): self
 	{
-		return new self($country_id, $name, $latitude, $longitude, $id);
+		return new self($country_id, $name, Coordinate::init($latitude, $longitude), $id);
 	}
 
 	/**
