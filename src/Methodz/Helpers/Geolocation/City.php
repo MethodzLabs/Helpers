@@ -81,23 +81,6 @@ class City
 			} else {
 				throw new Exception("Object " . self::class . " can't be save");
 			}
-		} else {
-			$result = Database::update(
-				table: "city",
-				data: [
-					'country_id' => $this->country_id,
-					'name' => $this->name,
-					'latitude' => $this->coordinate->getLatitude(),
-					'longitude' => $this->coordinate->getLongitude(),
-				],
-				where: "`id`=:id",
-				where_params: [
-					':id' => $this->getId(),
-				]
-			);
-			if (!$result->isOK()) {
-				throw new Exception("Object " . self::class . " can't be save");
-			}
 		}
 		return $this;
 	}
