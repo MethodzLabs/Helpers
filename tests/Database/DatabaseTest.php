@@ -10,48 +10,31 @@ class DatabaseTest extends TestCase
 
 	public function testGetData()
 	{
-		$result = Database::getData("SELECT * FROM `country`");
-		print_r($result);
-		self::assertTrue(true);
+		$result = Database::getData("SELECT * FROM `city`");
+		self::assertTrue($result->isOK());
 	}
 
 	public function testGetColumn()
 	{
-
+		$result = Database::getColumn("name", "SELECT * FROM `city`");
+		self::assertTrue($result->isOK());
 	}
 
 	public function testGetValues()
 	{
-
+		$result = Database::getValues("SELECT * FROM `city`");
+		self::assertTrue($result->isOK());
 	}
 
 	public function testGetValue()
 	{
-
-	}
-
-	public function testGetLastInsertId()
-	{
-
-	}
-
-	public function testUpdate()
-	{
-
-	}
-
-	public function testInsert()
-	{
-
+		$result = Database::getValue("SELECT * FROM `city`");
+		self::assertTrue($result->isOK());
 	}
 
 	public function testGetRow()
 	{
-
-	}
-
-	public function testDelete()
-	{
-
+		$result = Database::getRow("SELECT * FROM `city`");
+		self::assertTrue($result->isOK());
 	}
 }

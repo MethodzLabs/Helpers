@@ -23,21 +23,25 @@ abstract class Database
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	private static function executeRequest(string $sql, array $params = null): DatabaseQueryResult
+	private static function executeRequest(string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$result = DatabaseQueryResult::init($sql, $params);
 		try {
 			$pdoStatement = self::getBdd()->prepare($sql);
-			foreach ($params as $key => $value) {
-				if (is_null($value)) {
-					$pdoStatement->bindValue($key, $value, PDO::PARAM_NULL);
-				} else {
-					$pdoStatement->bindValue($key, $value);
+			if ($params !== null) {
+				foreach ($params as $key => $value) {
+					if (is_null($value)) {
+						$pdoStatement->bindValue($key, $value, PDO::PARAM_NULL);
+					} else {
+						$pdoStatement->bindValue($key, $value);
+					}
 				}
 			}
 
 			if ($pdoStatement->execute()) {
-				$result->setResult($pdoStatement->fetchAll(PDO::FETCH_ASSOC));
+				$result
+					->setStatus(DatabaseQueryResultStatus::OK)
+					->setResult($pdoStatement->fetchAll(PDO::FETCH_ASSOC));
 			} else {
 				$result->setStatus(DatabaseQueryResultStatus::ERROR);
 			}
@@ -54,25 +58,25 @@ abstract class Database
 	 * Returns the results of the query as an associative array
 	 *
 	 * @param string      $sql
-	 * @param null        $params
+	 * @param array|null  $params
 	 * @param string|null $keyAsIndex
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	public static function getData(string $sql, $params = null, ?string $keyAsIndex = null): DatabaseQueryResult
+	public static function getData(string $sql, ?array $params = null, ?string $keyAsIndex = null): DatabaseQueryResult
 	{
 		$data = self::executeRequest($sql, $params);
 
-		$res = $data->getResult();
-
 		if ($keyAsIndex !== null) {
+			$res = $data->getResult();
 			$tempo = $res;
 			$res = [];
 			foreach ($tempo as $row) {
 				$res[$row[$keyAsIndex]] = $row;
 			}
+			$data->setResult($res);
 		}
-		return $res;
+		return $data;
 	}
 
 	/**
@@ -82,10 +86,10 @@ abstract class Database
 	 * @param string     $sql
 	 * @param array|null $params
 	 *
-	 * @return array
+	 * @return DatabaseQueryResult
 	 * @throws Exception
 	 */
-	public static function getColumn(int|string $index, string $sql, array $params = null): array
+	public static function getColumn(int|string $index, string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$data = self::executeRequest($sql, $params);
 		if ($data->isOK()) {
@@ -95,7 +99,8 @@ abstract class Database
 				$column[] = $row[$index];
 			}
 
-			return $column;
+			$data->setResult($column);
+			return $data;
 		}
 		throw new Exception("Error during request (\"" . $data->getQuery() . "\", " . json_encode($data->getParameters()) . ")");
 	}
@@ -108,7 +113,7 @@ abstract class Database
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	public static function getRow(string $sql, array $params = null): DatabaseQueryResult
+	public static function getRow(string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$sql .= ' LIMIT 1';
 
@@ -128,17 +133,16 @@ abstract class Database
 	 * @param string     $sql
 	 * @param array|null $params
 	 *
-	 * @return DatabaseQueryResultStatus - false: no data
-	 * @throws Throwable
+	 * @return DatabaseQueryResult
 	 */
-	public static function getValue(string $sql, array $params = null): mixed
+	public static function getValue(string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$data = self::getRow($sql, $params);
 		if ($data->isOK()) {
 			$row = $data->getResult();
-			return array_shift($row);
+			$data->setResult(array_shift($row));
 		}
-		throw new Exception("Error during request (\"" . $data->getQuery() . "\", " . json_encode($data->getParameters()) . ")");
+		return $data;
 	}
 
 	/**
@@ -147,17 +151,18 @@ abstract class Database
 	 * @param string     $sql
 	 * @param array|null $params
 	 *
-	 * @return array
+	 * @return DatabaseQueryResult
 	 * @throws Throwable
 	 */
-	public static function getValues(string $sql, array $params = null): array
+	public static function getValues(string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$res = [];
 		$data = self::getData($sql, $params);
 		foreach ($data as $row) {
 			$res[] = array_shift($row);
 		}
-		return $res;
+		$data->setResult($res);
+		return $data;
 	}
 
 	/**
@@ -240,7 +245,7 @@ abstract class Database
 			$sql .= ' WHERE ' . $where;
 		}
 
-		if ($where_params) {
+		if ($where_params !== null) {
 			foreach ($where_params as $key_param => $param) {
 				$params[$key_param] = $param;
 			}
@@ -260,19 +265,14 @@ abstract class Database
 	}
 
 	/**
-	 * Renvoie un objet de connexion à la BDD en initialisant la connexion au besoin
+	 * Returns a connection object to the DB by initializing the connection as needed
 	 *
 	 * @return PDO Objet PDO de connexion à la BDD
 	 */
 	private static function getBdd(): PDO
 	{
 		if (!isset(self::$bdd)) {
-			// Création de la connexion
-			try {
-				self::$bdd = new PDO('mysql:host=' . self::DB_SERVER . ';dbname=' . self::DB_NAME, self::DB_USER, self::DB_PASSWD);
-			} catch (PDOException $e) {
-				echo $e->getMessage();
-			}
+			self::$bdd = new PDO('mysql:host=' . self::DB_SERVER . ';dbname=' . self::DB_NAME, self::DB_USER, self::DB_PASSWD);
 			self::$bdd->query("SET NAMES UTF8");
 		}
 
