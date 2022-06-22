@@ -8,6 +8,7 @@ class Country
 {
 	private int $id;
 	private string $name;
+	private ?int $language_id;
 	private string $iso_code_2;
 	private ?string $iso_code_3;
 
@@ -16,10 +17,18 @@ class Country
 	 */
 	private ?array $cities = null;
 
-	private function __construct(int $id, string $name, string $iso_code_2, ?string $iso_code_3)
+	private ?Language $main_language = null;
+
+	/**
+	 * @var Language[]|null
+	 */
+	private ?array $languages = null;
+
+	private function __construct(int $id, string $name, ?int $language_id, string $iso_code_2, ?string $iso_code_3)
 	{
 		$this->id = $id;
 		$this->name = $name;
+		$this->language_id = $language_id;
 		$this->iso_code_2 = $iso_code_2;
 		$this->iso_code_3 = $iso_code_3;
 	}
@@ -32,6 +41,11 @@ class Country
 	public function getName(): string
 	{
 		return $this->name;
+	}
+
+	public function getLanguageId(): ?int
+	{
+		return $this->language_id;
 	}
 
 	public function getIsoCode2(): string
@@ -51,6 +65,20 @@ class Country
 		}
 
 		return $this->cities;
+	}
+
+	public function getMainLanguage(): ?Language
+	{
+
+		return $this->language;
+	}
+
+	/**
+	 * @return Language[]|null
+	 */
+	public function getLanguages(): ?array
+	{
+		return $this->languages;
 	}
 
 	/**
@@ -97,7 +125,7 @@ class Country
 	 *
 	 * @return self|null
 	 */
-	public static function getWhereIdEquals(int $id): ?self
+	public static function findById(int $id): ?self
 	{
 		$data = Database::getRow("SELECT * FROM `country` WHERE `country`.`id` LIKE :id", [':id' => $id]);
 		$result = null;

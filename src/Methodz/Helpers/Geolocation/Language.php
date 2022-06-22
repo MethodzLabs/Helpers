@@ -5,21 +5,21 @@ namespace Methodz\Helpers\Geolocation;
 use Exception;
 use Methodz\Helpers\Database\Database;
 
-class City
+class Language
 {
 	private ?int $id;
 	private int $country_id;
 	private string $name;
-	private Coordinate $coordinate;
+	private string $iso_code_2;
 
 	private ?Country $country = null;
 
-	private function __construct(int $country_id, string $name, Coordinate $coordinate, ?int $id = null)
+	private function __construct(int $country_id, string $name, string $iso_code_2, ?int $id = null)
 	{
 		$this->id = $id;
 		$this->country_id = $country_id;
 		$this->name = $name;
-		$this->coordinate = $coordinate;
+		$this->iso_code_2 = $iso_code_2;
 	}
 
 	public function getId(): ?int
@@ -44,9 +44,9 @@ class City
 		return $this->name;
 	}
 
-	public function getCoordinate(): Coordinate
+	public function getIsoCode2(): string
 	{
-		return $this->coordinate;
+		return $this->iso_code_2;
 	}
 
 	/**
@@ -68,12 +68,11 @@ class City
 	{
 		if ($this->getId() === null) {
 			$result = Database::insert(
-				table: "city",
+				table: "language",
 				data: [
 					'country_id' => $this->country_id,
 					'name' => $this->name,
-					'latitude' => $this->coordinate->getLatitude(),
-					'longitude' => $this->coordinate->getLongitude(),
+					'iso_code_2' => $this->iso_code_2,
 				]
 			);
 			if ($result->isOK()) {
@@ -88,47 +87,15 @@ class City
 	/**
 	 * @param int      $country_id
 	 * @param string   $name
-	 * @param float    $latitude
-	 * @param float    $longitude
+	 * @param string   $iso_code_2
 	 * @param int|null $id
 	 *
 	 * @return self
 	 */
-	public static function init(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null): self
+	public static function init(int $country_id, string $name, string $iso_code_2, ?int $id = null): self
 	{
-		return new self($country_id, $name, Coordinate::init($latitude, $longitude), $id);
+		return new self($country_id, $name, $iso_code_2, $id);
 	}
-
-	/**
-	 * @param int $country_id - The id of country
-	 *
-	 * @return self[]
-	 */
-	public static function getCitiesForCountryId(int $country_id): array
-	{
-		$data = Database::getData("SELECT * FROM `city` WHERE `city`.`country_id`=:country_id", [':country_id' => $country_id]);
-		$result = [];
-		if ($data->isOK()) {
-			$result = self::arrayToObjects($data->getResult());
-		}
-		return $result;
-	}
-
-	/**
-	 * @param string $iso_code_2 - Code ISO of country
-	 *
-	 * @return self[]
-	 */
-	public static function getCitiesForCountryIsoCode2(string $iso_code_2): array
-	{
-		$data = Database::getData("SELECT `city`.* FROM `city` INNER JOIN `country` ON `city`.`country_id` = `country`.`id` WHERE `country`.`iso_code_2`=:iso_code_2", [':iso_code_2' => $iso_code_2]);
-		$result = [];
-		if ($data->isOK()) {
-			$result = self::arrayToObjects($data->getResult());
-		}
-		return $result;
-	}
-
 
 	/**
 	 * @param int $id - The id of city
@@ -137,7 +104,7 @@ class City
 	 */
 	public static function findById(int $id): ?self
 	{
-		$data = Database::getRow("SELECT * FROM `city` WHERE `city`.`id`=:id", [':id' => $id]);
+		$data = Database::getRow("SELECT * FROM `language` WHERE `language`.`id`=:id", [':id' => $id]);
 		$result = null;
 		if ($data->isOK()) {
 			$result = self::arrayToObject($data->getResult());
@@ -150,8 +117,7 @@ class City
 		return self::init(
 			country_id: $data['country_id'],
 			name: $data['name'],
-			latitude: $data['latitude'],
-			longitude: $data['longitude'],
+			iso_code_2: $data['iso_code_2'],
 			id: $data['id']
 		);
 	}
