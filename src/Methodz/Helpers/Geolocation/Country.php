@@ -9,14 +9,14 @@ class Country
 	private int $id;
 	private string $name;
 	private string $iso_code_2;
-	private string $iso_code_3;
+	private ?string $iso_code_3;
 
 	/**
 	 * @var City[]|null
 	 */
 	private ?array $cities = null;
 
-	private function __construct(int $id, string $name, string $iso_code_2, string $iso_code_3)
+	private function __construct(int $id, string $name, string $iso_code_2, ?string $iso_code_3)
 	{
 		$this->id = $id;
 		$this->name = $name;
@@ -39,7 +39,7 @@ class Country
 		return $this->iso_code_2;
 	}
 
-	public function getIsoCode3(): string
+	public function getIsoCode3(): ?string
 	{
 		return $this->iso_code_3;
 	}
@@ -54,14 +54,14 @@ class Country
 	}
 
 	/**
-	 * @param int    $id
-	 * @param string $name
-	 * @param string $iso_code_2
-	 * @param string $iso_code_3
+	 * @param int         $id
+	 * @param string      $name
+	 * @param string      $iso_code_2
+	 * @param string|null $iso_code_3
 	 *
 	 * @return self
 	 */
-	public static function init(int $id, string $name, string $iso_code_2, string $iso_code_3): self
+	public static function init(int $id, string $name, string $iso_code_2, ?string $iso_code_3): self
 	{
 		return new self($id, $name, $iso_code_2, $iso_code_3);
 	}
