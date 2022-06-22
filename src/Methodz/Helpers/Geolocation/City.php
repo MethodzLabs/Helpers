@@ -104,6 +104,22 @@ class City
 		return $result;
 	}
 
+
+	/**
+	 * @param int $id - The id of city
+	 *
+	 * @return self|null
+	 */
+	public static function getCityById(int $id): ?self
+	{
+		$data = Database::getRow("SELECT * FROM `city` WHERE `city`.`id`=:id", [':id' => $id]);
+		$result = null;
+		if ($data->isOK()) {
+			$result = self::arrayToObject($data->getResult());
+		}
+		return $result;
+	}
+
 	public static function arrayToObject(array $data): self
 	{
 		return self::init(
