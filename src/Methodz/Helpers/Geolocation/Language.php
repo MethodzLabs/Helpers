@@ -3,40 +3,31 @@
 namespace Methodz\Helpers\Geolocation;
 
 use Exception;
-use Methodz\Helpers\Database\Database;
+use Methodz\Helpers\Models\Model;
 
-class Language
+class Language extends Model
 {
-	private ?int $id;
-	private int $country_id;
+	public const _TABLE = "language";
+	public const _ID = "id";
+	public const _NAME = "name";
+	public const _ISO_CODE_2 = "iso_code_2";
+	public const _ISO_CODE_3 = "iso_code_3";
+
 	private string $name;
 	private string $iso_code_2;
+	private string $iso_code_3;
 
-	private ?Country $country = null;
+	/**
+	 * @var CountryLanguage[]|null
+	 */
+	private ?array $countryLanguages = null;
 
-	private function __construct(int $country_id, string $name, string $iso_code_2, ?int $id = null)
+	private function __construct(string $name, string $iso_code_2, ?string $iso_code_3, ?int $id = null)
 	{
 		$this->id = $id;
-		$this->country_id = $country_id;
 		$this->name = $name;
 		$this->iso_code_2 = $iso_code_2;
-	}
-
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
-
-	private function setId(int $id): self
-	{
-		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getCountryId(): int
-	{
-		return $this->country_id;
+		$this->iso_code_3 = $iso_code_3;
 	}
 
 	public function getName(): string
@@ -44,95 +35,104 @@ class Language
 		return $this->name;
 	}
 
+	public function setName(string $name): self
+	{
+		$this->name = $name;
+
+		return $this;
+	}
+
 	public function getIsoCode2(): string
 	{
 		return $this->iso_code_2;
 	}
 
-	/**
-	 * @return Country
-	 */
-	public function getCountry(): Country
+	public function setIsoCode2(string $iso_code_2): self
 	{
-		if ($this->country === null) {
-			$this->country = Country::findById($this->getCountryId());
-		}
+		$this->iso_code_2 = $iso_code_2;
 
-		return $this->country;
+		return $this;
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public function save(): self
+	public function getIsoCode3(): ?string
 	{
-		if ($this->getId() === null) {
-			$result = Database::insert(
-				table: "language",
-				data: [
-					'country_id' => $this->country_id,
-					'name' => $this->name,
-					'iso_code_2' => $this->iso_code_2,
-				]
-			);
-			if ($result->isOK()) {
-				$this->setId(Database::getLastInsertId());
-			} else {
-				throw new Exception("Object " . self::class . " can't be save");
-			}
-		}
+		return $this->iso_code_3;
+	}
+
+	public function setIsoCode3(?string $iso_code_3): self
+	{
+		$this->iso_code_3 = $iso_code_3;
+
 		return $this;
 	}
 
 	/**
-	 * @param int      $country_id
-	 * @param string   $name
-	 * @param string   $iso_code_2
-	 * @param int|null $id
+	 * @return CountryLanguage[]
+	 */
+	public function getCountryLanguages(): array
+	{
+		if ($this->countryLanguages === null) {
+			$this->countryLanguages = CountryLanguage::findAllByLanguageId($this->getId());
+		}
+
+		return $this->countryLanguages;
+	}
+
+
+	public function save(?array $data = null): static
+	{
+		return parent::save($data ?? [
+				self::_NAME => $this->name,
+				self::_ISO_CODE_2 => $this->iso_code_2,
+				self::_ISO_CODE_3 => $this->iso_code_3,
+			]);
+	}
+
+	/**
+	 * @param string      $name
+	 * @param string      $iso_code_2
+	 * @param string|null $iso_code_3
+	 * @param int|null    $id
 	 *
 	 * @return self
 	 */
-	public static function init(int $country_id, string $name, string $iso_code_2, ?int $id = null): self
+	public static function init(string $name, string $iso_code_2, ?string $iso_code_3, ?int $id = null): self
 	{
-		return new self($country_id, $name, $iso_code_2, $id);
+		return new self($name, $iso_code_2, $iso_code_3, $id);
 	}
 
 	/**
-	 * @param int $id - The id of city
+	 * @param string $name
 	 *
-	 * @return self|null
+	 * @return self[]|null
 	 */
-	public static function findById(int $id): ?self
+	public static function findAllByName(string $name): ?array
 	{
-		$data = Database::getRow("SELECT * FROM `language` WHERE `language`.`id`=:id", [':id' => $id]);
-		$result = null;
-		if ($data->isOK()) {
-			$result = self::arrayToObject($data->getResult());
-		}
-		return $result;
+		return self::findAllBy(self::_NAME, $name);
 	}
 
-	public static function arrayToObject(array $data): self
+	public static function findById(int $id): ?static
+	{
+		return parent::findById($id);
+	}
+
+	public static function findByIsoCode2(string $iso_code_2): ?self
+	{
+		return self::findBy(self::_ISO_CODE_2, $iso_code_2);
+	}
+
+	public static function findByIsoCode3(string $iso_code_3): ?self
+	{
+		return self::findBy(self::_ISO_CODE_3, $iso_code_3);
+	}
+
+	public static function arrayToObject(array $data): static
 	{
 		return self::init(
-			country_id: $data['country_id'],
-			name: $data['name'],
-			iso_code_2: $data['iso_code_2'],
-			id: $data['id']
+			name: $data[self::_NAME],
+			iso_code_2: $data[self::_ISO_CODE_2],
+			iso_code_3: $data[self::_ISO_CODE_3],
+			id: $data[self::_ID] ?? null
 		);
-	}
-
-	/**
-	 * @param array $data
-	 *
-	 * @return self[]
-	 */
-	public static function arrayToObjects(array $data): array
-	{
-		$result = [];
-		foreach ($data as $row) {
-			$result[] = self::arrayToObject($row);
-		}
-		return $result;
 	}
 }

@@ -4,8 +4,6 @@ namespace Methodz\Helpers\Database;
 
 use Exception;
 use PDO;
-use PDOException;
-use PDOStatement;
 use Throwable;
 
 abstract class Database
@@ -118,10 +116,12 @@ abstract class Database
 		$sql .= ' LIMIT 1';
 
 		$data = self::executeRequest($sql, $params);
-		if (count($data->getResult()) === 0) {
-			$data->setStatus(DatabaseQueryResultStatus::NO_DATA_FOUND);
-		} else {
-			$data->setResult($data->getResult()[0]);
+		if ($data->isOK()) {
+			if (count($data->getResult()) === 0) {
+				$data->setStatus(DatabaseQueryResultStatus::NO_DATA_FOUND);
+			} else {
+				$data->setResult($data->getResult()[0]);
+			}
 		}
 
 		return $data;

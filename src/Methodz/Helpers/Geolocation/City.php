@@ -2,12 +2,17 @@
 
 namespace Methodz\Helpers\Geolocation;
 
-use Exception;
-use Methodz\Helpers\Database\Database;
+use Methodz\Helpers\Models\Model;
 
-class City
+class City extends Model
 {
-	private ?int $id;
+	public const _TABLE = "city";
+	public const _ID = "id";
+	public const _NAME = "name";
+	public const _COUNTRY_ID = "country_id";
+	public const _LATITUDE = "latitude";
+	public const _LONGITUDE = "longitude";
+
 	private int $country_id;
 	private string $name;
 	private Coordinate $coordinate;
@@ -22,21 +27,16 @@ class City
 		$this->coordinate = $coordinate;
 	}
 
-	public function getId(): ?int
-	{
-		return $this->id;
-	}
-
-	private function setId(int $id): self
-	{
-		$this->id = $id;
-
-		return $this;
-	}
-
 	public function getCountryId(): int
 	{
 		return $this->country_id;
+	}
+
+	public function setCountryId(int $country_id): self
+	{
+		$this->country_id = $country_id;
+
+		return $this;
 	}
 
 	public function getName(): string
@@ -44,9 +44,23 @@ class City
 		return $this->name;
 	}
 
+	public function setName(string $name): self
+	{
+		$this->name = $name;
+
+		return $this;
+	}
+
 	public function getCoordinate(): Coordinate
 	{
 		return $this->coordinate;
+	}
+
+	public function setCoordinate(Coordinate $coordinate): self
+	{
+		$this->coordinate = $coordinate;
+
+		return $this;
 	}
 
 	/**
@@ -61,28 +75,14 @@ class City
 		return $this->country;
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public function save(): self
+	public function save(?array $data = null): static
 	{
-		if ($this->getId() === null) {
-			$result = Database::insert(
-				table: "city",
-				data: [
-					'country_id' => $this->country_id,
-					'name' => $this->name,
-					'latitude' => $this->coordinate->getLatitude(),
-					'longitude' => $this->coordinate->getLongitude(),
-				]
-			);
-			if ($result->isOK()) {
-				$this->setId(Database::getLastInsertId());
-			} else {
-				throw new Exception("Object " . self::class . " can't be save");
-			}
-		}
-		return $this;
+		return parent::save($data ?? [
+				self::_COUNTRY_ID => $this->country_id,
+				self::_NAME => $this->name,
+				self::_LATITUDE => $this->coordinate->getLatitude(),
+				self::_LONGITUDE => $this->coordinate->getLongitude(),
+			]);
 	}
 
 	/**
@@ -100,73 +100,38 @@ class City
 	}
 
 	/**
-	 * @param int $country_id - The id of country
+	 * @param string $name
 	 *
-	 * @return self[]
+	 * @return self[]|null
 	 */
-	public static function getCitiesForCountryId(int $country_id): array
+	public static function findAllByName(string $name): ?array
 	{
-		$data = Database::getData("SELECT * FROM `city` WHERE `city`.`country_id`=:country_id", [':country_id' => $country_id]);
-		$result = [];
-		if ($data->isOK()) {
-			$result = self::arrayToObjects($data->getResult());
-		}
-		return $result;
+		return self::findAllBy(self::_NAME, $name);
 	}
 
 	/**
-	 * @param string $iso_code_2 - Code ISO of country
+	 * @param int $country_id
 	 *
-	 * @return self[]
+	 * @return self[]|null
 	 */
-	public static function getCitiesForCountryIsoCode2(string $iso_code_2): array
+	public static function findAllByCountryId(int $country_id): ?array
 	{
-		$data = Database::getData("SELECT `city`.* FROM `city` INNER JOIN `country` ON `city`.`country_id` = `country`.`id` WHERE `country`.`iso_code_2`=:iso_code_2", [':iso_code_2' => $iso_code_2]);
-		$result = [];
-		if ($data->isOK()) {
-			$result = self::arrayToObjects($data->getResult());
-		}
-		return $result;
+		return self::findAllBy(self::_COUNTRY_ID, $country_id);
 	}
 
-
-	/**
-	 * @param int $id - The id of city
-	 *
-	 * @return self|null
-	 */
-	public static function findById(int $id): ?self
+	public static function findById(int $id): ?static
 	{
-		$data = Database::getRow("SELECT * FROM `city` WHERE `city`.`id`=:id", [':id' => $id]);
-		$result = null;
-		if ($data->isOK()) {
-			$result = self::arrayToObject($data->getResult());
-		}
-		return $result;
+		return parent::findById($id);
 	}
 
-	public static function arrayToObject(array $data): self
+	public static function arrayToObject(array $data): static
 	{
 		return self::init(
-			country_id: $data['country_id'],
-			name: $data['name'],
-			latitude: $data['latitude'],
-			longitude: $data['longitude'],
-			id: $data['id']
+			country_id: $data[self::_COUNTRY_ID],
+			name: $data[self::_NAME],
+			latitude: $data[self::_LATITUDE],
+			longitude: $data[self::_LONGITUDE],
+			id: $data[self::_ID] ?? null,
 		);
-	}
-
-	/**
-	 * @param array $data
-	 *
-	 * @return self[]
-	 */
-	public static function arrayToObjects(array $data): array
-	{
-		$result = [];
-		foreach ($data as $row) {
-			$result[] = self::arrayToObject($row);
-		}
-		return $result;
 	}
 }
