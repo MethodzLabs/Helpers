@@ -157,7 +157,7 @@ class Country extends Model
 
 	public static function findByIsoCodeNumeric(string $iso_code_numeric): ?self
 	{
-		return self::findBy(self::_ISO_CODE_3, $iso_code_numeric);
+		return self::findBy(self::_ISO_CODE_NUMERIC, $iso_code_numeric);
 	}
 
 	public static function arrayToObject(array $data): static

@@ -60,7 +60,7 @@ class CountryLanguage extends Model
 	public function getLanguage(): Language
 	{
 		if ($this->language === null) {
-			$this->language = Language::findById($this->getCountryId());
+			$this->language = Language::findById($this->getLanguageId());
 		}
 
 		return $this->language;
