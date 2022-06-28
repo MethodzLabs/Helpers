@@ -15,7 +15,7 @@ class Language extends Model
 
 	private string $name;
 	private string $iso_code_2;
-	private string $iso_code_3;
+	private ?string $iso_code_3;
 
 	/**
 	 * @var CountryLanguage[]|null
