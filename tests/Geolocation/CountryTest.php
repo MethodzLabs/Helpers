@@ -38,4 +38,11 @@ class CountryTest extends TestCase
 		$country = Country::findById(73);
 		self::assertNotEmpty($country->getCountryLanguages());
 	}
+
+	public function testGetSearchEngines()
+	{
+		$country = Country::findById(73);
+		print_r($country->getSearchEngines());
+		self::assertNotEmpty($country->getSearchEngines());
+	}
 }

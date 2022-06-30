@@ -28,6 +28,11 @@ class Country extends Model
 	 */
 	private ?array $countryLanguages = null;
 
+	/**
+	 * @var SearchEngine[]|null
+	 */
+	private ?array $searchEngines = null;
+
 	private function __construct(int $id, string $name, string $iso_code_2, ?string $iso_code_3, ?int $iso_code_numeric)
 	{
 		$this->id = $id;
@@ -104,6 +109,18 @@ class Country extends Model
 		}
 
 		return $this->countryLanguages;
+	}
+
+	/**
+	 * @return SearchEngine[]
+	 */
+	public function getSearchEngines(): array
+	{
+		if ($this->searchEngines === null) {
+			$this->searchEngines = SearchEngine::findAllByCountryId($this->getId());
+		}
+
+		return $this->searchEngines;
 	}
 
 	public function save(?array $data = null): static
