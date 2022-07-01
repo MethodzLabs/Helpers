@@ -1,8 +1,8 @@
 <?php
 
-namespace Methodz\Helpers\Geolocation;
+namespace Methodz\Helpers\Models;
 
-use Methodz\Helpers\Models\Model;
+use Methodz\Helpers\Geolocation\Coordinate;
 
 class City extends Model
 {

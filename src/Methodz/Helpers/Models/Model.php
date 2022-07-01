@@ -8,6 +8,8 @@ use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
 {
+	use CommonTrait;
+
 	protected ?int $id;
 	const _TABLE = "TABLE";
 	const _ID = "ID";
@@ -161,5 +163,10 @@ abstract class Model implements ModelInterface
 			}
 		}
 		return $result;
+	}
+
+	public function toString(): string
+	{
+		return static::class . " object:" . $this->id;
 	}
 }

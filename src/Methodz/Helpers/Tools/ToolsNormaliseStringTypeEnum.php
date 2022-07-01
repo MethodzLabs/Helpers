@@ -1,17 +1,16 @@
 <?php
 
-namespace Methodz\Helpers\Database;
+namespace Methodz\Helpers\Tools;
 
 use Methodz\Helpers\Models\CommonTrait;
 
-enum DatabaseQueryResultStatus
+enum ToolsNormaliseStringTypeEnum
 {
 	use CommonTrait;
 
-	case NO_DATA_FOUND;
-	case OK;
-	case PENDING;
-	case ERROR;
+	case CAMEL_CASE;
+	case PASCAL_CASE;
+	case SNAKE_CASE;
 
 	public function toString(): string
 	{

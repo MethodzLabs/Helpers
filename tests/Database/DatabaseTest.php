@@ -11,7 +11,7 @@ class DatabaseTest extends TestCase
 	public function testGetData()
 	{
 		$result = Database::getData("SELECT * FROM `city`");
-		print_r($result);
+		//print_r($result);
 		self::assertTrue($result->isOK());
 	}
 
@@ -36,6 +36,8 @@ class DatabaseTest extends TestCase
 	public function testGetRow()
 	{
 		$result = Database::getRow("SELECT * FROM `city`");
-		self::assertTrue($result->isOK(), $result->getError()->getMessage() . "\n" . $result->getError()->getTraceAsString());
+		self::assertTrue($result->isOK());
 	}
+
+
 }

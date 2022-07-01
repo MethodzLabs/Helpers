@@ -1,8 +1,8 @@
 <?php
 
-namespace Geolocation;
+namespace Models;
 
-use Methodz\Helpers\Geolocation\Country;
+use Methodz\Helpers\Models\Country;
 use PHPUnit\Framework\TestCase;
 
 class CountryTest extends TestCase
@@ -42,7 +42,7 @@ class CountryTest extends TestCase
 	public function testGetSearchEngines()
 	{
 		$country = Country::findById(73);
-		print_r($country->getSearchEngines());
+		//print_r($country->getSearchEngines());
 		self::assertNotEmpty($country->getSearchEngines());
 	}
 }

@@ -2,9 +2,6 @@
 
 namespace Encrypt;
 
-use Methodz\Helpers\Encrypt\Encrypt;
-use Methodz\Helpers\Geolocation\Country;
-use Methodz\Helpers\Geolocation\Language;
 use PHPUnit\Framework\TestCase;
 
 class EncryptTest extends TestCase
@@ -12,7 +9,7 @@ class EncryptTest extends TestCase
 
 	public function testEncode()
 	{
-		var_dump(Encrypt::encode("coucou"));
+		//var_dump(Encrypt::encode("coucou"));
 
 		self::assertTrue(true);
 	}
@@ -26,7 +23,7 @@ class EncryptTest extends TestCase
 
 	public function testTry()
 	{
-		print_r(Language::findAll());
+		//print_r(Language::findAll());
 
 		self::assertTrue(true);
 	}

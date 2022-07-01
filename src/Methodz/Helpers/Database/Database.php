@@ -21,7 +21,7 @@ abstract class Database
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	private static function executeRequest(string $sql, ?array $params = null): DatabaseQueryResult
+	public static function executeRequest(string $sql, ?array $params = null): DatabaseQueryResult
 	{
 		$result = DatabaseQueryResult::init($sql, $params);
 		try {

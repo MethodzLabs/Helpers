@@ -1,8 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Geolocation;
-
-use Methodz\Helpers\Models\Model;
+namespace Methodz\Helpers\Models;
 
 class SearchEngine extends Model
 {
@@ -10,17 +8,20 @@ class SearchEngine extends Model
 	public const _ID = "id";
 	public const _COUNTRY_ID = "country_id";
 	public const _URL = "url";
+	public const _TYPE = "type";
 
 	private int $country_id;
 	private string $url;
+	private SearchEngineTypeEnum $type;
 
 	private ?Country $country = null;
 
-	private function __construct(int $country_id, string $url, ?int $id)
+	private function __construct(int $country_id, string $url, SearchEngineTypeEnum $type, ?int $id)
 	{
 		$this->id = $id;
 		$this->country_id = $country_id;
 		$this->url = $url;
+		$this->type = $type;
 	}
 
 	public function getCountryId(): int
@@ -47,6 +48,18 @@ class SearchEngine extends Model
 		return $this;
 	}
 
+	public function getType(): SearchEngineTypeEnum
+	{
+		return $this->type;
+	}
+
+	public function setType(SearchEngineTypeEnum $type): self
+	{
+		$this->type = $type;
+
+		return $this;
+	}
+
 	public function getCountry(): Country
 	{
 		if ($this->country === null) {
@@ -61,19 +74,21 @@ class SearchEngine extends Model
 		return parent::save($data ?? [
 				self::_COUNTRY_ID => $this->country_id,
 				self::_URL => $this->url,
+				self::_TYPE => $this->type->value,
 			]);
 	}
 
 	/**
-	 * @param int      $country_id
-	 * @param string   $url
-	 * @param int|null $id
+	 * @param int                  $country_id
+	 * @param string               $url
+	 * @param SearchEngineTypeEnum $type
+	 * @param int|null             $id
 	 *
 	 * @return self
 	 */
-	public static function init(int $country_id, string $url, ?int $id): self
+	public static function init(int $country_id, string $url, SearchEngineTypeEnum $type, ?int $id): self
 	{
-		return new self($country_id, $url, $id);
+		return new self($country_id, $url, $type, $id);
 	}
 
 	public static function findById(int $id): ?static
@@ -91,11 +106,13 @@ class SearchEngine extends Model
 		return self::findAllBy(self::_COUNTRY_ID, $country_id);
 	}
 
+
 	public static function arrayToObject(array $data): static
 	{
 		return self::init(
 			country_id: $data[self::_COUNTRY_ID],
 			url: $data[self::_URL],
+			type: SearchEngineTypeEnum::from($data[self::_TYPE]),
 			id: $data[self::_ID] ?? null,
 		);
 	}

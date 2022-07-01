@@ -1,8 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Geolocation;
-
-use Methodz\Helpers\Models\Model;
+namespace Methodz\Helpers\Models;
 
 class CountryLanguage extends Model
 {

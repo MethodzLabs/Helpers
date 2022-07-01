@@ -1,9 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Geolocation;
-
-use Exception;
-use Methodz\Helpers\Models\Model;
+namespace Methodz\Helpers\Models;
 
 class Language extends Model
 {

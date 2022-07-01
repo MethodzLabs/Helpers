@@ -1,8 +1,8 @@
 <?php
 
-namespace Geolocation;
+namespace Models;
 
-use Methodz\Helpers\Geolocation\City;
+use Methodz\Helpers\Models\City;
 use PHPUnit\Framework\TestCase;
 
 class CityTest extends TestCase
