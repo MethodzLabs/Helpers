@@ -20,7 +20,7 @@ class QueryDeleteTest extends TestCase
 
 		self::assertEquals(
 			"DELETE FROM " . SearchEngine::_TABLE,
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -32,7 +32,7 @@ class QueryDeleteTest extends TestCase
 
 		self::assertEquals(
 			"DELETE FROM " . SearchEngine::_TABLE . " WHERE `" . SearchEngine::_URL . "` LIKE :url",
-			$query->getQuery()
+			$query->getSql()
 		);
 		self::assertContains("Google.fr", $query->getParameters());
 		self::assertContains("url", array_keys($query->getParameters()));

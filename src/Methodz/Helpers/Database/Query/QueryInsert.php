@@ -66,7 +66,7 @@ class QueryInsert extends Query
 		}
 
 		if ($this->select !== null) {
-			$this->addSQL($this->select->getQuery());
+			$this->addSQL($this->select->getSql());
 			$this->addParameters($this->select->getParameters() ?? []);
 		} else {
 			$this->addSQL("VALUES");

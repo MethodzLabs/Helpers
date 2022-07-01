@@ -24,7 +24,7 @@ class QueryUpdateTest extends TestCase
 
 		self::assertEquals(
 			"UPDATE " . SearchEngine::_TABLE . " SET  " . SearchEngine::_COUNTRY_ID . " = :country_id , " . SearchEngine::_TYPE . " = :type",
-			$query->getQuery()
+			$query->getSql()
 		);
 		self::assertContains(SearchEngineTypeEnum::BING_SEARCH->toString(), $query->getParameters());
 		self::assertContains("type", array_keys($query->getParameters()));
@@ -42,7 +42,7 @@ class QueryUpdateTest extends TestCase
 
 		self::assertEquals(
 			"UPDATE " . SearchEngine::_TABLE . " SET  " . SearchEngine::_COUNTRY_ID . " = :country_id , " . SearchEngine::_TYPE . " = :type WHERE `" . SearchEngine::_URL . "` LIKE :url",
-			$query->getQuery()
+			$query->getSql()
 		);
 		self::assertContains(SearchEngineTypeEnum::BING_SEARCH->toString(), $query->getParameters());
 		self::assertContains("type", array_keys($query->getParameters()));

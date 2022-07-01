@@ -17,7 +17,7 @@ abstract class Query implements QueryInterface
 		return $this;
 	}
 
-	public function getQuery(): string
+	public function getSql(): string
 	{
 		$this->buildQuery();
 		return $this->sql;

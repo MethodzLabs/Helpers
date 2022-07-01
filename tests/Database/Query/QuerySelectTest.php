@@ -19,7 +19,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE,
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -31,7 +31,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " INNER JOIN " . Country::_TABLE . " ON `" . SearchEngine::_TABLE . "`.`" . SearchEngine::_COUNTRY_ID . "`=`" . Country::_TABLE . "`.`" . Country::_ID . "`",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -43,7 +43,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " LEFT JOIN " . Country::_TABLE . " ON `" . SearchEngine::_TABLE . "`.`" . SearchEngine::_COUNTRY_ID . "`=`" . Country::_TABLE . "`.`" . Country::_ID . "`",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -55,7 +55,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " RIGHT JOIN " . Country::_TABLE . " ON `" . SearchEngine::_TABLE . "`.`" . SearchEngine::_COUNTRY_ID . "`=`" . Country::_TABLE . "`.`" . Country::_ID . "`",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -68,7 +68,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " WHERE `" . SearchEngine::_TYPE . "`=:search_engine_type",
-			$query->getQuery()
+			$query->getSql()
 		);
 		self::assertContains(SearchEngineTypeEnum::GOOGLE_SEARCH->toString(), $query->getParameters());
 		self::assertContains("search_engine_type", array_keys($query->getParameters()));
@@ -82,7 +82,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " GROUP BY `" . SearchEngine::_TYPE . "`",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -94,7 +94,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " HAVING `" . SearchEngine::_TYPE . "`='toto'",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -106,7 +106,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " ORDER BY `" . SearchEngine::_TYPE . "` ASC",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -118,7 +118,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " LIMIT 100",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 
@@ -130,7 +130,7 @@ class QuerySelectTest extends TestCase
 
 		self::assertEquals(
 			"SELECT * FROM " . SearchEngine::_TABLE . " OFFSET 50",
-			$query->getQuery()
+			$query->getSql()
 		);
 	}
 }

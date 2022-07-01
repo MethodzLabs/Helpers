@@ -3,6 +3,7 @@
 namespace Methodz\Helpers\Database;
 
 use Exception;
+use Methodz\Helpers\Database\Query\QuerySelect;
 use PDO;
 use Throwable;
 
@@ -55,15 +56,14 @@ abstract class Database
 	/**
 	 * Returns the results of the query as an associative array
 	 *
-	 * @param string      $sql
-	 * @param array|null  $params
+	 * @param QuerySelect $query
 	 * @param string|null $keyAsIndex
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	public static function getData(string $sql, ?array $params = null, ?string $keyAsIndex = null): DatabaseQueryResult
+	public static function getData(QuerySelect $query, ?string $keyAsIndex = null): DatabaseQueryResult
 	{
-		$data = self::executeRequest($sql, $params);
+		$data = $query->execute();
 
 		if ($keyAsIndex !== null) {
 			$res = $data->getResult();
@@ -80,16 +80,15 @@ abstract class Database
 	/**
 	 * Returns the first column of the result of a query as a flat array
 	 *
-	 * @param int|string $index
-	 * @param string     $sql
-	 * @param array|null $params
+	 * @param int|string  $index
+	 * @param QuerySelect $query
 	 *
 	 * @return DatabaseQueryResult
 	 * @throws Exception
 	 */
-	public static function getColumn(int|string $index, string $sql, ?array $params = null): DatabaseQueryResult
+	public static function getColumn(int|string $index, QuerySelect $query): DatabaseQueryResult
 	{
-		$data = self::executeRequest($sql, $params);
+		$data = $query->execute();
 		if ($data->isOK()) {
 			$column = [];
 
@@ -106,16 +105,13 @@ abstract class Database
 	/**
 	 * Returns the first line of the result of a query
 	 *
-	 * @param string     $sql
-	 * @param array|null $params
+	 * @param QuerySelect $query
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	public static function getRow(string $sql, ?array $params = null): DatabaseQueryResult
+	public static function getRow(QuerySelect $query): DatabaseQueryResult
 	{
-		$sql .= ' LIMIT 1';
-
-		$data = self::executeRequest($sql, $params);
+		$data = $query->limit(1)->execute();
 		if ($data->isOK()) {
 			if (count($data->getResult()) === 0) {
 				$data->setStatus(DatabaseQueryResultStatus::NO_DATA_FOUND);
@@ -130,14 +126,13 @@ abstract class Database
 	/**
 	 * Returns the value of the first field of the first row in a query
 	 *
-	 * @param string     $sql
-	 * @param array|null $params
+	 * @param QuerySelect $query
 	 *
 	 * @return DatabaseQueryResult
 	 */
-	public static function getValue(string $sql, ?array $params = null): DatabaseQueryResult
+	public static function getValue(QuerySelect $query): DatabaseQueryResult
 	{
-		$data = self::getRow($sql, $params);
+		$data = self::getRow($query);
 		if ($data->isOK()) {
 			$row = $data->getResult();
 			$data->setResult(array_shift($row));
@@ -148,16 +143,14 @@ abstract class Database
 	/**
 	 * Returns the values of the first field of each row in a query
 	 *
-	 * @param string     $sql
-	 * @param array|null $params
+	 * @param QuerySelect $query
 	 *
 	 * @return DatabaseQueryResult
-	 * @throws Throwable
 	 */
-	public static function getValues(string $sql, ?array $params = null): DatabaseQueryResult
+	public static function getValues(QuerySelect $query): DatabaseQueryResult
 	{
 		$res = [];
-		$data = self::getData($sql, $params);
+		$data = self::getData($query);
 		foreach ($data as $row) {
 			$res[] = array_shift($row);
 		}

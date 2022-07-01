@@ -4,6 +4,7 @@ namespace Methodz\Helpers\Models;
 
 use Exception;
 use Methodz\Helpers\Database\Database;
+use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
@@ -67,7 +68,9 @@ abstract class Model implements ModelInterface
 	 */
 	public static function findAll(bool $idAsKey = false): ?array
 	{
-		$data = Database::getData("SELECT * FROM `" . static::_TABLE . "`");
+		$query = QueryHandler::select("*")
+			->from("`" . static::_TABLE . "`");
+		$data = Database::getData($query);
 		$result = null;
 		if ($data->isOK()) {
 			$result = self::arrayToObjects($data->getResult(), $idAsKey);
@@ -85,7 +88,11 @@ abstract class Model implements ModelInterface
 	protected static function findAllBy(string $column, mixed $value, bool $negation = false): ?array
 	{
 		$pair = self::generateFindsComparatorAndParameters($value, $negation);
-		$data = Database::getData("SELECT * FROM `" . static::_TABLE . "` WHERE `" . static::_TABLE . "`.`" . $column . "` " . $pair->first, $pair->second);
+		$query = QueryHandler::select("*")
+			->from("`" . static::_TABLE . "`")
+			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
+			->addParameters($pair->second);
+		$data = Database::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
 		}
@@ -96,7 +103,11 @@ abstract class Model implements ModelInterface
 	protected static function findBy(string $column, mixed $value, bool $negation = false): ?static
 	{
 		$pair = self::generateFindsComparatorAndParameters($value, $negation);
-		$data = Database::getRow("SELECT * FROM `" . static::_TABLE . "` WHERE `" . static::_TABLE . "`.`" . $column . "` " . $pair->first, $pair->second);
+		$query = QueryHandler::select("*")
+			->from("`" . static::_TABLE . "`")
+			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
+			->addParameters($pair->second);
+		$data = Database::getRow($query);
 		if ($data->isOK()) {
 			return static::arrayToObject($data->getResult());
 		}
