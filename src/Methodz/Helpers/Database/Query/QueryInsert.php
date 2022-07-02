@@ -38,7 +38,7 @@ class QueryInsert extends Query
 			throw new Exception("\$values cannot be empty");
 		}
 
-		if (!is_array($values[0])) {
+		if (!is_array($values[array_keys($values)[0]])) {
 			$values = [$values];
 		}
 
