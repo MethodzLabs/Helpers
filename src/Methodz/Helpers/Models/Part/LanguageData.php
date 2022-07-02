@@ -8,7 +8,7 @@ class LanguageData
 {
 	use CommonTrait;
 
-	public string $google_search_parameter_hl;
+	public ?string $google_search_parameter_hl;
 
 	public function __construct(string $google_search_parameter_hl)
 	{
@@ -20,7 +20,7 @@ class LanguageData
 	{
 		$data = json_decode($data, true);
 		return new self(
-			google_search_parameter_hl: $data['google_search_parameter_hl']
+			google_search_parameter_hl: $data['google_search_parameter_hl'] ?? null
 		);
 	}
 }
