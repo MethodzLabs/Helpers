@@ -2,11 +2,8 @@
 
 namespace Methodz\Helpers\Database\Query;
 
-
 use Exception;
 use Methodz\Helpers\Database\DatabaseQueryResult;
-use Methodz\Helpers\Tools\Tools;
-use Methodz\Helpers\Tools\ToolsNormaliseStringTypeEnum;
 
 class QueryInsert extends Query
 {

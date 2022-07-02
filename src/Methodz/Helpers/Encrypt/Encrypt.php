@@ -2,8 +2,6 @@
 
 namespace Methodz\Helpers\Encrypt;
 
-use Methodz\Helpers\File\File;
-
 class Encrypt
 {
 

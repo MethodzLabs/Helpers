@@ -2,7 +2,6 @@
 
 namespace Methodz\Helpers\Database\Query;
 
-
 use Methodz\Helpers\Database\DatabaseQueryResult;
 
 class QuerySelect extends Query

@@ -5,7 +5,6 @@ namespace Methodz\Helpers\Database\Query;
 
 use Methodz\Helpers\Database\DatabaseQueryResult;
 use Methodz\Helpers\Tools\Tools;
-use Methodz\Helpers\Tools\ToolsNormaliseStringTypeEnum;
 
 class QueryUpdate extends Query
 {

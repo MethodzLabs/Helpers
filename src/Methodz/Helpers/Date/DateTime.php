@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Date;
 
-use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use DateTimeZone;
 
 /**
  * @author Thomas FONTAINE--TUFFERY
@@ -100,7 +100,7 @@ class DateTime extends \DateTime
 		return new self();
 	}
 
-	public static function createFromFormat(string $format, string $datetime, \DateTimeZone|null $timezone = null): self
+	public static function createFromFormat(string $format, string $datetime, DateTimeZone|null $timezone = null): self
 	{
 		return self::createFromTimestamp(\DateTime::createFromFormat($format, $datetime, $timezone)->getTimestamp());
 	}

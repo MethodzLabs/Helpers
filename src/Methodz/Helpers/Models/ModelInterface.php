@@ -8,6 +8,7 @@ namespace Methodz\Helpers\Models;
 interface ModelInterface
 {
 	public function getId(): ?int;
+
 	public function setId(int $id): static;
 
 	public function save(?array $data = null): static;

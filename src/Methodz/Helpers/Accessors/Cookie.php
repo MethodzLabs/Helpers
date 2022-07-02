@@ -2,7 +2,6 @@
 
 namespace Methodz\Helpers\Accessors;
 
-use JetBrains\PhpStorm\Pure;
 use Methodz\Helpers\Date\DateTime;
 
 class Cookie

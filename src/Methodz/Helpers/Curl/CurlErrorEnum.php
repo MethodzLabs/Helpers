@@ -93,7 +93,8 @@ enum CurlErrorEnum: int
 	case CURL_FTP_BAD_FILE_LIS = 87;
 	case CURL_CHUNK_FAIL = 88;
 
-	public static function getError(int $number): self {
+	public static function getError(int $number): self
+	{
 		foreach (self::cases() as $case) {
 			if ($case->value == $number) {
 				return $case;

@@ -3,11 +3,12 @@
 namespace Methodz\Helpers\Curl;
 
 
+use CurlHandle;
 use Methodz\Helpers\Curl\Exception\CurlExecuteException;
 
 class Curl
 {
-	private \CurlHandle $curlHandle;
+	private CurlHandle $curlHandle;
 	private null|string $result;
 	private string $url;
 	private array $infos;
