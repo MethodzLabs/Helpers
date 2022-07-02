@@ -2,8 +2,12 @@
 
 namespace Methodz\Helpers\Geolocation;
 
+use Methodz\Helpers\Models\CommonTrait;
+
 class Coordinate
 {
+	use CommonTrait;
+
 	private float $latitude;
 	private float $longitude;
 
@@ -54,7 +58,6 @@ class Coordinate
 	}
 
 
-
 	/**
 	 * @param float $latitude
 	 * @param float $longitude
@@ -65,6 +68,5 @@ class Coordinate
 	{
 		return new self($latitude, $longitude);
 	}
-
 
 }

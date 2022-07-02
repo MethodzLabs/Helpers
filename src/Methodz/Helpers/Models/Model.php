@@ -33,6 +33,7 @@ abstract class Model implements ModelInterface
 		return $this;
 	}
 
+
 	/**
 	 * @param mixed $value
 	 * @param bool  $negation
@@ -124,26 +125,15 @@ abstract class Model implements ModelInterface
 	 */
 	public function save(?array $data = null): static
 	{
-		$message = "";
 		if ($this->getId() === null) {
-			$result = Database::insert(
-				table: static::_TABLE,
-				data: $data
-			);
+			$result = QueryHandler::insert(static::_TABLE)->values($data)->execute();
 			if ($result->isOK()) {
 				$this->setId(Database::getLastInsertId());
 			} else {
 				$message = "Object " . static::class . " can't be inserted";
 			}
 		} else {
-			$result = Database::update(
-				table: static::_TABLE,
-				data: $data,
-				where: "`" . self::_ID . "`=:id",
-				where_params: [
-					':id' => $this->getId(),
-				]
-			);
+			$result = QueryHandler::update(static::_TABLE)->set($data)->where("`" . self::_ID . "`=:id")->addParameter('id', $this->getId())->execute();
 			if (!$result->isOK()) {
 				$message = "Object " . static::class . " can't be updated";
 			}
@@ -174,10 +164,5 @@ abstract class Model implements ModelInterface
 			}
 		}
 		return $result;
-	}
-
-	public function toString(): string
-	{
-		return static::class . " object:" . $this->id;
 	}
 }

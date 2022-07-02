@@ -71,6 +71,6 @@ abstract class Query implements QueryInterface
 
 	public function execute(): DatabaseQueryResult
 	{
-		return Database::executeRequest($this->sql, $this->parameters);
+		return Database::executeRequest($this);
 	}
 }

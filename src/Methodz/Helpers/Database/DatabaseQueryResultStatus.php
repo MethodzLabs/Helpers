@@ -2,11 +2,11 @@
 
 namespace Methodz\Helpers\Database;
 
-use Methodz\Helpers\Models\CommonTrait;
+use Methodz\Helpers\Models\CommonEnumTrait;
 
 enum DatabaseQueryResultStatus
 {
-	use CommonTrait;
+	use CommonEnumTrait;
 
 	case NO_DATA_FOUND;
 	case OK;

@@ -4,7 +4,7 @@ namespace Methodz\Helpers\Models;
 
 enum SearchEngineTypeEnum: string
 {
-	use CommonTrait;
+	use CommonEnumTrait;
 
 	case GOOGLE_SEARCH = "Google Search";
 	case BING_SEARCH = "Bing Search";

@@ -3,6 +3,7 @@
 namespace Models;
 
 use Methodz\Helpers\Models\City;
+use Methodz\Helpers\Models\SearchEngine;
 use PHPUnit\Framework\TestCase;
 
 class CityTest extends TestCase
