@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Models\Part\LanguageData;
+
 class Language extends Model
 {
 	public const _TABLE = "language";
@@ -9,22 +11,25 @@ class Language extends Model
 	public const _NAME = "name";
 	public const _ISO_CODE_2 = "iso_code_2";
 	public const _ISO_CODE_3 = "iso_code_3";
+	public const _DATA = "data";
 
 	private string $name;
 	private string $iso_code_2;
 	private ?string $iso_code_3;
+	private LanguageData $data;
 
 	/**
 	 * @var CountryLanguage[]|null
 	 */
 	private ?array $countryLanguages = null;
 
-	private function __construct(string $name, string $iso_code_2, ?string $iso_code_3, ?int $id = null)
+	private function __construct(string $name, string $iso_code_2, ?string $iso_code_3, LanguageData $data, ?int $id = null)
 	{
 		$this->id = $id;
 		$this->name = $name;
 		$this->iso_code_2 = $iso_code_2;
 		$this->iso_code_3 = $iso_code_3;
+		$this->data = $data;
 	}
 
 	public function getName(): string
@@ -63,6 +68,18 @@ class Language extends Model
 		return $this;
 	}
 
+	public function getData(): LanguageData
+	{
+		return $this->data;
+	}
+
+	public function setData(LanguageData $data): self
+	{
+		$this->data = $data;
+
+		return $this;
+	}
+
 	/**
 	 * @return CountryLanguage[]
 	 */
@@ -82,20 +99,22 @@ class Language extends Model
 				self::_NAME => $this->name,
 				self::_ISO_CODE_2 => $this->iso_code_2,
 				self::_ISO_CODE_3 => $this->iso_code_3,
+				self::_DATA => json_encode($this->data),
 			]);
 	}
 
 	/**
-	 * @param string      $name
-	 * @param string      $iso_code_2
-	 * @param string|null $iso_code_3
-	 * @param int|null    $id
+	 * @param string       $name
+	 * @param string       $iso_code_2
+	 * @param string|null  $iso_code_3
+	 * @param LanguageData $data
+	 * @param int|null     $id
 	 *
 	 * @return self
 	 */
-	public static function init(string $name, string $iso_code_2, ?string $iso_code_3, ?int $id = null): self
+	public static function init(string $name, string $iso_code_2, ?string $iso_code_3, LanguageData $data, ?int $id = null): self
 	{
-		return new self($name, $iso_code_2, $iso_code_3, $id);
+		return new self($name, $iso_code_2, $iso_code_3, $data, $id);
 	}
 
 	/**
@@ -129,6 +148,7 @@ class Language extends Model
 			name: $data[self::_NAME],
 			iso_code_2: $data[self::_ISO_CODE_2],
 			iso_code_3: $data[self::_ISO_CODE_3],
+			data: LanguageData::init($data[self::_DATA]),
 			id: $data[self::_ID] ?? null
 		);
 	}
