@@ -4,9 +4,9 @@ namespace Methodz\Helpers\Models;
 
 use Methodz\Helpers\Tools\Tools;
 
-trait CommonTrait
+trait CommonEnumTrait
 {
-	public function __toString(): string
+	public function toString(): string
 	{
 		return Tools::anyToString($this);
 	}

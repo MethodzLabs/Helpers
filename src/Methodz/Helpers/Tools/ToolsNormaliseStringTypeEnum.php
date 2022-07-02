@@ -2,18 +2,13 @@
 
 namespace Methodz\Helpers\Tools;
 
-use Methodz\Helpers\Models\CommonTrait;
+use Methodz\Helpers\Models\CommonEnumTrait;
 
 enum ToolsNormaliseStringTypeEnum
 {
-	use CommonTrait;
+	use CommonEnumTrait;
 
 	case CAMEL_CASE;
 	case PASCAL_CASE;
 	case SNAKE_CASE;
-
-	public function toString(): string
-	{
-		return $this->name;
-	}
 }
