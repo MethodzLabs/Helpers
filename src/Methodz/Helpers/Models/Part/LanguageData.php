@@ -16,11 +16,18 @@ class LanguageData
 	}
 
 
-	public static function init(string $data): self
+	public static function fromJson(string $data): self
 	{
 		$data = json_decode($data, true);
-		return new self(
+		return self::init(
 			google_search_parameter_hl: $data['google_search_parameter_hl'] ?? null
+		);
+	}
+
+	public static function init(string $google_search_parameter_hl): self
+	{
+		return new self(
+			google_search_parameter_hl: $google_search_parameter_hl
 		);
 	}
 }

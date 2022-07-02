@@ -148,7 +148,7 @@ class Language extends Model
 			name: $data[self::_NAME],
 			iso_code_2: $data[self::_ISO_CODE_2],
 			iso_code_3: $data[self::_ISO_CODE_3],
-			data: LanguageData::init($data[self::_DATA]),
+			data: LanguageData::fromJson($data[self::_DATA]),
 			id: $data[self::_ID] ?? null
 		);
 	}
