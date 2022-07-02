@@ -126,21 +126,21 @@ abstract class Model implements ModelInterface
 	public function save(?array $data = null): static
 	{
 		if ($this->getId() === null) {
-			$result = QueryHandler::insert(static::_TABLE)->values($data)->execute();
+			$result = QueryHandler::insert(static::_TABLE)->columns(array_keys($data))->values($data)->execute();
 			if ($result->isOK()) {
 				$this->setId(Database::getLastInsertId());
 			} else {
-				$message = "Object " . static::class . " can't be inserted";
+				$message = "Object " . static::class . " can't be inserted " . $this;
 			}
 		} else {
 			$result = QueryHandler::update(static::_TABLE)->set($data)->where("`" . self::_ID . "`=:id")->addParameter('id', $this->getId())->execute();
 			if (!$result->isOK()) {
-				$message = "Object " . static::class . " can't be updated";
+				$message = "Object " . static::class . " can't be updated " . $this;
 			}
 		}
 
 		if (!$result->isOK()) {
-			throw new Exception($message);
+			throw new Exception($message, previous: $result->getError());
 		}
 
 		return $this;
