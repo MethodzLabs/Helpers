@@ -3,6 +3,7 @@
 namespace Methodz\Helpers\DOM;
 
 use DOMElement;
+use DOMXPath;
 use Methodz\Helpers\File\File;
 
 class DOMDocument
@@ -21,7 +22,7 @@ class DOMDocument
 	 */
 	public function findElementsByXPath(string $xpath): array
 	{
-		$domXpath = new \DOMXPath($this->dOMDocument);
+		$domXpath = new DOMXPath($this->dOMDocument);
 		return [...$domXpath->evaluate($xpath)];
 	}
 
