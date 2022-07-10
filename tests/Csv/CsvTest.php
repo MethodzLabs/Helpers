@@ -3,7 +3,6 @@
 namespace Csv;
 
 use Methodz\Helpers\Csv\Csv;
-use Methodz\Helpers\File\File;
 use PHPUnit\Framework\TestCase;
 
 class CsvTest extends TestCase
@@ -11,8 +10,8 @@ class CsvTest extends TestCase
 
 	public function testFromFile()
 	{
-		//Csv::fromFile(__DIR__ . "/../..", "test.csv");
-
+		$csv = Csv::fromFile(__DIR__ . "/../../output", "testFromArray.csv");
+		print_r($csv->getData());
 		self::assertTrue(true);
 	}
 
@@ -25,7 +24,7 @@ class CsvTest extends TestCase
 
 	public function testFromArray()
 	{
-		Csv::fromArray([
+		$csv = Csv::fromArray([
 			[
 				"a" => 1,
 				"b" => 2,
@@ -37,6 +36,8 @@ class CsvTest extends TestCase
 				"z" => -1,
 			],
 		]);
+		print_r($csv->getData());
+		$csv->save(__DIR__ . "/../../output", "testFromArray.csv");
 		self::assertTrue(true);
 	}
 }
