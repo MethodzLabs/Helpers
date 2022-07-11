@@ -10,11 +10,13 @@ class Country extends Model
 	public const _ISO_CODE_2 = "iso_code_2";
 	public const _ISO_CODE_3 = "iso_code_3";
 	public const _ISO_CODE_NUMERIC = "iso_code_numeric";
+	public const _FLAG_SVG_HTML = "flag_svg_html";
 
 	private string $name;
 	private string $iso_code_2;
 	private ?string $iso_code_3;
 	private ?int $iso_code_numeric;
+	private string $flag_svg_html;
 
 	/**
 	 * @var City[]|null
@@ -31,13 +33,14 @@ class Country extends Model
 	 */
 	private ?array $searchEngines = null;
 
-	private function __construct(int $id, string $name, string $iso_code_2, ?string $iso_code_3, ?int $iso_code_numeric)
+	private function __construct(int $id, string $name, string $iso_code_2, ?string $iso_code_3, ?int $iso_code_numeric, string $flag_svg_html)
 	{
 		$this->id = $id;
 		$this->name = $name;
 		$this->iso_code_2 = $iso_code_2;
 		$this->iso_code_3 = $iso_code_3;
 		$this->iso_code_numeric = $iso_code_numeric;
+		$this->flag_svg_html = $flag_svg_html;
 	}
 
 	public function getName(): string
@@ -88,6 +91,19 @@ class Country extends Model
 		return $this;
 	}
 
+	public function getFlagSvgHtml(): string
+	{
+		return $this->flag_svg_html;
+	}
+
+	public function setFlagSvgHtml(string $flag_svg_html): self
+	{
+		$this->flag_svg_html = $flag_svg_html;
+
+		return $this;
+	}
+
+
 	public function getCities(bool $refresh = false): array
 	{
 		if ($refresh || $this->cities === null) {
@@ -128,6 +144,7 @@ class Country extends Model
 				self::_ISO_CODE_2 => $this->iso_code_2,
 				self::_ISO_CODE_3 => $this->iso_code_3,
 				self::_ISO_CODE_NUMERIC => $this->iso_code_numeric,
+				self::_FLAG_SVG_HTML => $this->flag_svg_html,
 			]);
 	}
 
@@ -140,9 +157,9 @@ class Country extends Model
 	 *
 	 * @return self
 	 */
-	public static function init(int $id, string $name, string $iso_code_2, ?string $iso_code_3, ?int $iso_code_numeric): self
+	public static function init(int $id, string $name, string $iso_code_2, ?string $iso_code_3, ?int $iso_code_numeric, string $flag_svg_html): self
 	{
-		return new self($id, $name, $iso_code_2, $iso_code_3, $iso_code_numeric);
+		return new self($id, $name, $iso_code_2, $iso_code_3, $iso_code_numeric, $flag_svg_html);
 	}
 
 	/**
@@ -182,7 +199,8 @@ class Country extends Model
 			name: $data[self::_NAME],
 			iso_code_2: $data[self::_ISO_CODE_2],
 			iso_code_3: $data[self::_ISO_CODE_3],
-			iso_code_numeric: $data[self::_ISO_CODE_NUMERIC]
+			iso_code_numeric: $data[self::_ISO_CODE_NUMERIC],
+			flag_svg_html: $data[self::_FLAG_SVG_HTML]
 		);
 	}
 }
