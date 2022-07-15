@@ -2,6 +2,7 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Models\Part\LanguageData;
 
 class Language extends Model
@@ -140,6 +141,26 @@ class Language extends Model
 	public static function findByIsoCode3(string $iso_code_3): ?self
 	{
 		return self::findBy(self::_ISO_CODE_3, $iso_code_3);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		return parent::findAllByQuery($query);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		return parent::findByQuery($query);
 	}
 
 	public static function arrayToObject(array $data): static

@@ -2,6 +2,7 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Geolocation\Coordinate;
 
 class City extends Model
@@ -122,6 +123,26 @@ class City extends Model
 	public static function findById(int $id): ?static
 	{
 		return parent::findById($id);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		return parent::findAllByQuery($query);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		return parent::findByQuery($query);
 	}
 
 	public static function arrayToObject(array $data): static

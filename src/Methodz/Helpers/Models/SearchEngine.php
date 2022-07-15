@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
+
 class SearchEngine extends Model
 {
 	public const _TABLE = "search_engine";
@@ -104,6 +106,26 @@ class SearchEngine extends Model
 	public static function findAllByCountryId(int $country_id): ?array
 	{
 		return self::findAllBy(self::_COUNTRY_ID, $country_id);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		return parent::findAllByQuery($query);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		return parent::findByQuery($query);
 	}
 
 

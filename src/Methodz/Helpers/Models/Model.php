@@ -5,6 +5,7 @@ namespace Methodz\Helpers\Models;
 use Exception;
 use Methodz\Helpers\Database\Database;
 use Methodz\Helpers\Database\Query\QueryHandler;
+use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
@@ -80,6 +81,20 @@ abstract class Model implements ModelInterface
 	}
 
 	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return static[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		$data = Database::getData($query);
+		if ($data->isOK()) {
+			return static::arrayToObjects($data->getResult());
+		}
+		return null;
+	}
+
+	/**
 	 * @param string $column
 	 * @param mixed  $value
 	 * @param bool   $negation
@@ -96,6 +111,20 @@ abstract class Model implements ModelInterface
 		$data = Database::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
+		}
+		return null;
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return static|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		$data = Database::getRow($query);
+		if ($data->isOK()) {
+			return static::arrayToObject($data->getResult());
 		}
 		return null;
 	}

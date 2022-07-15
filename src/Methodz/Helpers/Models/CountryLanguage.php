@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
+
 class CountryLanguage extends Model
 {
 	public const _TABLE = "country_language";
@@ -102,6 +104,26 @@ class CountryLanguage extends Model
 	public static function findAllByLanguageId(int $language_id): ?array
 	{
 		return self::findAllBy(self::_LANGUAGE_ID, $language_id);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		return parent::findAllByQuery($query);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		return parent::findByQuery($query);
 	}
 
 	public static function arrayToObject(array $data): static

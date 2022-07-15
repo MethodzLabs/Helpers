@@ -15,6 +15,10 @@ interface ModelInterface
 
 	public static function findAll(): ?array;
 
+	public static function findAllByQuery(): ?array;
+
+	public static function findByQuery(): ?static;
+
 	public static function arrayToObject(array $data): static;
 
 	/**

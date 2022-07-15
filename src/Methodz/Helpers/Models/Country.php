@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
+
 class Country extends Model
 {
 	public const _TABLE = "country";
@@ -190,6 +192,26 @@ class Country extends Model
 	public static function findByIsoCodeNumeric(string $iso_code_numeric): ?self
 	{
 		return self::findBy(self::_ISO_CODE_NUMERIC, $iso_code_numeric);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self[]|null
+	 */
+	public static function findAllByQuery(QuerySelect $query): ?array
+	{
+		return parent::findAllByQuery($query);
+	}
+
+	/**
+	 * @param QuerySelect $query
+	 *
+	 * @return self|null
+	 */
+	public static function findByQuery(QuerySelect $query): ?static
+	{
+		return parent::findByQuery($query);
 	}
 
 	public static function arrayToObject(array $data): static
