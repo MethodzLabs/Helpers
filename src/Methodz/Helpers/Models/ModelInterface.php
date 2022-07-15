@@ -2,6 +2,8 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\Query\QuerySelect;
+
 /**
  * @method init
  */
@@ -15,9 +17,9 @@ interface ModelInterface
 
 	public static function findAll(): ?array;
 
-	public static function findAllByQuery(): ?array;
+	public static function findAllByQuery(QuerySelect $query): ?array;
 
-	public static function findByQuery(): ?static;
+	public static function findByQuery(QuerySelect $query): ?static;
 
 	public static function arrayToObject(array $data): static;
 
