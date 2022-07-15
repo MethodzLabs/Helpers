@@ -4,7 +4,7 @@ namespace Methodz\Helpers\Curl;
 
 
 use CurlHandle;
-use Methodz\Helpers\Curl\Exception\CurlExecuteException;
+use Methodz\Helpers\Exceptions\CurlExecuteException;
 
 class Curl
 {

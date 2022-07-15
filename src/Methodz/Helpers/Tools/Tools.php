@@ -2,11 +2,47 @@
 
 namespace Methodz\Helpers\Tools;
 
+use Methodz\Helpers\Date\DateTime;
 use ReflectionClass;
 use ReflectionException;
 
 abstract class Tools
 {
+	private static array $history_uuid = [];
+
+	public static function generateUUID(int $length = 30): string
+	{
+		$res = "";
+		$chars = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+		for ($i = 0; $i < $length; $i++) {
+			$res .= $chars[array_rand($chars)];
+		}
+		self::$history_uuid = $res;
+		return $res;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getHistoryUUID(): array
+	{
+		return self::$history_uuid;
+	}
+
+	public static function getLastUUID(): ?string
+	{
+		if (count(self::getHistoryUUID()) === 0) {
+			return null;
+		}
+		return self::getHistoryUUID()[count(self::getHistoryUUID()) - 1];
+	}
+
+	/**
+	 * @param string                       $string
+	 * @param ToolsNormaliseStringTypeEnum $type
+	 *
+	 * @return string
+	 */
 	public static function normaliseString(string $string, ToolsNormaliseStringTypeEnum $type = ToolsNormaliseStringTypeEnum::SNAKE_CASE): string
 	{
 		$string = str_replace(['_', '-'], ' ', $string);
@@ -101,5 +137,33 @@ abstract class Tools
 			implode(', ', array_map(function ($e) {
 				return self::anyToString($e);
 			}, $array)) . "]";
+	}
+
+	public static function parseString(string $value): array|DateTime|string|int|float|null
+	{
+		if ($value === "NULL" || $value === "null") {
+			return null;
+		} elseif (!empty($value)) {
+			try {
+				try {
+					$numberMatchesInt = preg_match("/^-?[0-9]*$/", $value, $matches);
+					$numberMatchesFloat = preg_match("/^-?[0-9]*(.|,)?[0-9]*$/", $value, $matches);
+					if ($numberMatchesInt === 1) {
+						$value = intval($value);
+					} elseif ($numberMatchesFloat === 1) {
+						$value = str_replace(',', '.', $value);
+						$value = floatval($value);
+					} elseif (($datetime = new DateTime($value))->isValidDateTime()) {
+						$value = $datetime;
+					}
+				} catch (\Throwable $th) {
+					$value = json_decode($value);
+				}
+			} catch (\Throwable $th) {
+			}
+		}
+		print_r($value);
+		var_dump($value);
+		return $value;
 	}
 }

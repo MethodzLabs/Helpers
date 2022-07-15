@@ -1,6 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Mail\Exception;
+namespace Methodz\Helpers\Exceptions;
 
 use Exception;
 use Throwable;
