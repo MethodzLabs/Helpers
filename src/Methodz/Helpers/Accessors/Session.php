@@ -8,7 +8,7 @@ use Methodz\Helpers\Tools\Tools;
 
 class Session
 {
-	private static string $key = "";
+	private static string $key = "methodz_helpers_session";
 
 	/**
 	 * @throws IndexNotFoundException
@@ -21,7 +21,7 @@ class Session
 		return self::getAll()[$key];
 	}
 
-	public static function set(int|string $key, mixed $value)
+	public static function set(int|string $key, mixed $value): void
 	{
 		if (!isset($_SESSION)) session_start();
 		if (!array_key_exists(self::$key, $_SESSION)) {
@@ -32,12 +32,7 @@ class Session
 
 	public static function getAll(): array
 	{
-		print_r("GET");
 		if (!isset($_SESSION)) session_start();
-		if (self::$key === "") {
-			self::$key = Tools::generateUUID();
-		}
-
 		if (!array_key_exists(self::$key, $_SESSION)) {
 			$_SESSION[self::$key] = [];
 		}

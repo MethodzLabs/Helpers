@@ -3,6 +3,8 @@
 namespace Methodz\Helpers\Tools;
 
 use Methodz\Helpers\Date\DateTime;
+use Methodz\Helpers\Tools\Part\ToolsNumber;
+use Methodz\Helpers\Tools\Part\ToolsString;
 use ReflectionClass;
 use ReflectionException;
 
@@ -139,31 +141,13 @@ abstract class Tools
 			}, $array)) . "]";
 	}
 
-	public static function parseString(string $value): array|DateTime|string|int|float|null
+	public static function parseString(string $string): ToolsString
 	{
-		if ($value === "NULL" || $value === "null") {
-			return null;
-		} elseif (!empty($value)) {
-			try {
-				try {
-					$numberMatchesInt = preg_match("/^-?[0-9]*$/", $value, $matches);
-					$numberMatchesFloat = preg_match("/^-?[0-9]*(.|,)?[0-9]*$/", $value, $matches);
-					if ($numberMatchesInt === 1) {
-						$value = intval($value);
-					} elseif ($numberMatchesFloat === 1) {
-						$value = str_replace(',', '.', $value);
-						$value = floatval($value);
-					} elseif (($datetime = new DateTime($value))->isValidDateTime()) {
-						$value = $datetime;
-					}
-				} catch (\Throwable $th) {
-					$value = json_decode($value);
-				}
-			} catch (\Throwable $th) {
-			}
-		}
-		print_r($value);
-		var_dump($value);
-		return $value;
+		return ToolsString::init($string);
+	}
+
+	public static function parseNumber(string|int|float $number): ToolsNumber
+	{
+		return ToolsNumber::init((string) $number);
 	}
 }

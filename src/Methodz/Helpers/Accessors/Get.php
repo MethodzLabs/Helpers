@@ -4,7 +4,7 @@ namespace Methodz\Helpers\Accessors;
 
 use Methodz\Helpers\Exceptions\IndexNotFoundException;
 
-class Post
+class Get
 {
 
 	/**
@@ -20,16 +20,16 @@ class Post
 
 	public static function set(int|string $key, mixed $value): void
 	{
-		$_POST[$key] = $value;
+		$_GET[$key] = $value;
 	}
 
 	public static function getAll(): array
 	{
-		return $_POST;
+		return $_GET;
 	}
 
 	public static function exist(int|string $key): bool
 	{
-		return array_key_exists($key, $_POST);
+		return array_key_exists($key, $_GET);
 	}
 }
