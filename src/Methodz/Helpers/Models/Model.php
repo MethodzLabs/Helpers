@@ -3,7 +3,7 @@
 namespace Methodz\Helpers\Models;
 
 use Exception;
-use Methodz\Helpers\Database\Database;
+use Methodz\Helpers\Database\DatabaseHelpers;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Type\Pair;
@@ -72,7 +72,7 @@ abstract class Model implements ModelInterface
 	{
 		$query = QueryHandler::select("*")
 			->from("`" . static::_TABLE . "`");
-		$data = Database::getData($query);
+		$data = DatabaseHelpers::getData($query);
 		$result = null;
 		if ($data->isOK()) {
 			$result = self::arrayToObjects($data->getResult(), $idAsKey);
@@ -87,7 +87,7 @@ abstract class Model implements ModelInterface
 	 */
 	public static function findAllByQuery(QuerySelect $query): ?array
 	{
-		$data = Database::getData($query);
+		$data = DatabaseHelpers::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
 		}
@@ -108,7 +108,7 @@ abstract class Model implements ModelInterface
 			->from("`" . static::_TABLE . "`")
 			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
 			->addParameters($pair->second);
-		$data = Database::getData($query);
+		$data = DatabaseHelpers::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
 		}
@@ -122,7 +122,7 @@ abstract class Model implements ModelInterface
 	 */
 	public static function findByQuery(QuerySelect $query): ?static
 	{
-		$data = Database::getRow($query);
+		$data = DatabaseHelpers::getRow($query);
 		if ($data->isOK()) {
 			return static::arrayToObject($data->getResult());
 		}
@@ -137,7 +137,7 @@ abstract class Model implements ModelInterface
 			->from("`" . static::_TABLE . "`")
 			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
 			->addParameters($pair->second);
-		$data = Database::getRow($query);
+		$data = DatabaseHelpers::getRow($query);
 		if ($data->isOK()) {
 			return static::arrayToObject($data->getResult());
 		}
@@ -157,7 +157,7 @@ abstract class Model implements ModelInterface
 		if ($this->getId() === null) {
 			$result = QueryHandler::insert(static::_TABLE)->columns(array_keys($data))->values($data)->execute();
 			if ($result->isOK()) {
-				$this->setId(Database::getLastInsertId());
+				$this->setId(DatabaseHelpers::getLastInsertId());
 			} else {
 				$message = "Object " . static::class . " can't be inserted " . $this;
 			}

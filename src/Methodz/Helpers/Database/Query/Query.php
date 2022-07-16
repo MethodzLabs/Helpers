@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Database\Query;
 
-use Methodz\Helpers\Database\Database;
+use Methodz\Helpers\Database\DatabaseHelpers;
 use Methodz\Helpers\Database\DatabaseQueryResult;
 
 abstract class Query implements QueryInterface
@@ -71,6 +71,6 @@ abstract class Query implements QueryInterface
 
 	public function execute(): DatabaseQueryResult
 	{
-		return Database::executeRequest($this);
+		return DatabaseHelpers::executeRequest($this);
 	}
 }

@@ -8,13 +8,13 @@ use Methodz\Helpers\Database\Query\QuerySelect;
 use PDO;
 use Throwable;
 
-abstract class Database
+abstract class Database implements DatabaseInterface
 {
-	const DB_SERVER = '5.135.137.111';
-	const DB_NAME = 'helpers';
-	const DB_USER = 'u_helpers';
-	const DB_PASSWD = '3PDe7nrZN4phj6qH$';
-	private static PDO $bdd;
+	const DB_SERVER = 'SERVER_IP';
+	const DB_NAME = 'NAME';
+	const DB_USER = 'USER';
+	const DB_PASSWORD = 'PASSWORD';
+	protected static PDO $bdd;
 
 	/**
 	 * @param Query $query
@@ -25,7 +25,7 @@ abstract class Database
 	{
 		$result = DatabaseQueryResult::init($query->getSql(), $query->getParameters());
 		try {
-			$pdoStatement = self::getBdd()->prepare($query->getSql());
+			$pdoStatement = static::getDataBase()->prepare($query->getSql());
 			if ($query->getParameters() !== null) {
 				foreach ($query->getParameters() as $key => $value) {
 					if (is_null($value)) {
@@ -57,14 +57,14 @@ abstract class Database
 	 *
 	 * @return PDO Objet PDO de connexion à la BDD
 	 */
-	private static function getBdd(): PDO
+	private static function getDataBase(): PDO
 	{
-		if (!isset(self::$bdd)) {
-			self::$bdd = new PDO('mysql:host=' . self::DB_SERVER . ';dbname=' . self::DB_NAME, self::DB_USER, self::DB_PASSWD);
-			self::$bdd->query("SET NAMES UTF8");
+		if (!isset(static::$bdd)) {
+			static::$bdd = new PDO('mysql:host=' . static::DB_SERVER . ';dbname=' . static::DB_NAME, static::DB_USER, static::DB_PASSWORD);
+			static::$bdd->query("SET NAMES UTF8");
 		}
 
-		return self::$bdd;
+		return static::$bdd;
 	}
 
 	/**
@@ -101,7 +101,7 @@ abstract class Database
 	 */
 	public static function getValue(QuerySelect $query): DatabaseQueryResult
 	{
-		$data = self::getRow($query);
+		$data = static::getRow($query);
 		if ($data->isOK()) {
 			$row = $data->getResult();
 			$data->setResult(array_shift($row));
@@ -140,7 +140,7 @@ abstract class Database
 	public static function getValues(QuerySelect $query): DatabaseQueryResult
 	{
 		$res = [];
-		$data = self::getData($query);
+		$data = static::getData($query);
 		foreach ($data as $row) {
 			$res[] = array_shift($row);
 		}
@@ -179,7 +179,7 @@ abstract class Database
 	 */
 	public static function getLastInsertId(): int
 	{
-		return self::getBdd()->lastInsertId();
+		return static::getDataBase()->lastInsertId();
 	}
 
 }
