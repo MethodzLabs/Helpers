@@ -2,7 +2,6 @@
 
 namespace DOM;
 
-use Methodz\Helpers\DOM\DOMDocument;
 use PHPUnit\Framework\TestCase;
 
 class DOMDocumentTest extends TestCase

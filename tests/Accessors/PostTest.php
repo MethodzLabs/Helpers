@@ -2,8 +2,7 @@
 
 namespace Accessors;
 
-use Methodz\Helpers\Accessors\Post;
-use Methodz\Helpers\Exceptions\IndexNotFoundException;
+use Exceptions\IndexNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase

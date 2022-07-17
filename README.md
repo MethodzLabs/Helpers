@@ -60,7 +60,7 @@ Menu:
 > ```php
 > namespace Methodz\Helpers\Curl;
 > 
-> class Curl
+use Curl\CurlCommonHeaderKeyEnum;use Curl\CurlErrorEnum;use Curl\CurlInfoKeyEnum;> class Curl
 > {
 > 	private array $data;
 > 	private ?string $path;
@@ -105,9 +105,9 @@ Menu:
 > 	public function formatFrenchMin(string $format = 'd/m/Y'): string;
 > 	public function formatFrenchMax(string $format = 'H:i:s d/m/Y'): string;
 > 	public function isValidDateTime(): bool;
-> 	public function isBefore(string|DateTime $datetime): bool;
-> 	public function isAfter(string|DateTime $datetime): bool;
-> 	public function equals(string|DateTime $datetime): bool;
+> 	public function isBefore(string|\Date\DateTime $datetime): bool;
+> 	public function isAfter(string|\Date\DateTime $datetime): bool;
+> 	public function equals(string|\Date\DateTime $datetime): bool;
 > 	public function setDate(int $year, int $month, int $day): self;
 > 	public function setTimestamp(int $timestamp): self;
 > 
@@ -160,7 +160,7 @@ Menu:
 > ```php
 > namespace Methodz\Helpers\Curl;
 > 
-> class Url
+use Curl\CurlCommonHeaderKeyEnum;use Curl\UrlSchemeEnum;> class Url
 > {
 > 	private UrlSchemeEnum $scheme;
 > 	private ?string $user;

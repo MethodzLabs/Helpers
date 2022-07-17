@@ -2,9 +2,7 @@
 
 namespace Database;
 
-use Methodz\Helpers\Database\DatabaseHelpers;
-use Methodz\Helpers\Database\Query\Query;
-use Methodz\Helpers\Database\Query\QueryHandler;
+use Database\Query\QueryHandler;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseTest extends TestCase

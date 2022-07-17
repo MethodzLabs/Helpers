@@ -2,8 +2,6 @@
 
 namespace Models;
 
-use Methodz\Helpers\File\File;
-use Methodz\Helpers\Models\Country;
 use PHPUnit\Framework\TestCase;
 
 class CountryTest extends TestCase

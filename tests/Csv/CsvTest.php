@@ -2,7 +2,6 @@
 
 namespace Csv;
 
-use Methodz\Helpers\Csv\Csv;
 use PHPUnit\Framework\TestCase;
 
 class CsvTest extends TestCase

@@ -2,8 +2,6 @@
 
 namespace curl;
 
-use Methodz\Helpers\Curl\Curl;
-use Methodz\Helpers\Curl\CurlInfoKeyEnum;
 use PHPUnit\Framework\TestCase;
 
 class CurlTest extends TestCase

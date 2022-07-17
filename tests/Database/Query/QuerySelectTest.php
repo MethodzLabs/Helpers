@@ -2,12 +2,9 @@
 
 namespace Database\Query;
 
-use Methodz\Helpers\Database\Query\Query;
-use Methodz\Helpers\Database\Query\QueryHandler;
-use Methodz\Helpers\Models\Country;
-use Methodz\Helpers\Models\CountryLanguage;
-use Methodz\Helpers\Models\SearchEngine;
-use Methodz\Helpers\Models\SearchEngineTypeEnum;
+use Models\Country;
+use Models\SearchEngine;
+use Models\SearchEngineTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class QuerySelectTest extends TestCase

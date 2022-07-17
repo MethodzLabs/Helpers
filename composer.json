@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Methodz\\Helpers\\": "src/Methodz/Helpers"
+      "Methodz\\Helpers\\": "src"
     }
   },
   "require-dev": {

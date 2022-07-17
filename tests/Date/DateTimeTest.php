@@ -2,7 +2,6 @@
 
 namespace Date;
 
-use Methodz\Helpers\Date\DateTime;
 use PHPUnit\Framework\TestCase;
 
 class DateTimeTest extends TestCase

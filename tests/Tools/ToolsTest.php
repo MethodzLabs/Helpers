@@ -2,10 +2,8 @@
 
 namespace Tools;
 
-use Methodz\Helpers\Tools\Tools;
-use Methodz\Helpers\Tools\ToolsNormaliseStringTypeEnum;
-use Methodz\Helpers\Type\Pair;
 use PHPUnit\Framework\TestCase;
+use Type\Pair;
 
 class ToolsTest extends TestCase
 {

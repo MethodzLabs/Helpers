@@ -2,8 +2,7 @@
 
 namespace Accessors;
 
-use Methodz\Helpers\Accessors\Get;
-use Methodz\Helpers\Exceptions\IndexNotFoundException;
+use Exceptions\IndexNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 class GetTest extends TestCase

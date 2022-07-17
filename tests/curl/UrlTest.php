@@ -2,7 +2,6 @@
 
 namespace curl;
 
-use Methodz\Helpers\Curl\Url;
 use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase

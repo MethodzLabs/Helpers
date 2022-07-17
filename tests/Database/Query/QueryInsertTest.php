@@ -2,15 +2,8 @@
 
 namespace Database\Query;
 
-use Methodz\Helpers\Database\Query\Query;
-use Methodz\Helpers\Database\Query\QueryHandler;
-use Methodz\Helpers\Database\Query\QuerySelect;
-use Methodz\Helpers\Models\Country;
-use Methodz\Helpers\Models\CountryLanguage;
-use Methodz\Helpers\Models\SearchEngine;
-use Methodz\Helpers\Models\SearchEngineTypeEnum;
-use Methodz\Helpers\Tools\Tools;
-use Methodz\Helpers\Tools\ToolsNormaliseStringTypeEnum;
+use Models\Country;
+use Models\SearchEngine;
 use PHPUnit\Framework\TestCase;
 
 class QueryInsertTest extends TestCase
