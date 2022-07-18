@@ -36,12 +36,6 @@ class QueryDelete extends Query
 		return $this;
 	}
 
-	public function execute(): DatabaseQueryResult
-	{
-		$this->buildQuery();
-		return parent::execute();
-	}
-
 	public static function init(string $table): self
 	{
 		return (new self())->table($table);

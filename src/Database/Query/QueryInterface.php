@@ -9,5 +9,4 @@ use Methodz\Helpers\Database\DatabaseQueryResult;
  */
 interface QueryInterface
 {
-	public function execute(): DatabaseQueryResult;
 }

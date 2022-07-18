@@ -126,12 +126,6 @@ class QuerySelect extends Query
 		return $this;
 	}
 
-	public function execute(): DatabaseQueryResult
-	{
-		$this->buildQuery();
-		return parent::execute();
-	}
-
 	public static function init(array $selects): self
 	{
 		return (new self())->select($selects);

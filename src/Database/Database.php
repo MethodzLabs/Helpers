@@ -78,7 +78,7 @@ abstract class Database implements DatabaseInterface
 	 */
 	public static function getColumn(int|string $index, QuerySelect $query): DatabaseQueryResult
 	{
-		$data = $query->execute();
+		$data = static::executeRequest($query);
 		if ($data->isOK()) {
 			$column = [];
 
@@ -118,7 +118,7 @@ abstract class Database implements DatabaseInterface
 	 */
 	public static function getRow(QuerySelect $query): DatabaseQueryResult
 	{
-		$data = $query->limit(1)->execute();
+		$data = static::executeRequest($query->limit(1));
 		if ($data->isOK()) {
 			if (count($data->getResult()) === 0) {
 				$data->setStatus(DatabaseQueryResultStatus::NO_DATA_FOUND);
@@ -158,7 +158,7 @@ abstract class Database implements DatabaseInterface
 	 */
 	public static function getData(QuerySelect $query, ?string $keyAsIndex = null): DatabaseQueryResult
 	{
-		$data = $query->execute();
+		$data = static::executeRequest($query);
 
 		if ($keyAsIndex !== null) {
 			$res = $data->getResult();

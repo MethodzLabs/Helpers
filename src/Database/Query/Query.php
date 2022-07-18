@@ -68,9 +68,4 @@ abstract class Query implements QueryInterface
 	{
 		return $this;
 	}
-
-	public function execute(): DatabaseQueryResult
-	{
-		return DatabaseHelpers::executeRequest($this);
-	}
 }
