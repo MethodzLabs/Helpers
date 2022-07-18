@@ -32,7 +32,7 @@ class Session
 	{
 		if (!isset($_SESSION)) session_start();
 		if (!array_key_exists(self::$key, $_SESSION)) {
-			$_SESSION[self::$key] = new self();
+			$_SESSION[self::$key] = [];
 		}
 		$_SESSION[self::$key][$key] = $value;
 	}
