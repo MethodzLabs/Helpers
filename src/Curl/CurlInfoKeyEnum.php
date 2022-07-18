@@ -1,6 +1,6 @@
 <?php
 
-namespace Curl;
+namespace Methodz\Helpers\Curl;
 
 
 enum CurlInfoKeyEnum: string

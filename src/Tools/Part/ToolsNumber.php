@@ -1,6 +1,6 @@
 <?php
 
-namespace Tools\Part;
+namespace Methodz\Helpers\Tools\Part;
 
 class ToolsNumber
 {

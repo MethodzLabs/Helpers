@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
-use Models\SearchEngine;
-use Models\SearchEngineTypeEnum;
+use Methodz\Helpers\Models\SearchEngine;
+use Methodz\Helpers\Models\SearchEngineTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class QueryUpdateTest extends TestCase

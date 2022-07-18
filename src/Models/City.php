@@ -1,9 +1,9 @@
 <?php
 
-namespace Models;
+namespace Methodz\Helpers\Models;
 
-use Database\Query\QuerySelect;
-use Geolocation\Coordinate;
+use Methodz\Helpers\Database\Query\QuerySelect;
+use Methodz\Helpers\Geolocation\Coordinate;
 
 class City extends Model
 {

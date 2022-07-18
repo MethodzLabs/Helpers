@@ -1,9 +1,9 @@
 <?php
 
-namespace Models;
+namespace Methodz\Helpers\Models;
 
-use Database\Query\QuerySelect;
-use Models\Part\LanguageData;
+use Methodz\Helpers\Database\Query\QuerySelect;
+use Methodz\Helpers\Models\Part\LanguageData;
 
 class Language extends Model
 {

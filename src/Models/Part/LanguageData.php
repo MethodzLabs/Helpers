@@ -1,8 +1,8 @@
 <?php
 
-namespace Models\Part;
+namespace Methodz\Helpers\Models\Part;
 
-use Models\CommonTrait;
+use Methodz\Helpers\Models\CommonTrait;
 
 class LanguageData
 {

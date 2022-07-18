@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace Methodz\Helpers\Models;
 
-use Tools\Tools;
+use Methodz\Helpers\Tools\Tools;
 
 trait CommonTrait
 {

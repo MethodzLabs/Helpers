@@ -1,8 +1,8 @@
 <?php
 
-namespace Tools;
+namespace Methodz\Helpers\Tools;
 
-use Models\CommonEnumTrait;
+use Methodz\Helpers\Models\CommonEnumTrait;
 
 enum ToolsNormaliseStringTypeEnum
 {

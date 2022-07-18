@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace Methodz\Helpers\Models;
 
-use Database\Query\QuerySelect;
+use Methodz\Helpers\Database\Query\QuerySelect;
 
 class SearchEngine extends Model
 {

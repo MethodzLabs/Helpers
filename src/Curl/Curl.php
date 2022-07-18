@@ -1,10 +1,10 @@
 <?php
 
-namespace Curl;
+namespace Methodz\Helpers\Curl;
 
 
 use CurlHandle;
-use Exceptions\CurlExecuteException;
+use Methodz\Helpers\Exceptions\CurlExecuteException;
 
 class Curl
 {

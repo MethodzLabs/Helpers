@@ -1,13 +1,13 @@
 <?php
 
-namespace Tools\Part;
+namespace Methodz\Helpers\Tools\Part;
 
-use Date\DateTime;
+use Methodz\Helpers\Date\DateTime;
 use Exception;
-use Exceptions\NotBooleanException;
-use Exceptions\NotDateTimeException;
-use Exceptions\NotJsonArrayException;
-use Exceptions\NotNullException;
+use Methodz\Helpers\Exceptions\NotBooleanException;
+use Methodz\Helpers\Exceptions\NotDateTimeException;
+use Methodz\Helpers\Exceptions\NotJsonArrayException;
+use Methodz\Helpers\Exceptions\NotNullException;
 
 class ToolsString
 {

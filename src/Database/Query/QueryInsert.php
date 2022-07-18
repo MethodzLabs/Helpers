@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
-use Database\DatabaseQueryResult;
+use Methodz\Helpers\Database\DatabaseQueryResult;
 use Exception;
 
 class QueryInsert extends Query

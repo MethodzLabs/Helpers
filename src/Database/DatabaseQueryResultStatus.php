@@ -1,8 +1,8 @@
 <?php
 
-namespace Database;
+namespace Methodz\Helpers\Database;
 
-use Models\CommonEnumTrait;
+use Methodz\Helpers\Models\CommonEnumTrait;
 
 enum DatabaseQueryResultStatus
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Date;
+namespace Methodz\Helpers\Date;
 
 use DateTimeZone;
 

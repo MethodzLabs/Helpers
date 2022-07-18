@@ -1,6 +1,6 @@
 <?php
 
-namespace File;
+namespace Methodz\Helpers\File;
 
 abstract class File
 {

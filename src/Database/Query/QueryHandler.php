@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
 abstract class QueryHandler
 {

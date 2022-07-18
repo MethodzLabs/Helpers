@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
-use Models\Country;
-use Models\SearchEngine;
-use Models\SearchEngineTypeEnum;
+use Methodz\Helpers\Models\Country;
+use Methodz\Helpers\Models\SearchEngine;
+use Methodz\Helpers\Models\SearchEngineTypeEnum;
 use PHPUnit\Framework\TestCase;
 
 class QuerySelectTest extends TestCase

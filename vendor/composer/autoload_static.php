@@ -57,7 +57,7 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         ),
         'Methodz\\Helpers\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/Methodz/Helpers',
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

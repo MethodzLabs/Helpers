@@ -1,8 +1,8 @@
 <?php
 
-namespace Database;
+namespace Methodz\Helpers\Database;
 
-use Date\DateTime;
+use Methodz\Helpers\Date\DateTime;
 use PDOStatement;
 use Throwable;
 

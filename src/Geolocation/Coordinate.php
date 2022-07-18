@@ -1,8 +1,8 @@
 <?php
 
-namespace Geolocation;
+namespace Methodz\Helpers\Geolocation;
 
-use Models\CommonTrait;
+use Methodz\Helpers\Models\CommonTrait;
 
 class Coordinate
 {

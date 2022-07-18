@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
 
-use Database\DatabaseQueryResult;
-use Tools\Tools;
+use Methodz\Helpers\Database\DatabaseQueryResult;
+use Methodz\Helpers\Tools\Tools;
 
 class QueryUpdate extends Query
 {

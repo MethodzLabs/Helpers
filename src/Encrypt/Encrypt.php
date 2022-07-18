@@ -1,6 +1,6 @@
 <?php
 
-namespace Encrypt;
+namespace Methodz\Helpers\Encrypt;
 
 class Encrypt
 {

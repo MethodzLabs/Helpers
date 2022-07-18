@@ -1,6 +1,6 @@
 <?php
 
-namespace curl;
+namespace Methodz\Helpers\Curl;
 
 use PHPUnit\Framework\TestCase;
 

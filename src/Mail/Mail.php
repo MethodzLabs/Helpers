@@ -1,6 +1,6 @@
 <?php
 
-namespace Mail;
+namespace Methodz\Helpers\Mail;
 
 class Mail
 {

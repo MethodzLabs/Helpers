@@ -1,12 +1,12 @@
 <?php
 
-namespace Models;
+namespace Methodz\Helpers\Models;
 
-use Database\DatabaseHelpers;
-use Database\Query\QueryHandler;
-use Database\Query\QuerySelect;
+use Methodz\Helpers\Database\DatabaseHelpers;
+use Methodz\Helpers\Database\Query\QueryHandler;
+use Methodz\Helpers\Database\Query\QuerySelect;
 use Exception;
-use Type\Pair;
+use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
 {

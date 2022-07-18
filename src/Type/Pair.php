@@ -1,6 +1,6 @@
 <?php
 
-namespace Type;
+namespace Methodz\Helpers\Type;
 
 class Pair
 {

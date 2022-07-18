@@ -1,9 +1,8 @@
 <?php
 
-namespace Accessors;
+namespace Methodz\Helpers\Accessors;
 
-use Date\DateTime;
-use function Methodz\Helpers\Accessors\setcookie;
+use Methodz\Helpers\Date\DateTime;
 
 class Cookie
 {

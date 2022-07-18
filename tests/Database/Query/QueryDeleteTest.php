@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Query;
+namespace Methodz\Helpers\Database\Query;
 
-use Models\SearchEngine;
+use Methodz\Helpers\Models\SearchEngine;
 use PHPUnit\Framework\TestCase;
 
 class QueryDeleteTest extends TestCase

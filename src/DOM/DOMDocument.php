@@ -1,10 +1,10 @@
 <?php
 
-namespace DOM;
+namespace Methodz\Helpers\DOM;
 
 use DOMElement;
 use DOMXPath;
-use File\File;
+use Methodz\Helpers\File\File;
 
 class DOMDocument
 {
@@ -30,7 +30,7 @@ class DOMDocument
 	/**
 	 * @param string      $path
 	 * @param string|null $fileName
-	 * @param int|null    $options
+	 * @param int         $options
 	 *
 	 * @return static
 	 */
@@ -41,8 +41,8 @@ class DOMDocument
 	}
 
 	/**
-	 * @param string   $html
-	 * @param int|null $options
+	 * @param string $html
+	 * @param int    $options
 	 *
 	 * @return static
 	 */

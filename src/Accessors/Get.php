@@ -1,8 +1,8 @@
 <?php
 
-namespace Accessors;
+namespace Methodz\Helpers\Accessors;
 
-use Exceptions\IndexNotFoundException;
+use Methodz\Helpers\Exceptions\IndexNotFoundException;
 
 class Get
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Csv;
+namespace Methodz\Helpers\Csv;
 
 use Exception;
-use File\File;
+use Methodz\Helpers\File\File;
 
 class Csv
 {

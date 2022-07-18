@@ -1,9 +1,9 @@
 <?php
 
-namespace Tools;
+namespace Methodz\Helpers\Tools;
 
 use PHPUnit\Framework\TestCase;
-use Type\Pair;
+use Methodz\Helpers\Type\Pair;
 
 class ToolsTest extends TestCase
 {

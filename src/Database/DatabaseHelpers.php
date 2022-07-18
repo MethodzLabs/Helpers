@@ -1,6 +1,6 @@
 <?php
 
-namespace Database;
+namespace Methodz\Helpers\Database;
 
 abstract class DatabaseHelpers extends Database
 {

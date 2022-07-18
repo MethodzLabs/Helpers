@@ -1,11 +1,11 @@
 <?php
 
-namespace Tools;
+namespace Methodz\Helpers\Tools;
 
 use ReflectionClass;
 use ReflectionException;
-use Tools\Part\ToolsNumber;
-use Tools\Part\ToolsString;
+use Methodz\Helpers\Tools\Part\ToolsNumber;
+use Methodz\Helpers\Tools\Part\ToolsString;
 
 abstract class Tools
 {
@@ -18,7 +18,7 @@ abstract class Tools
 		for ($i = 0; $i < $length; $i++) {
 			$res .= $chars[array_rand($chars)];
 		}
-		self::$history_uuid = $res;
+		self::$history_uuid[] = $res;
 		return $res;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace DOM;
+namespace Methodz\Helpers\DOM;
 
 use PHPUnit\Framework\TestCase;
 

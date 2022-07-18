@@ -1,8 +1,8 @@
 <?php
 
-namespace File;
+namespace Methodz\Helpers\File;
 
-use Exception;
+use Methodz\Helpers\Exception;
 
 abstract class Directory
 {

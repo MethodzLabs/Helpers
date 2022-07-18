@@ -1,9 +1,9 @@
 <?php
 
-namespace Database;
+namespace Methodz\Helpers\Database;
 
-use Database\Query\Query;
-use Database\Query\QuerySelect;
+use Methodz\Helpers\Database\Query\Query;
+use Methodz\Helpers\Database\Query\QuerySelect;
 
 /**
  * @method getDatabase

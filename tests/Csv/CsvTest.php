@@ -1,6 +1,6 @@
 <?php
 
-namespace Csv;
+namespace Methodz\Helpers\Csv;
 
 use PHPUnit\Framework\TestCase;
 

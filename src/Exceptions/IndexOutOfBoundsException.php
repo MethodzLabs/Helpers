@@ -1,6 +1,6 @@
 <?php
 
-namespace Exceptions;
+namespace Methodz\Helpers\Exceptions;
 
 use Exception;
 use JetBrains\PhpStorm\Pure;
