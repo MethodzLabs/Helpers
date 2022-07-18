@@ -18,6 +18,14 @@ class Get
 		return self::getAll()[$key];
 	}
 
+	public static function getOrSet(int|string $key, mixed $value): mixed
+	{
+		if (!self::exist($key)) {
+			self::set($key, $value);
+		}
+		return self::getAll()[$key];
+	}
+
 	public static function set(int|string $key, mixed $value): void
 	{
 		$_GET[$key] = $value;
