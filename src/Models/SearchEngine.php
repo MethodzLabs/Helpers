@@ -2,15 +2,17 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QuerySelect;
 
 class SearchEngine extends Model
 {
-	public const _TABLE = "search_engine";
-	public const _ID = "id";
-	public const _COUNTRY_ID = "country_id";
-	public const _URL = "url";
-	public const _TYPE = "type";
+	const _DATABASE = HelpersDatabase::class;
+	const _TABLE = "search_engine";
+	const _ID = "id";
+	const _COUNTRY_ID = "country_id";
+	const _URL = "url";
+	const _TYPE = "type";
 
 	private int $country_id;
 	private string $url;

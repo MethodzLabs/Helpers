@@ -2,17 +2,20 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Models\Part\LanguageData;
 
 class Language extends Model
 {
-	public const _TABLE = "language";
-	public const _ID = "id";
-	public const _NAME = "name";
-	public const _ISO_CODE_2 = "iso_code_2";
-	public const _ISO_CODE_3 = "iso_code_3";
-	public const _DATA = "data";
+
+	const _DATABASE = HelpersDatabase::class;
+	const _TABLE = "language";
+	const _ID = "id";
+	const _NAME = "name";
+	const _ISO_CODE_2 = "iso_code_2";
+	const _ISO_CODE_3 = "iso_code_3";
+	const _DATA = "data";
 
 	private string $name;
 	private string $iso_code_2;

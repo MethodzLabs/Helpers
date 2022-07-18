@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Models;
 
-use Methodz\Helpers\Database\DatabaseHelpers;
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Exception;
@@ -13,6 +13,7 @@ abstract class Model implements ModelInterface
 	use CommonTrait;
 
 	protected ?int $id;
+	const _DATABASE = "DATABASE";
 	const _TABLE = "TABLE";
 	const _ID = "ID";
 
@@ -72,7 +73,7 @@ abstract class Model implements ModelInterface
 	{
 		$query = QueryHandler::select("*")
 			->from("`" . static::_TABLE . "`");
-		$data = DatabaseHelpers::getData($query);
+		$data = static::_DATABASE::getData($query);
 		$result = null;
 		if ($data->isOK()) {
 			$result = self::arrayToObjects($data->getResult(), $idAsKey);
@@ -87,7 +88,7 @@ abstract class Model implements ModelInterface
 	 */
 	public static function findAllByQuery(QuerySelect $query): ?array
 	{
-		$data = DatabaseHelpers::getData($query);
+		$data = static::_DATABASE::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
 		}
@@ -108,7 +109,7 @@ abstract class Model implements ModelInterface
 			->from("`" . static::_TABLE . "`")
 			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
 			->addParameters($pair->second);
-		$data = DatabaseHelpers::getData($query);
+		$data = static::_DATABASE::getData($query);
 		if ($data->isOK()) {
 			return static::arrayToObjects($data->getResult());
 		}
@@ -122,7 +123,7 @@ abstract class Model implements ModelInterface
 	 */
 	public static function findByQuery(QuerySelect $query): ?static
 	{
-		$data = DatabaseHelpers::getRow($query);
+		$data = static::_DATABASE::getRow($query);
 		if ($data->isOK()) {
 			return static::arrayToObject($data->getResult());
 		}
@@ -137,7 +138,7 @@ abstract class Model implements ModelInterface
 			->from("`" . static::_TABLE . "`")
 			->where("`" . static::_TABLE . "`.`" . $column . "` " . $pair->first)
 			->addParameters($pair->second);
-		$data = DatabaseHelpers::getRow($query);
+		$data = static::_DATABASE::getRow($query);
 		if ($data->isOK()) {
 			return static::arrayToObject($data->getResult());
 		}
@@ -155,14 +156,14 @@ abstract class Model implements ModelInterface
 	public function save(?array $data = null): static
 	{
 		if ($this->getId() === null) {
-			$result = QueryHandler::insert(static::_TABLE)->columns(array_keys($data))->values($data)->execute();
+			$result = static::_DATABASE::executeRequest(QueryHandler::insert(static::_TABLE)->columns(array_keys($data))->values($data));
 			if ($result->isOK()) {
-				$this->setId(DatabaseHelpers::getLastInsertId());
+				$this->setId(static::_DATABASE::getLastInsertId());
 			} else {
 				$message = "Object " . static::class . " can't be inserted " . $this;
 			}
 		} else {
-			$result = QueryHandler::update(static::_TABLE)->set($data)->where("`" . self::_ID . "`=:id")->addParameter('id', $this->getId())->execute();
+			$result = static::_DATABASE::executeRequest(QueryHandler::update(static::_TABLE)->set($data)->where("`" . self::_ID . "`=:id")->addParameter('id', $this->getId()));
 			if (!$result->isOK()) {
 				$message = "Object " . static::class . " can't be updated " . $this;
 			}

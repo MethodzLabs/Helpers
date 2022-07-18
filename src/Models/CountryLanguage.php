@@ -2,14 +2,17 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QuerySelect;
 
 class CountryLanguage extends Model
 {
-	public const _TABLE = "country_language";
-	public const _ID = "id";
-	public const _COUNTRY_ID = "country_id";
-	public const _LANGUAGE_ID = "language_id";
+
+	const _DATABASE = HelpersDatabase::class;
+	const _TABLE = "country_language";
+	const _ID = "id";
+	const _COUNTRY_ID = "country_id";
+	const _LANGUAGE_ID = "language_id";
 
 	private int $country_id;
 	private int $language_id;

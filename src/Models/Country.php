@@ -2,17 +2,19 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QuerySelect;
 
 class Country extends Model
 {
-	public const _TABLE = "country";
-	public const _ID = "id";
-	public const _NAME = "name";
-	public const _ISO_CODE_2 = "iso_code_2";
-	public const _ISO_CODE_3 = "iso_code_3";
-	public const _ISO_CODE_NUMERIC = "iso_code_numeric";
-	public const _FLAG_SVG_HTML = "flag_svg_html";
+	const _DATABASE = HelpersDatabase::class;
+	const _TABLE = "country";
+	const _ID = "id";
+	const _NAME = "name";
+	const _ISO_CODE_2 = "iso_code_2";
+	const _ISO_CODE_3 = "iso_code_3";
+	const _ISO_CODE_NUMERIC = "iso_code_numeric";
+	const _FLAG_SVG_HTML = "flag_svg_html";
 
 	private string $name;
 	private string $iso_code_2;

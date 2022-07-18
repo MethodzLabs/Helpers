@@ -10,32 +10,32 @@ class DatabaseTest extends TestCase
 
 	public function testGetData()
 	{
-		$result = DatabaseHelpers::getData(QueryHandler::select("*")->from("`city`"));
+		$result = HelpersDatabase::getData(QueryHandler::select("*")->from("`city`"));
 		//print_r($result);
 		self::assertTrue($result->isOK());
 	}
 
 	public function testGetColumn()
 	{
-		$result = DatabaseHelpers::getColumn("name", QueryHandler::select("*")->from("`city`"));
+		$result = HelpersDatabase::getColumn("name", QueryHandler::select("*")->from("`city`"));
 		self::assertTrue($result->isOK());
 	}
 
 	public function testGetValues()
 	{
-		$result = DatabaseHelpers::getValues(QueryHandler::select("*")->from("`city`"));
+		$result = HelpersDatabase::getValues(QueryHandler::select("*")->from("`city`"));
 		self::assertTrue($result->isOK());
 	}
 
 	public function testGetValue()
 	{
-		$result = DatabaseHelpers::getValue(QueryHandler::select("*")->from("`city`"));
+		$result = HelpersDatabase::getValue(QueryHandler::select("*")->from("`city`"));
 		self::assertTrue($result->isOK());
 	}
 
 	public function testGetRow()
 	{
-		$result = DatabaseHelpers::getRow(QueryHandler::select("*")->from("`city`"));
+		$result = HelpersDatabase::getRow(QueryHandler::select("*")->from("`city`"));
 		self::assertTrue($result->isOK());
 	}
 

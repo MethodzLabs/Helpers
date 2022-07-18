@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Database\Query;
 
-use Methodz\Helpers\Database\DatabaseHelpers;
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\DatabaseQueryResult;
 
 abstract class Query implements QueryInterface

@@ -2,17 +2,19 @@
 
 namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Geolocation\Coordinate;
 
 class City extends Model
 {
-	public const _TABLE = "city";
-	public const _ID = "id";
-	public const _NAME = "name";
-	public const _COUNTRY_ID = "country_id";
-	public const _LATITUDE = "latitude";
-	public const _LONGITUDE = "longitude";
+	const _DATABASE = HelpersDatabase::class;
+	const _TABLE = "city";
+	const _ID = "id";
+	const _NAME = "name";
+	const _COUNTRY_ID = "country_id";
+	const _LATITUDE = "latitude";
+	const _LONGITUDE = "longitude";
 
 	private int $country_id;
 	private string $name;

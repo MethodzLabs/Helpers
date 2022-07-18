@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Database;
 
-abstract class DatabaseHelpers extends Database
+abstract class HelpersDatabase extends Database
 {
 	const DB_SERVER = '5.135.137.111';
 	const DB_NAME = 'helpers';
