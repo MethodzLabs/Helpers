@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\File;
 
-use Methodz\Helpers\Exception;
+use Exception;
 
 abstract class Directory
 {
