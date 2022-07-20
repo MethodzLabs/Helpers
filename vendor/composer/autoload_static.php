@@ -27,6 +27,7 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         ),
         'M' => 
         array (
+            'Models\\Helpers\\' => 15,
             'Methodz\\Helpers\\' => 16,
         ),
         'D' => 
@@ -54,6 +55,10 @@ class ComposerStaticInita7eda2d9b6c20f4568e391090e04f6b5
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Models\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/output/Models/Helpers',
         ),
         'Methodz\\Helpers\\' => 
         array (

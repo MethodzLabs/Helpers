@@ -125,7 +125,7 @@ abstract class Model implements ModelInterface
 	{
 		$data = static::_DATABASE::getRow($query);
 		if ($data->isOK()) {
-			return static::arrayToObject($data->getResult());
+			return static::fromArray($data->getResult());
 		}
 		return null;
 	}
@@ -140,7 +140,7 @@ abstract class Model implements ModelInterface
 			->addParameters($pair->second);
 		$data = static::_DATABASE::getRow($query);
 		if ($data->isOK()) {
-			return static::arrayToObject($data->getResult());
+			return static::fromArray($data->getResult());
 		}
 		return null;
 	}
@@ -186,7 +186,7 @@ abstract class Model implements ModelInterface
 	{
 		$result = [];
 		foreach ($data as $row) {
-			$object = static::arrayToObject($row);
+			$object = static::fromArray($row);
 			if ($idAsKey) {
 				$result[$object->getId()] = $object;
 			} else {

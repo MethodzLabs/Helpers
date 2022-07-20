@@ -22,13 +22,7 @@ class City extends Model
 
 	private ?Country $country = null;
 
-	private function __construct(int $country_id, string $name, Coordinate $coordinate, ?int $id = null)
-	{
-		$this->id = $id;
-		$this->country_id = $country_id;
-		$this->name = $name;
-		$this->coordinate = $coordinate;
-	}
+	private function __construct() { }
 
 	public function getCountryId(): int
 	{
@@ -99,7 +93,12 @@ class City extends Model
 	 */
 	public static function init(int $country_id, string $name, float $latitude, float $longitude, ?int $id = null): self
 	{
-		return new self($country_id, $name, Coordinate::init($latitude, $longitude), $id);
+		$_object = new self();
+		$_object->id = $id;
+		$_object->country_id = $country_id;
+		$_object->name = $name;
+		$_object->coordinate = Coordinate::init($latitude, $longitude);
+		return $_object;
 	}
 
 	/**
@@ -122,26 +121,22 @@ class City extends Model
 		return self::findAllBy(self::_COUNTRY_ID, $country_id);
 	}
 
+
 	public static function findById(int $id): ?static
 	{
 		return parent::findById($id);
 	}
 
-	/**
-	 * @param QuerySelect $query
-	 *
-	 * @return self[]|null
-	 */
+	public static function findAll(bool $idAsKey = false): ?array
+	{
+		return parent::findAll($idAsKey);
+	}
+
 	public static function findAllByQuery(QuerySelect $query): ?array
 	{
 		return parent::findAllByQuery($query);
 	}
 
-	/**
-	 * @param QuerySelect $query
-	 *
-	 * @return self|null
-	 */
 	public static function findByQuery(QuerySelect $query): ?static
 	{
 		return parent::findByQuery($query);
@@ -156,5 +151,10 @@ class City extends Model
 			longitude: $data[self::_LONGITUDE],
 			id: $data[self::_ID] ?? null,
 		);
+	}
+
+	public static function fromArray(array $data): static
+	{
+		return parent::fromArray($data);
 	}
 }

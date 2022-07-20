@@ -15,13 +15,15 @@ interface ModelInterface
 
 	public function save(?array $data = null): static;
 
+	public static function findById(int $id): ?static;
+
 	public static function findAll(): ?array;
 
 	public static function findAllByQuery(QuerySelect $query): ?array;
 
 	public static function findByQuery(QuerySelect $query): ?static;
 
-	public static function arrayToObject(array $data): static;
+	public static function fromArray(array $data): static;
 
 	/**
 	 * @param array $data
