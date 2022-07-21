@@ -13,10 +13,6 @@ class ModelsBuilderTest extends TestCase
 	{
 		ModelsBuilder::build(__DIR__ . "/../../../output/Models", HelpersDatabase::class);
 
-		/*SearchEngine::fromArray([
-			SearchEngine::_TYPE => "Google Search"
-		]);*/
-
 		self::assertTrue(true);
 	}
 }

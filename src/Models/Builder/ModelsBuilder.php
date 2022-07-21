@@ -2,7 +2,6 @@
 
 namespace Methodz\Helpers\Models\Builder;
 
-use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\Date\DateTime;
@@ -40,7 +39,7 @@ class ModelsBuilder
 
 	public static function build(string $directory, string $database): void
 	{
-		$tablesResult = HelpersDatabase::executeRequest(
+		$tablesResult = $database::executeRequest(
 			QueryHandler::select("*")
 				->from("`information_schema`.TABLES")
 				->where("`TABLE_SCHEMA`=:table_schema")
@@ -62,7 +61,7 @@ class ModelsBuilder
 			$model->name = Tools::normaliseString($tableName, ToolsNormaliseStringTypeEnum::CAMEL_CASE);
 			$model->table_name = $tableName;
 
-			$columnsResult = HelpersDatabase::executeRequest(
+			$columnsResult = $database::executeRequest(
 				QueryHandler::select("*")
 					->from("`information_schema`.COLUMNS")
 					->where("`TABLE_SCHEMA`=:table_schema AND `TABLE_NAME`=:table_name")
@@ -74,7 +73,7 @@ class ModelsBuilder
 			foreach ($columnsResult->getResult() as $columnArray) {
 				$columnName = $columnArray['COLUMN_NAME'];
 
-				$outgoingLinksResult = HelpersDatabase::executeRequest(
+				$outgoingLinksResult = $database::executeRequest(
 					QueryHandler::select("*")
 						->from("`information_schema`.KEY_COLUMN_USAGE")
 						->where("`TABLE_SCHEMA`=:table_schema AND `TABLE_NAME`=:table_name AND `CONSTRAINT_NAME` NOT LIKE 'PRIMARY' AND `COLUMN_NAME`=:column_name AND `REFERENCED_TABLE_SCHEMA` IS NOT NULL AND `REFERENCED_TABLE_NAME` IS NOT NULL AND `REFERENCED_COLUMN_NAME` IS NOT NULL")
@@ -82,7 +81,7 @@ class ModelsBuilder
 						->addParameter('table_name', $tableName)
 						->addParameter('column_name', $columnName)
 				);
-				$incomingLinksResult = HelpersDatabase::executeRequest(
+				$incomingLinksResult = $database::executeRequest(
 					QueryHandler::select("*")
 						->from("`information_schema`.KEY_COLUMN_USAGE")
 						->where("`REFERENCED_TABLE_SCHEMA`=:table_schema AND `REFERENCED_TABLE_NAME`=:table_name AND `CONSTRAINT_NAME` NOT LIKE 'PRIMARY' AND `REFERENCED_COLUMN_NAME`=:column_name")
@@ -212,15 +211,17 @@ class ModelsBuilder
 				$content .= "\n";
 
 				foreach ($model->fieldsIncomingLinks as $fieldsIncomingLink) {
-					$content .= "	/**";
-					$content .= "	 * @var " . $fieldsIncomingLink->getTargetType() . "[]|null";
-					$content .= "	 */";
+					$content .= "	/**\n";
+					$content .= "	 * @var " . $fieldsIncomingLink->getTargetType() . "[]|null\n";
+					$content .= "	 */\n";
 					$content .= "	private ?array $" . $fieldsIncomingLink->getName() . " = null;\n";
 				}
 			}
 
 			$content .= "\n";
+			$content .= "\n";
 			$content .= "	private function __construct() { }\n";
+			$content .= "\n";
 			$content .= "\n";
 
 			foreach ($model->fields as $field) {
@@ -257,13 +258,13 @@ class ModelsBuilder
 			}
 
 			foreach ($model->fieldsIncomingLinks as $fieldsIncomingLink) {
-				$content .= "	/**";
-				$content .= "	 * @return " . $fieldsIncomingLink->getTargetType() . "[]";
-				$content .= "	 */";
+				$content .= "	/**\n";
+				$content .= "	 * @return " . $fieldsIncomingLink->getTargetType() . "[]\n";
+				$content .= "	 */\n";
 				$content .= "	public function get" . Tools::normaliseString($fieldsIncomingLink->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(): array\n";
 				$content .= "	{\n";
 				$content .= "		if (\$this->" . $fieldsIncomingLink->getName() . " === null) {\n";
-				$content .= "			\$this->" . $fieldsIncomingLink->getName() . " = " . $fieldsIncomingLink->getTargetType() . "::findAllBy(" . $fieldsIncomingLink->getTargetType() . "::_" . strtoupper($fieldsIncomingLink->getTargetField()) . ", \$this->" . $fieldsIncomingLink->getSourceField() . ");\n";
+				$content .= "			\$this->" . $fieldsIncomingLink->getName() . " = " . $fieldsIncomingLink->getTargetType() . "::findAllBy(" . $fieldsIncomingLink->getTargetType() . "::_" . strtoupper($fieldsIncomingLink->getSourceField()) . ", \$this->" . $fieldsIncomingLink->getTargetField() . ");\n";
 				$content .= "		}";
 				$content .= "\n";
 				$content .= "		return \$this->" . $fieldsIncomingLink->getName() . ";\n";
@@ -306,10 +307,12 @@ class ModelsBuilder
 			$content .= "	{\n";
 			$content .= "		return static::init(\n";
 			foreach ($model->fields as $field) {
-				$content .= "			" . $field->getName() . ": " . ($field->isEnum() ? $field->getType() . "::" . ($field->isNullable() ? "tryFrom" : "from") : "") . "\$data[static::_" . strtoupper($field->getName()) . "]" . ($field->isNullable() && !$field->isEnum() ? " ?? null" : "") . ",\n";
+				if ($field->getName() !== "id") {
+					$content .= "			" . $field->getName() . ": " . ($field->isEnum() ? $field->getType() . "::" . ($field->isNullable() ? "tryFrom" : "from") . "(" : "") . "\$data[static::_" . strtoupper($field->getName()) . "]" . ($field->isNullable() && !$field->isEnum() ? " ?? null" : "") . ($field->isEnum() ? ")" : "") . ",\n";
+				}
 			}
 			$content .= "			id: \$data[static::_ID] ?? null,\n";
-			$content .= "		);\n";
+			$content .= "		)->set_data(\$data);\n";
 			$content .= "	}\n";
 			$content .= "\n";
 			$content .= "\n";

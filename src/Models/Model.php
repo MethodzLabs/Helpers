@@ -2,20 +2,21 @@
 
 namespace Methodz\Helpers\Models;
 
-use Methodz\Helpers\Database\HelpersDatabase;
+use Exception;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
-use Exception;
 use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
 {
 	use CommonTrait;
 
-	protected ?int $id;
 	const _DATABASE = "DATABASE";
 	const _TABLE = "TABLE";
 	const _ID = "ID";
+
+	protected ?int $id;
+	protected ?array $__data = null;
 
 
 	public function getId(): ?int
@@ -194,5 +195,17 @@ abstract class Model implements ModelInterface
 			}
 		}
 		return $result;
+	}
+
+	protected function set_data(array $data): static
+	{
+		$this->__data = $data;
+
+		return $this;
+	}
+
+	protected function get_data(): array
+	{
+		return $this->__data;
 	}
 }
