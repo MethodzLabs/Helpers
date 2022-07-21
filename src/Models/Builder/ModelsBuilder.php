@@ -188,7 +188,7 @@ class ModelsBuilder
 			$content .= "	const _TABLE = \"" . $model->table_name . "\";\n";
 
 			foreach (array_keys($model->fields) as $field) {
-				$content .= "	const _" . strtoupper($field) . " = \"$field\";\n";
+				$content .= "	const _" . strtoupper(ltrim($field, "_")) . " = \"$field\";\n";
 			}
 
 			$content .= "\n";
