@@ -182,8 +182,6 @@ class ModelsBuilder
 			}
 
 			$models[] = $model;
-
-			break;
 		}
 
 		foreach ($models as $model) {
