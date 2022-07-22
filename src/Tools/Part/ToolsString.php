@@ -2,12 +2,14 @@
 
 namespace Methodz\Helpers\Tools\Part;
 
-use Methodz\Helpers\Date\DateTime;
 use Exception;
 use Methodz\Helpers\Exceptions\NotBooleanException;
 use Methodz\Helpers\Exceptions\NotDateTimeException;
 use Methodz\Helpers\Exceptions\NotJsonArrayException;
 use Methodz\Helpers\Exceptions\NotNullException;
+use Methodz\Helpers\Type\_DateTime;
+use Methodz\Helpers\Type\Enum\_DateTimeFormatEnum;
+use function Methodz\Helpers\Type\_datetime;
 
 class ToolsString
 {
@@ -53,10 +55,10 @@ class ToolsString
 	/**
 	 * @throws NotDateTimeException
 	 */
-	public function asDateTime(): DateTime
+	public function asDateTime(string|_DateTimeFormatEnum $format = _DateTimeFormatEnum::DATETIME): _DateTime
 	{
 		try {
-			if (($datetime = new DateTime($this->str))->isValidDateTime()) {
+			if (($datetime = _datetime($this->str, $format))->isValid()) {
 				return $datetime;
 			}
 		} catch (Exception $e) {

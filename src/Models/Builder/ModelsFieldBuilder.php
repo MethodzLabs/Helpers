@@ -5,16 +5,20 @@ namespace Methodz\Helpers\Models\Builder;
 class ModelsFieldBuilder
 {
 	private string $type;
+	private string $function_type;
 	private string $name;
 	private bool $nullable;
 	private bool $enum;
+	private string $default_value;
+	private bool $have_default_value;
 
-	private function __construct(string $type, string $name, bool $nullable)
+	private function __construct(string $name, bool $nullable)
 	{
-		$this->type = $type;
+		$this->type = "";
 		$this->name = $name;
 		$this->nullable = $nullable;
-		$this->enum = str_ends_with($type, "Enum");
+		$this->enum = false;
+		$this->have_default_value = false;
 	}
 
 	/**
@@ -34,6 +38,43 @@ class ModelsFieldBuilder
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getFunctionType(): string
+	{
+		return $this->function_type;
+	}
+
+	/**
+	 * @param string $function_type
+	 *
+	 * @return ModelsFieldBuilder
+	 */
+	public function setFunctionType(string $function_type): static
+	{
+		$this->function_type = $function_type;
+
+		return $this;
+	}
+
+	/**
+	 * @param array|string $type
+	 *
+	 * @return ModelsFieldBuilder
+	 */
+	public function setType(array|string $type): static
+	{
+		if (is_array($type)) {
+			$this->setFunctionType($type['function']);
+			$type = $type['class'];
+		}
+		$this->type = $type;
+		$this->enum = str_ends_with($this->type, "Enum");
+
+		return $this;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isNullable(): bool
@@ -49,9 +90,38 @@ class ModelsFieldBuilder
 		return $this->enum;
 	}
 
-	public static function init(string $type, string $name, bool $nullable): self
+	/**
+	 * @return string
+	 */
+	public function getDefaultValue(): string
 	{
-		return new self($type, $name, $nullable);
+		return $this->default_value;
+	}
+
+	/**
+	 * @param string|null $default_value
+	 *
+	 * @return ModelsFieldBuilder
+	 */
+	public function setDefaultValue(?string $default_value): static
+	{
+		$this->have_default_value = true;
+		$this->default_value = $default_value ?? "null";
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function haveDefaultValue(): bool
+	{
+		return $this->have_default_value;
+	}
+
+	public static function init(string $name, bool $nullable): static
+	{
+		return new self($name, $nullable);
 	}
 
 }

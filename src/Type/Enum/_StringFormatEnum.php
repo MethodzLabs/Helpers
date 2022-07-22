@@ -1,10 +1,10 @@
 <?php
 
-namespace Methodz\Helpers\Tools;
+namespace Methodz\Helpers\Type\Enum;
 
 use Methodz\Helpers\Models\CommonEnumTrait;
 
-enum ToolsNormaliseStringTypeEnum
+enum _StringFormatEnum
 {
 	use CommonEnumTrait;
 

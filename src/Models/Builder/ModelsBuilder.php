@@ -4,13 +4,18 @@ namespace Methodz\Helpers\Models\Builder;
 
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
-use Methodz\Helpers\Date\DateTime;
 use Methodz\Helpers\File\File;
 use Methodz\Helpers\Models\CommonEnumTrait;
 use Methodz\Helpers\Models\CommonTrait;
 use Methodz\Helpers\Models\Model;
 use Methodz\Helpers\Tools\Tools;
-use Methodz\Helpers\Tools\ToolsNormaliseStringTypeEnum;
+use Methodz\Helpers\Type\_DateTime;
+use Methodz\Helpers\Type\_Float;
+use Methodz\Helpers\Type\_Int;
+use Methodz\Helpers\Type\_String;
+use Methodz\Helpers\Type\Enum\_DateTimeFormatEnum;
+use Methodz\Helpers\Type\Enum\_StringFormatEnum;
+use function Methodz\Helpers\Type\_string;
 
 class ModelsBuilder
 {
@@ -55,10 +60,10 @@ class ModelsBuilder
 		foreach ($tablesResult->getResult() as $tableArray) {
 			$tableName = $tableArray['TABLE_NAME'];
 
-			$model = new self();
-			$model->directory = $directory . "/" . Tools::normaliseString($database::DB_NAME, ToolsNormaliseStringTypeEnum::CAMEL_CASE);
-			$model->namespace = "Models\\" . Tools::normaliseString($database::DB_NAME, ToolsNormaliseStringTypeEnum::CAMEL_CASE);
-			$model->name = Tools::normaliseString($tableName, ToolsNormaliseStringTypeEnum::CAMEL_CASE);
+			$model = new static();
+			$model->directory = $directory . "/" . Tools::normaliseString($database::DB_NAME, _StringFormatEnum::CAMEL_CASE);
+			$model->namespace = "Models\\" . Tools::normaliseString($database::DB_NAME, _StringFormatEnum::CAMEL_CASE);
+			$model->name = Tools::normaliseString($tableName, _StringFormatEnum::CAMEL_CASE);
 			$model->table_name = $tableName;
 
 			$columnsResult = $database::executeRequest(
@@ -91,37 +96,43 @@ class ModelsBuilder
 				);
 
 				$association = [
-					"tinyint" => "int",
-					"smallint" => "int",
-					"mediumint" => "int",
-					"int" => "int",
-					"bigint" => "int",
-					"decimal" => "float",
-					"float" => "float",
-					"double" => "float",
-					"bit" => "int",
-					"date" => "\\" . DateTime::class,
-					"datetime" => "\\" . DateTime::class,
-					"timestamp" => "\\" . DateTime::class,
-					"time" => "string",
-					"year" => "int",
-					"char" => "string",
-					"varchar" => "string",
-					"tinytext" => "string",
-					"text" => "string",
-					"mediumtext" => "string",
-					"longtext" => "string",
-					"binary" => "string",
-					"varbinary" => "string",
-					"tinyblob" => "string",
-					"blob" => "string",
-					"mediumblob" => "string",
-					"longblob" => "string",
-					"json" => "string",
+					"tinyint" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"smallint" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"mediumint" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"int" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"bigint" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"decimal" => ['class' => "\\" . _Float::class, 'function' => "_float"],
+					"float" => ['class' => "\\" . _Float::class, 'function' => "_float"],
+					"double" => ['class' => "\\" . _Float::class, 'function' => "_float"],
+					"bit" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"date" => ['class' => "\\" . _DateTime::class, 'function' => "_date"],
+					"datetime" => ['class' => "\\" . _DateTime::class, 'function' => "_datetime"],
+					"timestamp" => ['class' => "\\" . _DateTime::class, 'function' => "_datetime"],
+					"time" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"year" => ['class' => "\\" . _Int::class, 'function' => "_int"],
+					"char" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"varchar" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"tinytext" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"text" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"mediumtext" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"longtext" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"binary" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"varbinary" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"tinyblob" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"blob" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"mediumblob" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"longblob" => ['class' => "\\" . _String::class, 'function' => "_string"],
+					"json" => ['class' => "\\" . _String::class, 'function' => "_string"],
 				];
 
+
+				$field = ModelsFieldBuilder::init(
+					name: Tools::normaliseString($columnName, _StringFormatEnum::SNAKE_CASE),
+					nullable: $columnArray['IS_NULLABLE'] !== "NO"
+				);
+
 				if (array_key_exists($columnArray['DATA_TYPE'], $association)) {
-					$type = $association[$columnArray['DATA_TYPE']];
+					$field->setType($association[$columnArray['DATA_TYPE']]);
 				} else {
 					$type = $model->namespace . "\\Enum";
 
@@ -129,29 +140,28 @@ class ModelsBuilder
 					$values[0] = str_replace(['set(', 'enum('], '', $values[0]);
 
 					$enum = ModelsFieldEnumBuilder::init(
-						name: $model->name . Tools::normaliseString($columnName, ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "Enum",
+						name: $model->name . Tools::normaliseString($columnName, _StringFormatEnum::CAMEL_CASE) . "Enum",
 						namespace: $type,
 						values: $values
 					);
 
 					$model->enums[] = $enum;
 
-					$type = "\\" . $type . "\\" . $enum->getName();
+					$field->setType("\\" . $type . "\\" . $enum->getName());
 				}
 
-				$field = ModelsFieldBuilder::init(
-					type: $type,
-					name: Tools::normaliseString($columnName, ToolsNormaliseStringTypeEnum::SNAKE_CASE),
-					nullable: $columnArray['IS_NULLABLE'] !== "NO"
-				);
+
+				if ($columnArray['COLUMN_DEFAULT'] !== null || $columnArray['IS_NULLABLE'] !== "NO") {
+					$field->setDefaultValue($columnArray['COLUMN_DEFAULT']);
+				}
 
 				$model->fields[$columnName] = $field;
 
 				foreach ($outgoingLinksResult->getResult() as $link) {
 					$l = ModelsFieldLinkBuilder::init(
-						target_type: "\\Models\\" . Tools::normaliseString($link['REFERENCED_TABLE_SCHEMA'], ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "\\" . Tools::normaliseString($link['REFERENCED_TABLE_NAME'], ToolsNormaliseStringTypeEnum::CAMEL_CASE),
-						target_field: Tools::normaliseString($link['REFERENCED_COLUMN_NAME'], ToolsNormaliseStringTypeEnum::SNAKE_CASE),
-						name: Tools::normaliseString($link['REFERENCED_TABLE_NAME'], ToolsNormaliseStringTypeEnum::SNAKE_CASE),
+						target_type: "\\Models\\" . Tools::normaliseString($link['REFERENCED_TABLE_SCHEMA'], _StringFormatEnum::CAMEL_CASE) . "\\" . Tools::normaliseString($link['REFERENCED_TABLE_NAME'], _StringFormatEnum::CAMEL_CASE),
+						target_field: Tools::normaliseString($link['REFERENCED_COLUMN_NAME'], _StringFormatEnum::SNAKE_CASE),
+						name: Tools::normaliseString($link['REFERENCED_TABLE_NAME'], _StringFormatEnum::SNAKE_CASE),
 						source_field: $field->getName(),
 						nullable: $field->isNullable()
 					);
@@ -160,10 +170,10 @@ class ModelsBuilder
 
 				foreach ($incomingLinksResult->getResult() as $link) {
 					$l = ModelsFieldLinkBuilder::init(
-						target_type: "\\Models\\" . Tools::normaliseString($link['TABLE_SCHEMA'], ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "\\" . Tools::normaliseString($link['TABLE_NAME'], ToolsNormaliseStringTypeEnum::CAMEL_CASE),
+						target_type: "\\Models\\" . Tools::normaliseString($link['TABLE_SCHEMA'], _StringFormatEnum::CAMEL_CASE) . "\\" . Tools::normaliseString($link['TABLE_NAME'], _StringFormatEnum::CAMEL_CASE),
 						target_field: $field->getName(),
-						name: Tools::normaliseString($link['TABLE_NAME'], ToolsNormaliseStringTypeEnum::SNAKE_CASE) . "_list",
-						source_field: Tools::normaliseString($link['COLUMN_NAME'], ToolsNormaliseStringTypeEnum::SNAKE_CASE),
+						name: Tools::normaliseString($link['TABLE_NAME'], _StringFormatEnum::SNAKE_CASE) . "_list",
+						source_field: Tools::normaliseString($link['COLUMN_NAME'], _StringFormatEnum::SNAKE_CASE),
 						nullable: $field->isNullable()
 					);
 					$model->fieldsIncomingLinks[] = $l;
@@ -172,6 +182,8 @@ class ModelsBuilder
 			}
 
 			$models[] = $model;
+
+			break;
 		}
 
 		foreach ($models as $model) {
@@ -226,18 +238,18 @@ class ModelsBuilder
 
 			foreach ($model->fields as $field) {
 				if ($field->getType() === "bool") {
-					$content .= "	public function is" . Tools::normaliseString($field->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(): " . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . "bool\n";
+					$content .= "	public function is" . Tools::normaliseString($field->getName(), _StringFormatEnum::CAMEL_CASE) . "(): " . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . "bool\n";
 					$content .= "	{\n";
 					$content .= "		return \$this->" . $field->getName() . ";\n";
 					$content .= "	}\n";
 					$content .= "\n";
 				}
-				$content .= "	public function get" . Tools::normaliseString($field->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(): " . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . $field->getType() . "\n";
+				$content .= "	public function get" . Tools::normaliseString($field->getName(), _StringFormatEnum::CAMEL_CASE) . "(): " . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . $field->getType() . "\n";
 				$content .= "	{\n";
 				$content .= "		return \$this->" . $field->getName() . ";\n";
 				$content .= "	}\n";
 				$content .= "\n";
-				$content .= "	public function set" . Tools::normaliseString($field->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(" . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . $field->getType() . " $" . $field->getName() . "): static\n";
+				$content .= "	public function set" . Tools::normaliseString($field->getName(), _StringFormatEnum::CAMEL_CASE) . "(" . ($field->isNullable() || $field->getName() === "id" ? "?" : "") . $field->getType() . " $" . $field->getName() . "): static\n";
 				$content .= "	{\n";
 				$content .= "		\$this->" . $field->getName() . " = $" . $field->getName() . ";\n";
 				$content .= "\n";
@@ -247,7 +259,7 @@ class ModelsBuilder
 			}
 
 			foreach ($model->fieldsOutgoingLinks as $fieldsOutgoingLink) {
-				$content .= "	public function get" . Tools::normaliseString($fieldsOutgoingLink->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(): " . ($fieldsOutgoingLink->isNullable() ? "?" : "") . $fieldsOutgoingLink->getTargetType() . "\n";
+				$content .= "	public function get" . Tools::normaliseString($fieldsOutgoingLink->getName(), _StringFormatEnum::CAMEL_CASE) . "(): " . ($fieldsOutgoingLink->isNullable() ? "?" : "") . $fieldsOutgoingLink->getTargetType() . "\n";
 				$content .= "	{\n";
 				$content .= "		if (\$this->" . $fieldsOutgoingLink->getName() . " === null" . ($fieldsOutgoingLink->isNullable() ? " && \$this->" . $fieldsOutgoingLink->getSourceField() . " !== null" : "") . ") {\n";
 				$content .= "			\$this->" . $fieldsOutgoingLink->getName() . " = " . $fieldsOutgoingLink->getTargetType() . "::findBy(" . $fieldsOutgoingLink->getTargetType() . "::_" . strtoupper($fieldsOutgoingLink->getTargetField()) . ", \$this->" . $fieldsOutgoingLink->getSourceField() . ");\n";
@@ -261,7 +273,7 @@ class ModelsBuilder
 				$content .= "	/**\n";
 				$content .= "	 * @return " . $fieldsIncomingLink->getTargetType() . "[]\n";
 				$content .= "	 */\n";
-				$content .= "	public function get" . Tools::normaliseString($fieldsIncomingLink->getName(), ToolsNormaliseStringTypeEnum::CAMEL_CASE) . "(): array\n";
+				$content .= "	public function get" . Tools::normaliseString($fieldsIncomingLink->getName(), _StringFormatEnum::CAMEL_CASE) . "(): array\n";
 				$content .= "	{\n";
 				$content .= "		if (\$this->" . $fieldsIncomingLink->getName() . " === null) {\n";
 				$content .= "			\$this->" . $fieldsIncomingLink->getName() . " = " . $fieldsIncomingLink->getTargetType() . "::findAllBy(" . $fieldsIncomingLink->getTargetType() . "::_" . strtoupper($fieldsIncomingLink->getSourceField()) . ", \$this->" . $fieldsIncomingLink->getTargetField() . ");\n";
@@ -277,7 +289,7 @@ class ModelsBuilder
 			$content .= "		return parent::save(\$data ?? [\n";
 			foreach ($model->fields as $field) {
 				if ($field->getName() !== "id") {
-					$content .= "				self::_" . strtoupper($field->getName()) . " => \$this->" . $field->getName() . ($field->isEnum() ? "->value" : "") . ",\n";
+					$content .= "				static::_" . strtoupper($field->getName()) . " => \$this->" . $field->getName() . ($field->isEnum() ? "->value" : "->getValue()") . ",\n";
 				}
 			}
 			$content .= "			]);\n";
@@ -286,18 +298,59 @@ class ModelsBuilder
 			$content .= "\n";
 			$initParametersArray = [];
 
-			foreach ($model->fields as $field) {
+			$fields = $model->fields;
+
+			usort($fields, function ($a, $b) {
+				$aC = $a->isNullable() || $a->haveDefaultValue();
+				$bC = $b->isNullable() || $b->haveDefaultValue();
+
+				if (!$aC && $bC) {
+					return -1;
+				} elseif ($aC && !$bC) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+
+			foreach ($fields as $field) {
 				if ($field->getName() !== "id") {
-					$initParametersArray[] = ($field->isNullable() ? "?" : "") . $field->getType() . " $" . $field->getName();
+					$initParametersArray[] = ($field->isNullable() || $field->haveDefaultValue() ? "?" : "") . $field->getType() . " $" . $field->getName() . ($field->haveDefaultValue() ? " = null" : "");
 				}
 			}
 
-			$content .= "	public static function init(" . implode(', ', $initParametersArray) . ", ?int \$id = null): static\n";
+			$content .= "	public static function init(" . implode(', ', $initParametersArray) . ", ?\\" . _Int::class . " \$id = null): static\n";
 			$content .= "	{\n";
-			$content .= "		\$_object = new self();\n";
+			$content .= "		\$_object = new static();\n";
 			$content .= "\n";
-			foreach ($model->fields as $field) {
-				$content .= "		\$_object->" . $field->getName() . " = $" . $field->getName() . ";\n";
+			foreach ($fields as $field) {
+				$format = null;
+				$function = null;
+
+				if ($field->isEnum()) {
+					if ($field->haveDefaultValue() && $field->getDefaultValue() !== "null") {
+						$function = $field->getType() . "::" . strtoupper(Tools::normaliseString($field->getDefaultValue(), _StringFormatEnum::SNAKE_CASE));
+					}
+				} else {
+					if (_string($field->getFunctionType())->startsWith("_date")) {
+						$format = match ($field->getFunctionType()) {
+							"_date" => "\\" . _DateTimeFormatEnum::class . "::DATE",
+							"_datetime" => "\\" . _DateTimeFormatEnum::class . "::DATETIME",
+						};
+					}
+					if ($field->haveDefaultValue() && $field->getDefaultValue() !== "null") {
+						if (_string($field->getFunctionType())->startsWith("_date")) {
+							$function = "_datetime(\"" . $field->getDefaultValue() . "\", $format)";
+						} elseif ($field->getFunctionType() === "_string") {
+							$function = "_string(\"" . $field->getDefaultValue() . "\")";
+						} else {
+							$function = $field->getFunctionType() . "(" . $field->getDefaultValue() . ")";
+						}
+						$function = "\\Methodz\\Helpers\\Type\\$function";
+					}
+				}
+
+				$content .= "		\$_object->" . $field->getName() . " = $" . $field->getName() . ($function !== null ? " ?? $function" : "") . ";\n";
 			}
 			$content .= "\n";
 			$content .= "		return \$_object;\n";
@@ -306,9 +359,26 @@ class ModelsBuilder
 			$content .= "	public static function fromArray(array \$data): static\n";
 			$content .= "	{\n";
 			$content .= "		return static::init(\n";
-			foreach ($model->fields as $field) {
+			foreach ($fields as $field) {
 				if ($field->getName() !== "id") {
-					$content .= "			" . $field->getName() . ": " . ($field->isEnum() ? $field->getType() . "::" . ($field->isNullable() ? "tryFrom" : "from") . "(" : "") . "\$data[static::_" . strtoupper($field->getName()) . "]" . ($field->isNullable() && !$field->isEnum() ? " ?? null" : "") . ($field->isEnum() ? ")" : "") . ",\n";
+					if ($field->isEnum()) {
+						$content .= "			" . $field->getName() . ": " . $field->getType() . "::" . ($field->isNullable() ? "tryFrom" : "from") . "(\$data[static::_" . strtoupper($field->getName()) . "]),\n";
+					} else {
+						$format = null;
+						if (_string($field->getFunctionType())->startsWith("_date")) {
+							$format = match ($field->getFunctionType()) {
+								"_date" => "\\" . _DateTimeFormatEnum::class . "::DATE",
+								"_datetime" => "\\" . _DateTimeFormatEnum::class . "::DATETIME",
+							};
+							$field->setFunctionType("_datetime");
+						}
+
+						if ($field->isNullable()) {
+							$content .= "			" . $field->getName() . ": " . "array_key_exists(static::_" . strtoupper($field->getName()) . ", \$data) ? \\Methodz\\Helpers\\Type\\" . $field->getFunctionType() . "(\$data[static::_" . strtoupper($field->getName()) . "]" . ($format !== null ? ", $format" : "") . ") : null,\n";
+						} else {
+							$content .= "			" . $field->getName() . ": \\Methodz\\Helpers\\Type\\" . $field->getFunctionType() . "(\$data[static::_" . strtoupper($field->getName()) . "]" . ($format !== null ? ", $format" : "") . "),\n";
+						}
+					}
 				}
 			}
 			$content .= "			id: \$data[static::_ID] ?? null,\n";
@@ -316,13 +386,13 @@ class ModelsBuilder
 			$content .= "	}\n";
 			$content .= "\n";
 			$content .= "\n";
-			$content .= "	public static function findById(int \$id): ?static\n";
+			$content .= "	public static function findById(\\" . _Int::class . " \$id): ?static\n";
 			$content .= "	{\n";
 			$content .= "		return parent::findById(\$id);\n";
 			$content .= "	}\n";
 			$content .= "\n";
 			$content .= "	/**\n";
-			$content .= "	 * @return self[]|null\n";
+			$content .= "	 * @return static[]|null\n";
 			$content .= "	 */\n";
 			$content .= "	public static function findAll(bool \$idAsKey = false): ?array\n";
 			$content .= "	{\n";
@@ -335,7 +405,7 @@ class ModelsBuilder
 			$content .= "	}\n";
 			$content .= "\n";
 			$content .= "	/**\n";
-			$content .= "	 * @return self[]|null\n";
+			$content .= "	 * @return static[]|null\n";
 			$content .= "	 */\n";
 			$content .= "	public static function findAllByQuery(\\" . QuerySelect::class . " \$query): ?array\n";
 			$content .= "	{\n";
@@ -355,7 +425,7 @@ class ModelsBuilder
 				$contentEnum .= "	use \\" . CommonEnumTrait::class . ";\n";
 				$contentEnum .= "\n";
 				foreach ($enum->getValues() as $value) {
-					$contentEnum .= "	case " . strtoupper(Tools::normaliseString($value, ToolsNormaliseStringTypeEnum::SNAKE_CASE)) . " = \"$value\";\n";
+					$contentEnum .= "	case " . strtoupper(Tools::normaliseString($value, _StringFormatEnum::SNAKE_CASE)) . " = \"$value\";\n";
 				}
 				$contentEnum .= "\n";
 				$contentEnum .= "	public function toString(): string\n";

@@ -2,10 +2,11 @@
 
 namespace Methodz\Helpers\Tools;
 
-use ReflectionClass;
-use ReflectionException;
 use Methodz\Helpers\Tools\Part\ToolsNumber;
 use Methodz\Helpers\Tools\Part\ToolsString;
+use Methodz\Helpers\Type\Enum\_StringFormatEnum;
+use ReflectionClass;
+use ReflectionException;
 
 abstract class Tools
 {
@@ -39,12 +40,12 @@ abstract class Tools
 	}
 
 	/**
-	 * @param string                       $string
-	 * @param ToolsNormaliseStringTypeEnum $type
+	 * @param string            $string
+	 * @param _StringFormatEnum $type
 	 *
 	 * @return string
 	 */
-	public static function normaliseString(string $string, ToolsNormaliseStringTypeEnum $type = ToolsNormaliseStringTypeEnum::SNAKE_CASE): string
+	public static function normaliseString(string $string, _StringFormatEnum $type = _StringFormatEnum::SNAKE_CASE): string
 	{
 		$string = str_replace(['_', '-'], ' ', $string);
 
@@ -55,11 +56,11 @@ abstract class Tools
 		foreach ($words as $word) {
 			if (!empty($word)) {
 				switch ($type) {
-					case ToolsNormaliseStringTypeEnum::CAMEL_CASE:
-					case ToolsNormaliseStringTypeEnum::PASCAL_CASE:
+					case _StringFormatEnum::CAMEL_CASE:
+					case _StringFormatEnum::PASCAL_CASE:
 						$string .= ucfirst($word);
 						break;
-					case ToolsNormaliseStringTypeEnum::SNAKE_CASE:
+					case _StringFormatEnum::SNAKE_CASE:
 						$string .= '_' . strtolower($word);
 						break;
 				}
@@ -67,8 +68,8 @@ abstract class Tools
 		}
 
 		return match ($type) {
-			ToolsNormaliseStringTypeEnum::PASCAL_CASE => lcfirst($string),
-			ToolsNormaliseStringTypeEnum::SNAKE_CASE => trim($string, '_'),
+			_StringFormatEnum::PASCAL_CASE => lcfirst($string),
+			_StringFormatEnum::SNAKE_CASE => trim($string, '_'),
 			default => $string,
 		};
 	}

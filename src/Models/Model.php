@@ -5,6 +5,7 @@ namespace Methodz\Helpers\Models;
 use Exception;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
+use Methodz\Helpers\Type\_Int;
 use Methodz\Helpers\Type\Pair;
 
 abstract class Model implements ModelInterface
@@ -15,21 +16,21 @@ abstract class Model implements ModelInterface
 	const _TABLE = "TABLE";
 	const _ID = "ID";
 
-	protected ?int $id;
+	protected ?_Int $id;
 	protected ?array $__data = null;
 
 
-	public function getId(): ?int
+	public function getId(): ?_Int
 	{
 		return $this->id;
 	}
 
 	/**
-	 * @param int|null $id
+	 * @param _Int|null $id
 	 *
 	 * @return static
 	 */
-	public function setId(?int $id): static
+	public function setId(?_Int $id): static
 	{
 		$this->id = $id;
 
@@ -146,7 +147,7 @@ abstract class Model implements ModelInterface
 		return null;
 	}
 
-	public static function findById(int $id): ?static
+	public static function findById(_Int $id): ?static
 	{
 		return static::findBy(static::_ID, $id);
 	}

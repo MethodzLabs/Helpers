@@ -2,19 +2,20 @@
 
 namespace Methodz\Helpers\Tools;
 
-use PHPUnit\Framework\TestCase;
+use Methodz\Helpers\Type\Enum\_StringFormatEnum;
 use Methodz\Helpers\Type\Pair;
+use PHPUnit\Framework\TestCase;
 
 class ToolsTest extends TestCase
 {
 
 	/**
-	 * @param string                       $expected
-	 * @param ToolsNormaliseStringTypeEnum $type
+	 * @param string            $expected
+	 * @param _StringFormatEnum $type
 	 *
 	 * @dataProvider dataProviderNormaliseString
 	 */
-	public function testNormaliseString(string $expected, ToolsNormaliseStringTypeEnum $type)
+	public function testNormaliseString(string $expected, _StringFormatEnum $type)
 	{
 		self::assertEquals($expected, Tools::normaliseString("PhraSe De_ -Te-st", $type));
 	}
@@ -22,9 +23,9 @@ class ToolsTest extends TestCase
 	public function dataProviderNormaliseString(): array
 	{
 		return [
-			["phrase_de_te_st", ToolsNormaliseStringTypeEnum::SNAKE_CASE],
-			["phraSeDeTeSt", ToolsNormaliseStringTypeEnum::PASCAL_CASE],
-			["PhraSeDeTeSt", ToolsNormaliseStringTypeEnum::CAMEL_CASE],
+			["phrase_de_te_st", _StringFormatEnum::SNAKE_CASE],
+			["phraSeDeTeSt", _StringFormatEnum::PASCAL_CASE],
+			["PhraSeDeTeSt", _StringFormatEnum::CAMEL_CASE],
 		];
 	}
 

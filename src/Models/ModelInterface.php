@@ -3,19 +3,20 @@
 namespace Methodz\Helpers\Models;
 
 use Methodz\Helpers\Database\Query\QuerySelect;
+use Methodz\Helpers\Type\_Int;
 
 /**
  * @method init
  */
 interface ModelInterface
 {
-	public function getId(): ?int;
+	public function getId(): ?_Int;
 
-	public function setId(int $id): static;
+	public function setId(_Int $id): static;
 
 	public function save(?array $data = null): static;
 
-	public static function findById(int $id): ?static;
+	public static function findById(_Int $id): ?static;
 
 	public static function findAll(): ?array;
 

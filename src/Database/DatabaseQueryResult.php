@@ -2,16 +2,17 @@
 
 namespace Methodz\Helpers\Database;
 
-use Methodz\Helpers\Date\DateTime;
+use Methodz\Helpers\Type\_DateTime;
 use PDOStatement;
 use Throwable;
+use function Methodz\Helpers\Type\_datetime;
 
 class DatabaseQueryResult
 {
 	private DatabaseQueryResultStatus $status;
 	private mixed $result;
-	private DateTime $datetime_start;
-	private ?DateTime $datetime_end;
+	private _DateTime $datetime_start;
+	private ?_DateTime $datetime_end;
 	private string $query;
 	private ?array $parameters;
 	private ?Throwable $error;
@@ -21,7 +22,7 @@ class DatabaseQueryResult
 	{
 		$this->status = DatabaseQueryResultStatus::PENDING;
 		$this->result = null;
-		$this->datetime_start = DateTime::now();
+		$this->datetime_start = _datetime();
 		$this->datetime_end = null;
 		$this->query = $query;
 		$this->parameters = $parameters;
@@ -47,7 +48,7 @@ class DatabaseQueryResult
 	public function setResult(mixed $result): self
 	{
 		if ($this->datetime_end === null) {
-			$this->datetime_end = DateTime::now();
+			$this->datetime_end = _datetime();
 		}
 		$this->result = $result;
 
@@ -59,12 +60,12 @@ class DatabaseQueryResult
 		return $this->getStatus() === DatabaseQueryResultStatus::OK;
 	}
 
-	public function getDatetimeStart(): DateTime
+	public function getDatetimeStart(): _DateTime
 	{
 		return $this->datetime_start;
 	}
 
-	public function getDatetimeEnd(): ?DateTime
+	public function getDatetimeEnd(): ?_DateTime
 	{
 		return $this->datetime_end;
 	}

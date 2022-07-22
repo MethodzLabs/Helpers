@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Accessors;
 
-use Methodz\Helpers\Date\DateTime;
+use Methodz\Helpers\Type\_DateTime;
 
 class Cookie
 {
@@ -15,7 +15,7 @@ class Cookie
 		$this->name = $name;
 	}
 
-	public function setDatetimeExpire(DateTime $dateTime): self
+	public function setDatetimeExpire(_DateTime $dateTime): self
 	{
 		$this->maxTime = $dateTime->getTimestamp();
 		return $this;

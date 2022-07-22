@@ -11,7 +11,10 @@
     "psr-4": {
       "Methodz\\Helpers\\": "src",
       "Models\\Helpers\\": "output/Models/Helpers"
-    }
+    },
+    "files": [
+      "src/Type/functions.php"
+    ]
   },
   "require-dev": {
     "phpunit/phpunit": "9.5.20"
