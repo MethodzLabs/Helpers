@@ -4,6 +4,7 @@ namespace Methodz\Helpers\Database\Query;
 
 use Methodz\Helpers\Database\HelpersDatabase;
 use Methodz\Helpers\Database\DatabaseQueryResult;
+use Methodz\Helpers\Type\_Any;
 
 abstract class Query implements QueryInterface
 {
@@ -36,7 +37,10 @@ abstract class Query implements QueryInterface
 
 		$this->parameters[$key] = $value;
 		if (is_object($value)) {
-			$this->parameters[$key] = $value->toString();
+			if ($value instanceof _Any) {
+				$this->parameters[$key] = $value->__toString();
+			} else {
+				$this->parameters[$key] = $value->toString();}
 		}
 		return $this;
 	}

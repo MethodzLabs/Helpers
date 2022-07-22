@@ -2,8 +2,6 @@
 
 namespace Methodz\Helpers\Type;
 
-use Methodz\Helpers\Models\CommonTrait;
-
 class _Int extends _Number
 {
 

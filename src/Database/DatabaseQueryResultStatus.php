@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Database;
 
-use Methodz\Helpers\Models\CommonEnumTrait;
+use Methodz\Helpers\Models\Structure\CommonEnumTrait;
 
 enum DatabaseQueryResultStatus
 {

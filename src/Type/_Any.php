@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Type;
 
-use Methodz\Helpers\Models\CommonTrait;
+use Methodz\Helpers\Models\Structure\CommonTrait;
 
 abstract class _Any
 {
@@ -12,8 +12,6 @@ abstract class _Any
 	{
 		return $this->value;
 	}
-
-
 
 	public function __toString(): string
 	{

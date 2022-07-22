@@ -3,6 +3,7 @@
 namespace Methodz\Helpers\Models;
 
 use PHPUnit\Framework\TestCase;
+use function Methodz\Helpers\Type\_int;
 
 class CountryTest extends TestCase
 {
@@ -14,12 +15,7 @@ class CountryTest extends TestCase
 
 	public function testFindById()
 	{
-		self::assertNotNull(Country::findById(73));
-	}
-
-	public function testFindByIsoCodeNumeric()
-	{
-		self::assertNotNull(Country::findByIsoCodeNumeric(250));
+		self::assertNotNull(Country::findById(_int(73)));
 	}
 
 	public function testFindAllByName()
@@ -34,14 +30,14 @@ class CountryTest extends TestCase
 
 	public function testGetCountryLanguages()
 	{
-		$country = Country::findById(73);
-		self::assertNotEmpty($country->getCountryLanguages());
+		$country = Country::findById(_int(73));
+		self::assertNotEmpty($country->getCountryLanguageList());
 	}
 
 	public function testGetSearchEngines()
 	{
-		$country = Country::findById(73);
+		$country = Country::findById(_int(73));
 		//print_r($country->getSearchEngines());
-		self::assertNotEmpty($country->getSearchEngines());
+		self::assertNotEmpty($country->getSearchEngineList());
 	}
 }

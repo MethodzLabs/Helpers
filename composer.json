@@ -9,8 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Methodz\\Helpers\\": "src",
-      "Models\\Helpers\\": "output/Models/Helpers"
+      "Methodz\\Helpers\\": "src"
     },
     "files": [
       "src/Type/functions.php"

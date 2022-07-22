@@ -1,6 +1,6 @@
 <?php
 
-namespace Methodz\Models\Helpers;
+namespace Methodz\Helpers\Models;
 
 use Methodz\Helpers\Type\_Float;
 use Methodz\Helpers\Type\_Int;
@@ -9,10 +9,10 @@ use function Methodz\Helpers\Type\_float;
 use function Methodz\Helpers\Type\_int;
 use function Methodz\Helpers\Type\_string;
 
-class City extends \Methodz\Helpers\Models\Model
+class City extends Structure\Model
 {
 
-	use \Methodz\Helpers\Models\CommonTrait;
+	use Structure\CommonTrait;
 
 	const _DATABASE = \Methodz\Helpers\Database\HelpersDatabase::class;
 	const _TABLE = "city";
@@ -132,7 +132,7 @@ class City extends \Methodz\Helpers\Models\Model
 			name: _string($data[static::_NAME]),
 			latitude: _float($data[static::_LATITUDE]),
 			longitude: _float($data[static::_LONGITUDE]),
-			id: $data[static::_ID] ?? null,
+			id: array_key_exists(static::_ID, $data) ? \Methodz\Helpers\Type\_int($data[static::_ID]) : null,
 		)->set_data($data);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Type\Enum;
 
-use Methodz\Helpers\Models\CommonEnumTrait;
+use Methodz\Helpers\Models\Structure\CommonEnumTrait;
 
 enum _StringFormatEnum
 {

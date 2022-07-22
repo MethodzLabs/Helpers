@@ -1,6 +1,6 @@
 <?php
 
-namespace Methodz\Helpers\Models;
+namespace Methodz\Helpers\Models\Structure;
 
 use Methodz\Helpers\Tools\Tools;
 

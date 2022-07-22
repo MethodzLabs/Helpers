@@ -1,14 +1,14 @@
 <?php
 
-namespace Methodz\Models\Helpers;
+namespace Methodz\Helpers\Models;
 
 use Methodz\Helpers\Type\_Int;
 use function Methodz\Helpers\Type\_int;
 
-class CountryLanguage extends \Methodz\Helpers\Models\Model
+class CountryLanguage extends Structure\Model
 {
 
-	use \Methodz\Helpers\Models\CommonTrait;
+	use Structure\CommonTrait;
 
 	const _DATABASE = \Methodz\Helpers\Database\HelpersDatabase::class;
 	const _TABLE = "country_language";
@@ -103,7 +103,7 @@ class CountryLanguage extends \Methodz\Helpers\Models\Model
 		return static::init(
 			country_id: _int($data[static::_COUNTRY_ID]),
 			language_id: _int($data[static::_LANGUAGE_ID]),
-			id: $data[static::_ID] ?? null,
+			id: array_key_exists(static::_ID, $data) ? \Methodz\Helpers\Type\_int($data[static::_ID]) : null,
 		)->set_data($data);
 	}
 

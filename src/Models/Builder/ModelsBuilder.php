@@ -5,9 +5,9 @@ namespace Methodz\Helpers\Models\Builder;
 use Methodz\Helpers\Database\Query\QueryHandler;
 use Methodz\Helpers\Database\Query\QuerySelect;
 use Methodz\Helpers\File\File;
-use Methodz\Helpers\Models\CommonEnumTrait;
-use Methodz\Helpers\Models\CommonTrait;
-use Methodz\Helpers\Models\Model;
+use Methodz\Helpers\Models\Structure\CommonEnumTrait;
+use Methodz\Helpers\Models\Structure\CommonTrait;
+use Methodz\Helpers\Models\Structure\Model;
 use Methodz\Helpers\Tools\Tools;
 use Methodz\Helpers\Type\_DateTime;
 use Methodz\Helpers\Type\_Float;
@@ -379,7 +379,7 @@ class ModelsBuilder
 					}
 				}
 			}
-			$content .= "			id: \$data[static::_ID] ?? null,\n";
+			$content .= "			id: array_key_exists(static::_ID, \$data) ?  \\Methodz\\Helpers\\Type\\_int(\$data[static::_ID]) : null,\n";
 			$content .= "		)->set_data(\$data);\n";
 			$content .= "	}\n";
 			$content .= "\n";

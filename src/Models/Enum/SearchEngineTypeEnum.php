@@ -1,10 +1,10 @@
 <?php
 
-namespace Methodz\Models\Helpers\Enum;
+namespace Methodz\Helpers\Models\Enum;
 
 enum SearchEngineTypeEnum: string
 {
-	use \Methodz\Helpers\Models\CommonEnumTrait;
+	use \Methodz\Helpers\Models\Structure\CommonEnumTrait;
 
 	case GOOGLE_SEARCH = "Google Search";
 	case BING_SEARCH = "Bing Search";

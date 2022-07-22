@@ -2,6 +2,7 @@
 
 namespace Methodz\Helpers\Tools;
 
+use Methodz\Helpers\Type\Enum\_DateTimeFormatEnum;
 use Methodz\Helpers\Type\Enum\_StringFormatEnum;
 use Methodz\Helpers\Type\Pair;
 use PHPUnit\Framework\TestCase;
@@ -35,7 +36,7 @@ class ToolsTest extends TestCase
 		Tools::parseString("456.464")->asNumber()->asFloat();
 		Tools::parseString("456,464")->asNumber()->asFloat();
 		Tools::parseString("[12,23]")->asJsonArray();
-		Tools::parseString("2021-10-10")->asDateTime();
+		Tools::parseString("2021-10-10")->asDateTime(_DateTimeFormatEnum::DATE);
 		Tools::parseString("Un test")->asString();
 		Tools::parseString("true")->asBoolean();
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace Methodz\Models\Helpers;
+namespace Methodz\Helpers\Models;
 
+use Methodz\Helpers\Models\Enum\SearchEngineTypeEnum;
 use Methodz\Helpers\Type\_Int;
 use Methodz\Helpers\Type\_String;
 use function Methodz\Helpers\Type\_int;
 use function Methodz\Helpers\Type\_string;
-use Methodz\Models\Helpers\Enum\SearchEngineTypeEnum;
 
-class SearchEngine extends \Methodz\Helpers\Models\Model
+class SearchEngine extends Structure\Model
 {
 
-	use \Methodz\Helpers\Models\CommonTrait;
+	use Structure\CommonTrait;
 
 	const _DATABASE = \Methodz\Helpers\Database\HelpersDatabase::class;
 	const _TABLE = "search_engine";
@@ -114,7 +114,7 @@ class SearchEngine extends \Methodz\Helpers\Models\Model
 			country_id: _int($data[static::_COUNTRY_ID]),
 			url: _string($data[static::_URL]),
 			type: SearchEngineTypeEnum::from($data[static::_TYPE]),
-			id: $data[static::_ID] ?? null,
+			id: array_key_exists(static::_ID, $data) ? \Methodz\Helpers\Type\_int($data[static::_ID]) : null,
 		)->set_data($data);
 	}
 

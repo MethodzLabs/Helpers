@@ -2,7 +2,7 @@
 
 namespace Methodz\Helpers\Models\Part;
 
-use Methodz\Helpers\Models\CommonTrait;
+use Methodz\Helpers\Models\Structure\CommonTrait;
 
 class LanguageData
 {
